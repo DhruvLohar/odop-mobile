@@ -1,31 +1,76 @@
 import { Link, Tabs } from 'expo-router';
+import { Brodcast, Calendar, Home2, SearchNormal, User } from 'iconsax-react-native';
+import { memo } from 'react';
+import { View } from 'react-native';
 
-import { HeaderButton } from '../../components/HeaderButton';
-import { TabBarIcon } from '../../components/TabBarIcon';
+
+type TabIcon = {
+  Icon: any,
+  focused: boolean
+}
+
+const TabIcon = memo(({ Icon, focused }: TabIcon) => {
+
+  return (
+      <View style={{
+        alignItems: "center",
+        // paddingVertical: 16,
+      }}>
+          <Icon
+            size={26}
+            variant={focused ? "Bold" : "Outline"}
+            color={"blue"}
+            style={{ marginBottom: -4 }}
+          />
+      </View>
+  );
+});
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'black',
+        tabBarStyle: {
+          height: 65
+        },
+        tabBarLabelStyle: {
+          fontSize: 15,
+          fontWeight: 500,
+        }
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <HeaderButton />
-            </Link>
-          ),
+          title: 'Home',
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Home2} />,
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="explore"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Explore',
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={SearchNormal} />,
+        }}
+      />
+      <Tabs.Screen
+        name="events"
+        options={{
+          title: 'Events',
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Calendar} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={User} />,
+        }}
+      />
+      <Tabs.Screen
+        name="portal"
+        options={{
+          title: 'Income',
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Brodcast} />,
         }}
       />
     </Tabs>

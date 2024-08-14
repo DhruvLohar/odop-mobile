@@ -4,6 +4,9 @@ import React, { useEffect } from 'react';
 import { TamaguiProvider } from 'tamagui';
 
 import config from '../tamagui.config';
+import { SessionProvider } from '~/lib/auth';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useColorScheme } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -13,6 +16,9 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+
+  const colorScheme = useColorScheme()
+
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
@@ -28,10 +34,18 @@ export default function RootLayout() {
 
   return (
     <TamaguiProvider config={config}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <ThemeProvider value={DarkTheme}>
+        <SessionProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false
+            }}
+          >
+            {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          </Stack>
+        </SessionProvider>
+      </ThemeProvider>
     </TamaguiProvider>
   );
 }

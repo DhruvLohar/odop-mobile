@@ -1,5 +1,6 @@
 // import { Text, View } from "react-native";
 
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { 
@@ -8,8 +9,18 @@ import {
 
 export default function OnBoarding() {
 
+    const router = useRouter()
     // 0 - user || 1 - artisan
     const [selectedState, setSelectedState] = useState(0)
+
+
+    function handleContinue() {
+        if (selectedState === 0) {
+            router.push('/auth/login')
+        } else {
+            router.push('/auth/registerArtisan')
+        }
+    }
 
     return (
         <YStack
@@ -62,6 +73,7 @@ export default function OnBoarding() {
                 
                 <Button 
                     themeInverse
+                    onPress={handleContinue}
                 >Create My Account</Button>
             </YStack>
         </YStack>

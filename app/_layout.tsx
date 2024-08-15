@@ -41,7 +41,8 @@ export default function RootLayout() {
             }}>
             {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
             {/* <Stack.Screen name="artisan/workshop/all" options={{ headerShown: true, title: 'Workshop All' }}/> */}
-            <Stack.Screen name="artisan/events/all" options={{ headerShown: true, title: 'Workshop Detail' }} />
+            {/* <Stack.Screen name="artisan/events/all" options={{ headerShown: true, title: 'Workshop Detail' }} /> */}
+            <Stack.Screen name="product/[id]" options={{ headerShown: true, title: 'Product' }} />
             {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
           </Stack>
         </SessionProvider>

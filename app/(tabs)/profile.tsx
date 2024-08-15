@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { Edit2, Location, MoneySend, More, WalletMoney } from "iconsax-react-native";
+import { MoneySend, More } from "iconsax-react-native";
 import { useState } from "react";
 import { Pressable } from "react-native";
-import { Avatar, Button, Card, H2, H3, H4, H5, Image, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, Theme, View, XStack, YStack } from "tamagui";
+import { Avatar, Button, Card, H2, H3, H4, H5, Image, Paragraph, Separator, SizableText, Tabs, type TabsContentProps, Theme, View, XStack, YStack } from "tamagui";
 import ProfileDetails from "~/components/profile/DetailsSheet";
 import SupportArtisan from "~/components/profile/SupportArtisanSheet";
 
@@ -73,7 +73,7 @@ export default function ProfilePage() {
                 open={open}
                 setOpen={setOpen}
             />
-            <ScrollView>
+            
             <YStack padding="$5" rowGap="$4">
                 <StatusBar style="light" />
 

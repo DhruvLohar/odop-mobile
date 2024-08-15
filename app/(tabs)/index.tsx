@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { H3,H6,Image, YStack, Paragraph, Tabs, XStack, H4 } from 'tamagui';
+import { H3,H6,Image, YStack, Paragraph, Tabs, XStack, H4, H2 } from 'tamagui';
 import productsData from '../../lib/data/products.json';
 import ProductCard from '../../components/custom/ProductCard'; 
+import { Location } from 'iconsax-react-native';
 
 type Category = 'Edibles' | 'Clothing' | 'Handicraft';
 
@@ -14,19 +15,22 @@ const HomePage: React.FC = () => {
 
   return (
     <ScrollView>
-      <YStack flex={1} alignItems="center" paddingHorizontal="$5">
-        <H3 width={"100%"} color="#fff">Good Afternoon, User</H3>
-        <Paragraph width={"100%"} size={"$4"} theme="alt2" marginBottom={"$3"}>
-          Ratnagiri, Maharashtra
-        </Paragraph>
-        
+      <YStack flex={1} alignItems="flex-start" justifyContent='flex-start' padding="$5">
+        <H3 fontSize={"$9"} mb="$2" fontWeight={"bold"}>Good Afternoon, User</H3>
+        <XStack justifyContent='center' alignItems='center' columnGap="$2">
+          <Location size={20} color="#ffffffAA" />
+          <Paragraph theme={"alt2"} fontSize={"$5"}>
+            Ratnagiri, Maharashtra
+          </Paragraph>
+        </XStack>
+
         <Image
           source={require('../../assets/HomePageImage.png')}
           style={{
             width: "100%",
             height: 200,
             borderRadius: 20,
-            marginBottom: 20,
+            marginVertical: 20,
           }}
         />
 

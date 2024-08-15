@@ -1,0 +1,120 @@
+{
+    "productsNearby": [
+      {
+        "id": 1,
+        "name": "Product 1",
+        "price": "$100",
+        "location": "Ratnagiri, Mumbai",
+        "image": "../../assets/Products/Product1.png"
+      },
+      {
+        "id": 2,
+        "name": "Product 2",
+        "price": "$200",
+        "location": "Nashik, Mumbai",
+        "image": "../../assets/Products/Product1.png"
+      },
+      {
+        "id": 3,
+        "name": "Product 3",
+        "price": "$150",
+        "location": "Mumbai, Mumbai",
+        "image": "../../assets/Products/Product1.png"
+      }
+    ],
+    "exploreMoreProducts": [
+      {
+        "id": 4,
+        "name": "Product 4",
+        "price": "$120",
+        "location": "Mumbai, Mumbai",
+        "image": "../../assets/Products/Product1.png"
+      },
+      {
+        "id": 5,
+        "name": "Product 5",
+        "price": "$180",
+        "location": "Mumbai, Mumbai",
+        "image": "../../assets/Products/Product1.png"
+      },
+      {
+        "id": 6,
+        "name": "Product 6",
+        "price": "$220",
+        "location": "Mumbai, Mumbai",
+        "image": "../../assets/Products/Product1.png"
+      }
+    ],
+    "categoryProducts": {
+      "Edibles": [
+        {
+          "id": 1,
+          "name": "Mango Pickle",
+          "price": "$5",
+          "location": "Ratnagiri, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        },
+        {
+          "id": 2,
+          "name": "Coconut Ladoo",
+          "price": "$3",
+          "location": "Kolhapur, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        },
+        {
+          "id": 3,
+          "name": "Alphonso Mango",
+          "price": "$10",
+          "location": "Ratnagiri, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        }
+      ],
+      "Clothing": [
+        {
+          "id": 1,
+          "name": "Mango Pickle",
+          "price": "$5",
+          "location": "Ratnagiri, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        },
+        {
+          "id": 2,
+          "name": "Coconut Ladoo",
+          "price": "$3",
+          "location": "Kolhapur, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        },
+        {
+          "id": 3,
+          "name": "Alphonso Mango",
+          "price": "$10",
+          "location": "Ratnagiri, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        }
+      ],
+      "Handicraft": [
+        {
+          "id": 1,
+          "name": "Mango Pickle",
+          "price": "$5",
+          "location": "Ratnagiri, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        },
+        {
+          "id": 2,
+          "name": "Coconut Ladoo",
+          "price": "$3",
+          "location": "Kolhapur, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        },
+        {
+          "id": 3,
+          "name": "Alphonso Mango",
+          "price": "$10",
+          "location": "Ratnagiri, Maharashtra",
+          "image": "../../assets/Products/Product1.png"
+        }
+      ]
+    }
+  }
+  

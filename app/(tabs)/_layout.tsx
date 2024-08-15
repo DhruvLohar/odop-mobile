@@ -17,9 +17,9 @@ const TabIcon = memo(({ Icon, focused }: TabIcon) => {
         // paddingVertical: 16,
       }}>
           <Icon
-            size={26}
+            size={28}
             variant={focused ? "Bold" : "Outline"}
-            color={"blue"}
+            color={focused ? "white" : "#ffffffA3"}
             style={{ marginBottom: -4 }}
           />
       </View>
@@ -36,7 +36,9 @@ export default function TabLayout() {
         tabBarLabelStyle: {
           fontSize: 15,
           fontWeight: 500,
-        }
+          color: "white"
+        },
+        tabBarShowLabel: false
       }}>
       <Tabs.Screen
         name="index"

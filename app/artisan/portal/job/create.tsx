@@ -15,7 +15,7 @@ function Create() {
       .number()
       .required('Number of Applicants is required')
       .min(1, 'Require at least 1 applicant'),
-    availnow: yup.boolean().required(),
+    availnow: yup.boolean().default(false),
   });
 
   const {

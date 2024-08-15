@@ -16,8 +16,7 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-
-  const colorScheme = useColorScheme()
+  const colorScheme = useColorScheme();
 
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
@@ -38,11 +37,10 @@ export default function RootLayout() {
         <SessionProvider>
           <Stack
             screenOptions={{
-              headerShown: false
-            }}
-          >
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
+              headerShown: false,
+            }}>
+            {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
           </Stack>
         </SessionProvider>
       </ThemeProvider>

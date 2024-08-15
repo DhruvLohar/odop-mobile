@@ -20,6 +20,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Redirect, useRouter } from 'expo-router';
 
 const schema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
@@ -110,6 +111,7 @@ export default function RegisterArtisan() {
   const onSubmit = (data: FormData) => {
     console.log('Form Data:', data);
     reset();
+    setStep(1); //Temporarily redirecting to step 1
   };
 
   const handleNext = async () => {

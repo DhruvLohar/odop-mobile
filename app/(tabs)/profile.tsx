@@ -150,7 +150,7 @@ export default function ProfilePage() {
 
                 <HorizontalTabs />
             </YStack>
-            </ScrollView>
+        
         </>
     )
 }

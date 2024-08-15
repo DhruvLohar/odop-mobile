@@ -1,127 +1,65 @@
-import { Text } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import {
-  YStack,
-  H2,
-  Paragraph,
-  Progress,
-  Button,
-  Input,
-  XStack,
-  Sheet,
-  Adapt,
-  Select,
-  SizeTokens,
-  Form,
-  H4,
-  Label,
-} from 'tamagui';
-import { useMemo, useState } from 'react';
-import { ArrowDown2, Check } from 'iconsax-react-native';
-import * as DocumentPicker from 'expo-document-picker';
-import * as yup from 'yup';
-import { useForm, Controller } from 'react-hook-form';
+import { useState } from 'react';
+import { YStack, H2, Paragraph, Progress, Form, Button, SizeTokens, XStack } from 'tamagui';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Redirect, useRouter } from 'expo-router';
+import * as Yup from 'yup';
+import Stage1 from '~/components/forms/Stage1';
+import Stage2 from '~/components/forms/Stage2';
+import Stage3 from '~/components/forms/Stage3';
 
-const schema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
-  mobileNumber: yup
-    .string()
-    .required('Mobile number is required')
-    .matches(/^[0-9]{10}$/, 'Please enter a valid 10-digit mobile number.'),
-  email: yup.string().required('Email is required').email('Please enter a valid email.'),
-  selectedState: yup.string().required('State is required'),
-  selectedCity: yup.string().required('City is required'),
-  selectedDistrict: yup.string().required('District is required'),
-});
+// Define the types for the field names
+type FieldNames =
+  | 'firstName'
+  | 'lastName'
+  | 'mobileNumber'
+  | 'email'
+  | 'selectedState'
+  | 'selectedDistrict';
 
-type FormData = {
-  firstName: string;
-  lastName: string;
-  mobileNumber: string;
-  email: string;
-  selectedState: string;
-  selectedCity: string;
-  selectedDistrict: string;
-};
+const RegisterArtisan = () => {
+  // Validation Schema
+  const schema = Yup.object().shape({
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
+    mobileNumber: Yup.string()
+      .matches(/^[0-9]{10}$/, 'Mobile number must be 10 digits')
+      .required('Mobile number is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    selectedState: Yup.string().required('State is required'),
+    selectedDistrict: Yup.string().required('District is required'),
+  });
 
-type LocationType = {
-  name: string;
-  cities: { name: string; districts: string[] }[];
-};
-
-const locations: LocationType[] = [
-  {
-    name: 'Maharashtra',
-    cities: [
-      { name: 'Mumbai', districts: ['Andheri', 'Versova', 'Juhu'] },
-      { name: 'Pune', districts: ['Kothrud', 'Shivajinagar', 'Baner'] },
-    ],
-  },
-  {
-    name: 'Tamil Nadu',
-    cities: [
-      { name: 'Chennai', districts: ['Adyar', 'T Nagar', 'Anna Nagar'] },
-      { name: 'Coimbatore', districts: ['Gandhipuram', 'RS Puram', 'Peelamedu'] },
-    ],
-  },
-  {
-    name: 'Gujarat',
-    cities: [
-      { name: 'Ahmedabad', districts: ['Vastrapur', 'Bodakdev', 'Thaltej'] },
-      { name: 'Surat', districts: ['Adajan', 'Vesu', 'Bhatar'] },
-    ],
-  },
-  {
-    name: 'Karnataka',
-    cities: [
-      { name: 'Bengaluru', districts: ['Koramangala', 'HSR Layout', 'Whitefield'] },
-      { name: 'Mysore', districts: ['Jayalakshmipuram', 'Vidyaranyapuram', 'Hebbal'] },
-    ],
-  },
-];
-
-export default function RegisterArtisan() {
   const {
     control,
     formState: { errors },
-    trigger,
     handleSubmit,
+    trigger,
     reset,
-  } = useForm<FormData>({
+  } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      mobileNumber: '',
-      email: '',
-      selectedState: '',
-      selectedCity: '',
-      selectedDistrict: '',
-    },
   });
 
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33);
   const [selectedState, setSelectedState] = useState<string | null>(null);
-  const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
   const sizeProp = `$4` as SizeTokens;
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: any) => {
     console.log('Form Data:', data);
     reset();
-    setStep(1); //Temporarily redirecting to step 1
-    setProgress(33); //Temporarily redirecting to step 1
+    setStep(1);
+    setProgress(33);
   };
 
   const handleNext = async () => {
-    const fieldNames: (keyof FormData)[] =
-      step === 1
-        ? ['firstName', 'lastName', 'mobileNumber', 'email']
-        : ['selectedState', 'selectedCity', 'selectedDistrict'];
+    let fieldNames: FieldNames[] = [];
+
+    if (step === 1) {
+      fieldNames = ['firstName', 'lastName', 'mobileNumber', 'email'];
+    } else if (step === 2) {
+      fieldNames = ['selectedState', 'selectedDistrict'];
+    }
 
     const isValid = await trigger(fieldNames);
 
@@ -141,106 +79,19 @@ export default function RegisterArtisan() {
     }
   };
 
-  const getCities = () => {
-    const state = locations.find((loc) => loc.name === selectedState);
-    return state ? state.cities : [];
-  };
-
-  const getDistricts = () => {
-    const city = getCities().find((city) => city.name === selectedCity);
-    return city ? city.districts : [];
-  };
-
-  const renderSelect = (
-    label: string,
-    value: string | null,
-    onValueChange: (value: string) => void,
-    items: string[],
-    isDisabled: boolean
-  ) => {
-    const renderedItems = useMemo(() => {
-      return items.map((item, index) => (
-        <Select.Item key={index} index={index} value={item}>
-          <Select.ItemText>{item}</Select.ItemText>
-          <Select.ItemIndicator marginLeft="auto">
-            <Check size={16} color="white" />
-          </Select.ItemIndicator>
-        </Select.Item>
-      ));
-    }, [items]);
-
-    return (
-      <Select value={value || ''} onValueChange={onValueChange}>
-        <Label>{label}</Label>
-        <Select.Trigger width="100%" mb="$2" disabled={isDisabled}>
-          <XStack justifyContent="space-between" alignItems="center" w="100%">
-            <Select.Value placeholder={label} />
-            <ArrowDown2 size={16} color="white" />
-          </XStack>
-        </Select.Trigger>
-        <Adapt when="sm" platform="touch">
-          <Sheet
-            modal
-            dismissOnSnapToBottom
-            animationConfig={{ type: 'spring', damping: 20, mass: 1 }}>
-            <Sheet.Frame padding="$4" maxHeight="$20" bottom="$0" position="absolute">
-              <Sheet.ScrollView>
-                <Adapt.Contents />
-              </Sheet.ScrollView>
-            </Sheet.Frame>
-            <Sheet.Overlay />
-          </Sheet>
-        </Adapt>
-        <Select.Content>
-          <Select.Viewport>{renderedItems}</Select.Viewport>
-        </Select.Content>
-      </Select>
-    );
-  };
-
-  const [aadharCard, setAadharCard] = useState<DocumentPicker.DocumentPickerResult | any>(null)
-  const [panCard, setPanCard] = useState<DocumentPicker.DocumentPickerResult | any>(null)
-
-  const uploadDocument = async (docType: 'Aadhar' | 'PAN') => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: 'image/*',
-      });
-
-      if (docType === 'Aadhar') {
-        setAadharCard(result)
-      } else {
-        setPanCard(result)
-      }
-    } catch (error) {
-      console.error(`Failed to upload ${docType}:`, error);
-    }
-  };
-
-  const formStageInfo = [
-    {
-      title: "Personal Information",
-      desc: "Fill correct details below to create your account in few seconds"
-    },
-    {
-      title: "Where are your from?",
-      desc: "Select the state and district you belong"
-    },
-    {
-      title: "Upload Documents",
-      desc: "Upload the required documents inorder to finish the registration process"
-    }
-  ]
-
   return (
     <YStack width={'100%'} height={'100%'} justifyContent="center" paddingHorizontal="$5">
-      <StatusBar style="light" />
-
       <H2 fontWeight={'bold'} mb="$2">
-        {formStageInfo[step - 1].title}
+        {['Personal Information', 'Where are you from?', 'Upload Documents'][step - 1]}
       </H2>
       <Paragraph size={'$3'} theme="alt2" mb="$3">
-        {formStageInfo[step - 1].desc}
+        {
+          [
+            'Fill correct details below to create your account in few seconds',
+            'Select the state and district you belong',
+            'Upload the required documents in order to finish the registration process',
+          ][step - 1]
+        }
       </Paragraph>
 
       <Progress key={step} size={sizeProp} value={progress} mb="$5" br="$0">
@@ -248,206 +99,37 @@ export default function RegisterArtisan() {
       </Progress>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {step === 1 && (
-          <YStack mb="$3" rowGap="$4">
-            <XStack width={"100%"} justifyContent='space-between'>
-              <YStack width={"48%"}>
-                <Controller
-                  control={control}
-                  name="firstName"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <YStack>
-                      <Label>First Name</Label>
-                      <Input
-                        size={'$5'}
-                        borderWidth={2}
-                        placeholder="First Name"
-                        onChangeText={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                      />
-                    </YStack>
-                  )}
-                />
-                {errors.firstName && (
-                  <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                    {errors.firstName.message}
-                  </Paragraph>
-                )}
-              </YStack>
-
-              <YStack width={"48%"}>
-                <Controller
-                  control={control}
-                  name="lastName"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <YStack>
-                      <Label>Last Name</Label>
-                      <Input
-                        size={'$5'}
-                        borderWidth={2}
-                        placeholder="Last Name"
-                        onChangeText={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                      />
-                    </YStack>
-                  )}
-                />
-                {errors.lastName && (
-                  <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                    {errors.lastName.message}
-                  </Paragraph>
-                )}
-              </YStack>
-            </XStack>
-
-            <Controller
-              control={control}
-              name="mobileNumber"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <YStack>
-                  <Label>Contact Number</Label>
-                  <Input
-                    size={'$5'}
-                    borderWidth={2}
-                    placeholder="Mobile Number"
-                    keyboardType='numeric'
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                  />
-                </YStack>
-              )}
-            />
-            {errors.mobileNumber && (
-              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                {errors.mobileNumber.message}
-              </Paragraph>
-            )}
-
-            <Controller
-              control={control}
-              name="email"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <YStack>
-                  <Label>Email</Label>
-                  <Input
-                    size={'$5'}
-                    borderWidth={2}
-                    placeholder="Email"
-                    onChangeText={onChange}
-                    keyboardType='email-address'
-                    onBlur={onBlur}
-                    value={value}
-                  />
-                </YStack>
-              )}
-            />
-            {errors.email && (
-              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                {errors.email.message}
-              </Paragraph>
-            )}
-          </YStack>
-        )}
-
+        {step === 1 && <Stage1 control={control} errors={errors} />}
         {step === 2 && (
-          <YStack mb="$3">
-            <Controller
-              control={control}
-              name="selectedState"
-              render={({ field: { onChange, value } }) =>
-                renderSelect(
-                  'Select State',
-                  value,
-                  (value) => {
-                    onChange(value);
-                    setSelectedState(value);
-                    setSelectedCity(null); // Reset city and district when state changes
-                    setSelectedDistrict(null);
-                  },
-                  locations.map((loc) => loc.name),
-                  false
-                )
-              }
-            />
-            {errors.selectedState && (
-              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                {errors.selectedState.message}
-              </Paragraph>
-            )}
-
-            <Controller
-              control={control}
-              name="selectedCity"
-              render={({ field: { onChange, value } }) =>
-                renderSelect(
-                  'Select City',
-                  value,
-                  (value) => {
-                    onChange(value);
-                    setSelectedCity(value);
-                    setSelectedDistrict(null); // Reset district when city changes
-                  },
-                  getCities().map((city) => city.name),
-                  !selectedState
-                )
-              }
-            />
-            {errors.selectedCity && (
-              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                {errors.selectedCity.message}
-              </Paragraph>
-            )}
-
-            <Controller
-              control={control}
-              name="selectedDistrict"
-              render={({ field: { onChange, value } }) =>
-                renderSelect('Select District', value, onChange, getDistricts(), !selectedCity)
-              }
-            />
-            {errors.selectedDistrict && (
-              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                {errors.selectedDistrict.message}
-              </Paragraph>
-            )}
-          </YStack>
+          <Stage2
+            control={control}
+            errors={errors}
+            selectedState={selectedState}
+            setSelectedState={setSelectedState}
+            setSelectedDistrict={setSelectedDistrict}
+          />
         )}
+        {step === 3 && <Stage3 />}
 
-        {step === 3 && (
-          <YStack mb="$3">
-            <Button onPress={() => uploadDocument('Aadhar')} my="$2">
-              {!aadharCard
-                ? "Upload Aadhar"
-                : `Uploaded File : ${aadharCard?.assets[0]?.name}`
-              }
-            </Button>
-            <Button onPress={() => uploadDocument('PAN')} my="$2">
-              {!panCard
-                ? "Upload Pan Card"
-                : `Uploaded File : ${panCard?.assets[0]?.name}`
-              }
-            </Button>
-          </YStack>
-        )}
-
-        <XStack width={"100%"} justifyContent="space-between" mb="$4">
+        <XStack mt="$3">
           {step > 1 && (
-            <Button disabled={step === 1} onPress={handlePrev} variant='outlined'>
+            <Button disabled={step === 1} onPress={handlePrev} variant="outlined">
               Previous
             </Button>
           )}
           {step < 3 ? (
-            <Button onPress={handleNext} ml="auto">Next</Button>
+            <Button onPress={handleNext} ml="auto">
+              Next
+            </Button>
           ) : (
             <Form.Trigger asChild>
-              <Button>Final Submit</Button>
+              <Button ml="auto">Final Submit</Button>
             </Form.Trigger>
           )}
         </XStack>
       </Form>
     </YStack>
   );
-}
+};
+
+export default RegisterArtisan;

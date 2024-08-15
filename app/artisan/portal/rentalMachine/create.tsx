@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
 
-type FieldNames = 'title' | 'description' | 'startTime' | 'endTime' | 'availnow';
-
 function Create() {
   // Update the Yup schema to validate the 12-hour time format with AM/PM
   const schema = yup.object().shape({
@@ -33,7 +31,6 @@ function Create() {
     control,
     formState: { errors },
     handleSubmit,
-    trigger,
     reset,
   } = useForm({
     resolver: yupResolver(schema),

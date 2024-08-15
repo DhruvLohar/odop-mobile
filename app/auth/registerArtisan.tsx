@@ -13,6 +13,8 @@ import {
   Select,
   SizeTokens,
   Form,
+  H4,
+  Label,
 } from 'tamagui';
 import { useMemo, useState } from 'react';
 import { ArrowDown2, Check } from 'iconsax-react-native';
@@ -169,6 +171,7 @@ export default function RegisterArtisan() {
 
     return (
       <Select value={value || ''} onValueChange={onValueChange}>
+        <Label>{label}</Label>
         <Select.Trigger width="100%" mb="$2" disabled={isDisabled}>
           <XStack justifyContent="space-between" alignItems="center" w="100%">
             <Select.Value placeholder={label} />
@@ -195,94 +198,126 @@ export default function RegisterArtisan() {
     );
   };
 
+  const [aadharCard, setAadharCard] = useState<DocumentPicker.DocumentPickerResult | any>(null)
+  const [panCard, setPanCard] = useState<DocumentPicker.DocumentPickerResult | any>(null)
+
   const uploadDocument = async (docType: 'Aadhar' | 'PAN') => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: 'image/*',
       });
-      console.log(result);
+
+      if (docType === 'Aadhar') {
+        setAadharCard(result)
+      } else {
+        setPanCard(result)
+      }
     } catch (error) {
       console.error(`Failed to upload ${docType}:`, error);
     }
   };
+
+  const formStageInfo = [
+    {
+      title: "Personal Information",
+      desc: "Fill correct details below to create your account in few seconds"
+    },
+    {
+      title: "Where are your from?",
+      desc: "Select the state and district you belong"
+    },
+    {
+      title: "Upload Documents",
+      desc: "Upload the required documents inorder to finish the registration process"
+    }
+  ]
 
   return (
     <YStack width={'100%'} height={'100%'} justifyContent="center" paddingHorizontal="$5">
       <StatusBar style="light" />
 
       <H2 fontWeight={'bold'} mb="$2">
-        Personal Information
+        {formStageInfo[step - 1].title}
       </H2>
       <Paragraph size={'$3'} theme="alt2" mb="$3">
-        Fill Correct Details Below to create your account in a few seconds
+        {formStageInfo[step - 1].desc}
       </Paragraph>
 
-      <Progress key={step} size={sizeProp} value={progress} mb="$3" my="$1" br="$0">
+      <Progress key={step} size={sizeProp} value={progress} mb="$5" br="$0">
         <Progress.Indicator animation="bouncy" />
       </Progress>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         {step === 1 && (
-          <YStack mb="$3">
-            <Text>Section 1: Basic Information</Text>
-            <Controller
-              control={control}
-              name="firstName"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  id="firstName"
-                  size={'$5'}
-                  borderWidth={2}
-                  placeholder="First Name"
-                  mb="$4"
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
+          <YStack mb="$3" rowGap="$4">
+            <XStack width={"100%"} justifyContent='space-between'>
+              <YStack width={"48%"}>
+                <Controller
+                  control={control}
+                  name="firstName"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <YStack>
+                      <Label>First Name</Label>
+                      <Input
+                        size={'$5'}
+                        borderWidth={2}
+                        placeholder="First Name"
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    </YStack>
+                  )}
                 />
-              )}
-            />
-            {errors.firstName && (
-              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                {errors.firstName.message}
-              </Paragraph>
-            )}
+                {errors.firstName && (
+                  <Paragraph size={'$4'} color={'$red10'} mt="$-4">
+                    {errors.firstName.message}
+                  </Paragraph>
+                )}
+              </YStack>
 
-            <Controller
-              control={control}
-              name="lastName"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  id="lastName"
-                  size={'$5'}
-                  borderWidth={2}
-                  placeholder="Last Name"
-                  mb="$4"
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
+              <YStack width={"48%"}>
+                <Controller
+                  control={control}
+                  name="lastName"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <YStack>
+                      <Label>Last Name</Label>
+                      <Input
+                        size={'$5'}
+                        borderWidth={2}
+                        placeholder="Last Name"
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    </YStack>
+                  )}
                 />
-              )}
-            />
-            {errors.lastName && (
-              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-                {errors.lastName.message}
-              </Paragraph>
-            )}
+                {errors.lastName && (
+                  <Paragraph size={'$4'} color={'$red10'} mt="$-4">
+                    {errors.lastName.message}
+                  </Paragraph>
+                )}
+              </YStack>
+            </XStack>
 
             <Controller
               control={control}
               name="mobileNumber"
               render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  id="mobileNumber"
-                  size={'$5'}
-                  borderWidth={2}
-                  placeholder="Mobile Number"
-                  mb="$4"
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
+                <YStack>
+                  <Label>Contact Number</Label>
+                  <Input
+                    size={'$5'}
+                    borderWidth={2}
+                    placeholder="Mobile Number"
+                    keyboardType='numeric'
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                  />
+                </YStack>
               )}
             />
             {errors.mobileNumber && (
@@ -295,16 +330,18 @@ export default function RegisterArtisan() {
               control={control}
               name="email"
               render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  id="email"
-                  size={'$5'}
-                  borderWidth={2}
-                  placeholder="Email"
-                  mb="$4"
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
+                <YStack>
+                  <Label>Email</Label>
+                  <Input
+                    size={'$5'}
+                    borderWidth={2}
+                    placeholder="Email"
+                    onChangeText={onChange}
+                    keyboardType='email-address'
+                    onBlur={onBlur}
+                    value={value}
+                  />
+                </YStack>
               )}
             />
             {errors.email && (
@@ -317,7 +354,6 @@ export default function RegisterArtisan() {
 
         {step === 2 && (
           <YStack mb="$3">
-            <Text>Section 2: Location Information</Text>
             <Controller
               control={control}
               name="selectedState"
@@ -382,22 +418,29 @@ export default function RegisterArtisan() {
 
         {step === 3 && (
           <YStack mb="$3">
-            <Text>Section 3: Upload Documents</Text>
             <Button onPress={() => uploadDocument('Aadhar')} my="$2">
-              Upload Aadhar
+              {!aadharCard
+                ? "Upload Aadhar"
+                : `Uploaded File : ${aadharCard?.assets[0]?.name}`
+              }
             </Button>
             <Button onPress={() => uploadDocument('PAN')} my="$2">
-              Upload PAN
+              {!panCard
+                ? "Upload Pan Card"
+                : `Uploaded File : ${panCard?.assets[0]?.name}`
+              }
             </Button>
           </YStack>
         )}
 
-        <XStack justifyContent="space-between" mb="$4">
-          <Button disabled={step === 1} onPress={handlePrev}>
-            Previous
-          </Button>
+        <XStack width={"100%"} justifyContent="space-between" mb="$4">
+          {step > 1 && (
+            <Button disabled={step === 1} onPress={handlePrev} variant='outlined'>
+              Previous
+            </Button>
+          )}
           {step < 3 ? (
-            <Button onPress={handleNext}>Next</Button>
+            <Button onPress={handleNext} ml="auto">Next</Button>
           ) : (
             <Form.Trigger asChild>
               <Button>Final Submit</Button>

@@ -74,6 +74,7 @@ export default function OnBoarding() {
                 <Button 
                     themeInverse
                     onPress={handleContinue}
+                    mt="$4"
                 >Create My Account</Button>
             </YStack>
         </YStack>

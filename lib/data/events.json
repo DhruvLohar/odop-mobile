@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "title": "Pottery Guidance",
+      "rating": 4.5,
+      "location": "Nashik",
+      "showTime": "28 June | 9:00 AM"
+    },
+    {
+      "id": 2,
+      "title": "Woodwork Workshop",
+      "rating": 4.8,
+      "location": "Pune",
+      "showTime": "24th June | 11:00 AM"
+    }
+  ]
+  

@@ -1,0 +1,23 @@
+{
+    "workshops": [
+      {
+        "id": 1,
+        "title": "Workshop Title 1",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo.",
+        "date": "2024-10-10",
+        "time": "9:00",
+        "categories": ["Workshop", "Beginner"],
+        "image": "Workshop1.jpg"
+      },
+      {
+        "id": 2,
+        "title": "Workshop Title 2",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "date": "2024-11-15",
+        "time": "14:00",
+        "categories": ["Seminar", "Advanced"],
+        "image": "Workshop2.jpg"
+      }
+    ]
+  }
+  

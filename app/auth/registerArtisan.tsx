@@ -112,6 +112,7 @@ export default function RegisterArtisan() {
     console.log('Form Data:', data);
     reset();
     setStep(1); //Temporarily redirecting to step 1
+    setProgress(33); //Temporarily redirecting to step 1
   };
 
   const handleNext = async () => {

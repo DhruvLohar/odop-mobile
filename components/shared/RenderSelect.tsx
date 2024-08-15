@@ -1,5 +1,5 @@
 import { Select, XStack, Label, Sheet, Adapt } from 'tamagui';
-import { Check, ArrowDown2 } from 'iconsax-react-native';
+import { TickCircle, ArrowDown2 } from 'iconsax-react-native';
 import { useMemo } from 'react';
 
 export const RenderSelect = (
@@ -14,7 +14,7 @@ export const RenderSelect = (
       <Select.Item key={index} index={index} value={item}>
         <Select.ItemText>{item}</Select.ItemText>
         <Select.ItemIndicator marginLeft="auto">
-          <Check size={16} color="white" />
+          <TickCircle size={16} color="white" />
         </Select.ItemIndicator>
       </Select.Item>
     ));
@@ -23,7 +23,7 @@ export const RenderSelect = (
   return (
     <Select value={value || ''} onValueChange={onValueChange}>
       <Label>{label}</Label>
-      <Select.Trigger width="100%" mb="$2" disabled={isDisabled}>
+      <Select.Trigger width="100%" my="$2" disabled={isDisabled}>
         <XStack justifyContent="space-between" alignItems="center" w="100%">
           <Select.Value placeholder={label} />
           <ArrowDown2 size={16} color="white" />
@@ -34,7 +34,7 @@ export const RenderSelect = (
           modal
           dismissOnSnapToBottom
           animationConfig={{ type: 'spring', damping: 20, mass: 1 }}>
-          <Sheet.Frame padding="$4" maxHeight="$20" bottom="$0" position="absolute">
+          <Sheet.Frame padding="$4" maxHeight="$20" height={'fit'} bottom="$0" position="absolute">
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>

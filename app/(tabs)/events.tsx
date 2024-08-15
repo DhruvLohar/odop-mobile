@@ -82,7 +82,6 @@ export default function EventsPage() {
 
     return (
         <YStack padding="$5">
-            {console.log(currentTab)}
             <H2 fontWeight={"bold"} mb="$2">{info[currentTab].title}</H2>
             <Paragraph theme={"alt2"} fontSize={"$4"}>{info[currentTab].desc}</Paragraph>
 

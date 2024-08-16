@@ -46,6 +46,7 @@ export default function RootLayout() {
             {/* <Stack.Screen name="order/[id]" options={{ headerShown: true, title: 'Individual order' }}/> */}
             {/* <Stack.Screen name="order/index" options={{ headerShown: true, title: 'Individual order' }}/> */}
             <Stack.Screen name="artisan/profile/connectionRequests" options={{ headerShown: true, title: 'Connection' }} />
+            <Stack.Screen name="product/[id]" options={{ headerShown: true, title: 'Product' }} />
           </Stack>
         </SessionProvider>
       </ThemeProvider>

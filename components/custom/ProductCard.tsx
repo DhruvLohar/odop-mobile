@@ -1,6 +1,8 @@
+import { Link } from 'expo-router';
+import { Location } from 'iconsax-react-native';
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { H6, YStack } from 'tamagui';
+import { H3, H6, Paragraph, SizableText, XStack, YStack } from 'tamagui';
 
 type ProductCardProps = {
   id: number;
@@ -17,20 +19,25 @@ const imageMap: { [key: string]: any } = {
 
 const ProductCard: React.FC<ProductCardProps> = ({ name, price, location, image }) => {
   return (
-    <YStack marginRight="$3" marginTop="$1" borderRadius="$3" width={150} backgroundColor="$backgroundStrong" padding="$1">
-      <Image
-        source={imageMap[image]}
-        style={{
-          width: "100%",
-          height: 200,
-          borderRadius: 10,
-          marginBottom: 10,
-        }}
-      />
-      <H6 size={"$4"}>{name}</H6>
-      <H6 size={"$1"} theme="alt2">{location}</H6>
-      <H6 size={"$5"}>{price}</H6>
-    </YStack>
+    <Link href={`/product/${name}`}>
+      <YStack backgroundColor="$backgroundStrong">
+        <Image
+          source={imageMap[image]}
+          style={{
+            minWidth: 200,
+            width: "100%",
+            height: 250,
+            objectFit: 'cover'
+          }}
+        />
+        <H6 size={"$6"} mt="$2">{name}</H6>
+        <XStack theme="alt2" alignItems='center' mt="$1" mb="$2">
+          <Location size={18} color='#ffffffa7' />
+          <Paragraph fontWeight={"bold"} ml="$2">{location}</Paragraph>
+        </XStack>
+        <H3>{price}</H3>
+      </YStack>
+    </Link>
   );
 };
 

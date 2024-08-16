@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, YStack, H3, Paragraph } from 'tamagui';
-import EventCard from '../../../components/custom/EventCard'; // Adjust the import path as needed
-import eventsData from '../../../lib/data/events.json'; // Adjust the path to your JSON file
+import EventCard from '../../../components/custom/EventCard';
+import eventsData from '../../../lib/data/events.json';
 
 type Event = {
     id: number;

@@ -13,7 +13,6 @@ type ProductCardProps = {
 const imageMap: { [key: string]: any } = {
   'Product1.png': require('../../assets/Products/Product1.png'),
   'Product2.png': require('../../assets/Products/Product2.png'),
-  'Product3.png': require('../../assets/Products/Product3.png'),
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ name, price, location, image }) => {

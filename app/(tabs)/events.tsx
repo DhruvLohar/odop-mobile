@@ -1,5 +1,19 @@
 import { useState } from "react";
-import { Button, H2, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, YStack } from "tamagui";
+import { Button, H2,H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, YStack } from "tamagui";
+import workshops from '../../lib/data/workshops.json';
+import WorkshopCard from '../../components/custom/WorkshopCard';
+import EventCard from '../../components/custom/EventCard';
+import eventsData from '../../lib/data/events.json';
+
+
+type Event = {
+    id: number;
+    title: string;
+    rating: number;
+    location: string;
+    showTime: string;
+  };
+
 
 function HorizontalTabs({ setCurrentTab }: any) {
     return (
@@ -8,9 +22,10 @@ function HorizontalTabs({ setCurrentTab }: any) {
             orientation="horizontal"
             flexDirection="column"
             width={"100%"}
-            height={150}
+            height={500}
             borderRadius={"$5"}
             overflow="hidden"
+        
             onValueChange={setCurrentTab}
         >
             <Tabs.List
@@ -24,29 +39,33 @@ function HorizontalTabs({ setCurrentTab }: any) {
                 </Tabs.Tab>
             </Tabs.List>
 
-            <TabsContent value="workshops">
-                <H5>Workshops</H5>
-            </TabsContent>
+            <Tabs.Content value="workshops" flex={1}>
+            <ScrollView>
+                <YStack flex={1} alignItems="center" paddingVertical="$5">
+                    
+                    {workshops.workshops.map(workshop => (
+                    <WorkshopCard 
+                        key={workshop.id}
+                        {...workshop}
+                    />
+                    ))}
+                </YStack>
+                </ScrollView>
+            </Tabs.Content>
 
-            <TabsContent value="events">
-                <H5>Events</H5>
-            </TabsContent>
+            <Tabs.Content value="events">
+            <ScrollView>
+                <YStack flex={1} alignItems="center" paddingVertical="$5">
+                
+        
+                {eventsData.map((event: Event) => (
+                    <EventCard key={event.id} event={event} />
+                ))}
+        
+                </YStack>
+            </ScrollView>
+            </Tabs.Content>
         </Tabs>
-    )
-}
-
-const TabsContent = (props: TabsContentProps) => {
-    return (
-        <Tabs.Content
-            padding="$2"
-            alignItems="center"
-            justifyContent="center"
-            flex={1}
-            borderWidth={0}
-            {...props}
-        >
-            {props.children}
-        </Tabs.Content>
     )
 }
 
@@ -99,8 +118,9 @@ export default function EventsPage() {
                     </Button>
                 ))}
             </ScrollView>
-
-            <HorizontalTabs setCurrentTab={setCurrentTab} />
+            <YStack flex={1}>
+                <HorizontalTabs setCurrentTab={setCurrentTab} />
+            </YStack>
         </YStack>
     )
 }

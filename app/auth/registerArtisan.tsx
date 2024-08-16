@@ -1,5 +1,17 @@
 import { useState } from 'react';
-import { YStack, H2, Paragraph, Progress, Form, Button, SizeTokens, XStack } from 'tamagui';
+import {
+  YStack,
+  H2,
+  Paragraph,
+  Progress,
+  Form,
+  Button,
+  SizeTokens,
+  XStack,
+  Sheet,
+  Input,
+  H4,
+} from 'tamagui';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -7,24 +19,34 @@ import Stage1 from '~/components/forms/Stage1';
 import Stage2 from '~/components/forms/Stage2';
 import Stage3 from '~/components/forms/Stage3';
 
-// Define the types for the field names
 type FieldNames =
-  | 'firstName'
-  | 'lastName'
+  | 'name'
   | 'mobileNumber'
   | 'email'
+  | 'gender'
+  | 'age'
   | 'selectedState'
-  | 'selectedDistrict';
+  | 'selectedDistrict'
+  | 'address'
+  | 'pinCode';
 
 const RegisterArtisan = () => {
-  // Validation Schema
   const schema = Yup.object().shape({
-    firstName: Yup.string().required('First name is required'),
-    lastName: Yup.string().required('Last name is required'),
+    name: Yup.string().required('First name is required'),
     mobileNumber: Yup.string()
       .matches(/^[0-9]{10}$/, 'Mobile number must be 10 digits')
       .required('Mobile number is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
+    age: Yup.number().min(18, 'Minimum age required is 18').required('Age is Required'),
+    pinCode: Yup.number()
+      .typeError('Pincode must be a number')
+      .positive()
+      .integer()
+      .min(100000)
+      .max(999999)
+      .required(),
+    address: Yup.string().required('Address is required'),
+    gender: Yup.string().required('Gender is required'),
     selectedState: Yup.string().required('State is required'),
     selectedDistrict: Yup.string().required('District is required'),
   });
@@ -43,6 +65,9 @@ const RegisterArtisan = () => {
   const [progress, setProgress] = useState(33);
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
+  const [showOtpSheet, setShowOtpSheet] = useState(false);
+  const [otpInput, setOtpInput] = useState('');
+  const correctOtp = '123456'; // Predefined OTP
   const sizeProp = `$4` as SizeTokens;
 
   const onSubmit = (data: any) => {
@@ -56,16 +81,20 @@ const RegisterArtisan = () => {
     let fieldNames: FieldNames[] = [];
 
     if (step === 1) {
-      fieldNames = ['firstName', 'lastName', 'mobileNumber', 'email'];
+      fieldNames = ['name', 'mobileNumber', 'email', 'gender', 'age'];
     } else if (step === 2) {
-      fieldNames = ['selectedState', 'selectedDistrict'];
+      fieldNames = ['selectedState', 'selectedDistrict', 'address', 'pinCode'];
     }
 
     const isValid = await trigger(fieldNames);
 
     if (isValid && step < 3) {
-      setStep((prev) => prev + 1);
-      setProgress((prev) => prev + 33);
+      if (step === 1) {
+        setShowOtpSheet(true); // Show OTP sheet at the end of step 1
+      } else {
+        setStep((prev) => prev + 1);
+        setProgress((prev) => prev + 33);
+      }
     } else if (step === 3) {
       setProgress(100);
       handleSubmit(onSubmit)();
@@ -76,6 +105,16 @@ const RegisterArtisan = () => {
     if (step > 1) {
       setStep((prev) => prev - 1);
       setProgress((prev) => prev - 33);
+    }
+  };
+
+  const handleOtpConfirm = () => {
+    if (otpInput === correctOtp) {
+      setShowOtpSheet(false);
+      setStep((prev) => prev + 1);
+      setProgress((prev) => prev + 33);
+    } else {
+      alert('Invalid OTP. Please try again.');
     }
   };
 
@@ -128,6 +167,36 @@ const RegisterArtisan = () => {
           )}
         </XStack>
       </Form>
+
+      <Sheet
+        forceRemoveScrollEnabled={showOtpSheet}
+        modal
+        open={showOtpSheet}
+        onOpenChange={setShowOtpSheet}
+        snapPointsMode="fit"
+        dismissOnSnapToBottom>
+        <Sheet.Overlay animation={'lazy'} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+
+        <Sheet.Handle backgroundColor={'white'} />
+        <YStack p="$4">
+          <H4 fontWeight={'bold'} mb="$2">
+            Confirm Otp
+          </H4>
+          <Paragraph theme={'alt1'} mb="$2">
+            Check out for the otp sent on your registered Email
+          </Paragraph>
+          <Input
+            placeholder="Enter OTP"
+            value={otpInput}
+            onChangeText={setOtpInput}
+            size={sizeProp}
+            keyboardType="numeric"
+          />
+          <Button onPress={handleOtpConfirm} mt="$4">
+            Confirm
+          </Button>
+        </YStack>
+      </Sheet>
     </YStack>
   );
 };

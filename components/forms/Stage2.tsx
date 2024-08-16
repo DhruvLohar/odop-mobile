@@ -1,7 +1,7 @@
-import { YStack, Paragraph } from 'tamagui';
+import { YStack, Paragraph, Label, Input } from 'tamagui';
 import { Controller } from 'react-hook-form';
 import { RenderSelect } from '../shared/RenderSelect';
-import { States, StatesAndDistrict } from '~/lib/stateDistirctData';
+import { States, StatesAndDistrict } from '~/lib/constants/stateDistirctData';
 
 const Stage2 = ({
   control,
@@ -59,6 +59,57 @@ const Stage2 = ({
           {errors.selectedDistrict.message}
         </Paragraph>
       )}
+
+      <YStack width={'100%'} mb="$2">
+        <Controller
+          control={control}
+          name="address"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <YStack>
+              <Label mb="$2">Address</Label>
+              <Input
+                size={'$5'}
+                borderWidth={2}
+                placeholder="Address"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+              />
+            </YStack>
+          )}
+        />
+        {errors.address && (
+          <Paragraph size={'$4'} color={'$red10'} mb="$2">
+            {errors.address.message}
+          </Paragraph>
+        )}
+      </YStack>
+
+      <YStack>
+        <Controller
+          control={control}
+          name="pinCode"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <YStack>
+              <Label mb="$2">Pincode</Label>
+              <Input
+                size={'$5'}
+                borderWidth={2}
+                placeholder="Enter Pincode"
+                keyboardType="numeric"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+              />
+            </YStack>
+          )}
+        />
+        {errors.pinCode && (
+          <Paragraph size={'$4'} color={'$red10'} mb="$2">
+            {errors.pinCode.message}
+          </Paragraph>
+        )}
+      </YStack>
     </YStack>
   );
 };

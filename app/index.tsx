@@ -1,7 +1,6 @@
-import { Redirect } from "expo-router"
+import { Redirect } from 'expo-router';
 
 export default function AppLayout() {
-
-    // return <Redirect href={'/(tabs)/'} />
-    return <Redirect href="/artisan/workshop/all" />
+  // return <Redirect href="/artisan/workshop/host" />;
+  return <Redirect href="/artisan/portal/job/mohit/apply" />;
 }

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Button, H2, H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
-
+import JobPortalCard from '../../components/custom/JobPortalCard';
+import jobs from '../../lib/data/Jobs.json';
+import RentalMachineCard from '../../components/custom/RentalMachineCard';
+import rentalmachine from '../../lib/data/rentalmachine.json';
 import { Filter } from "iconsax-react-native";
 
 
@@ -28,20 +31,24 @@ function HorizontalTabs({ setCurrentTab }: any) {
                 </Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Content value="job_portal" flex={1}>
+            <Tabs.Content value="job_portal" padding="$1" flex={1}>
                 <ScrollView flex={1}>
-                    <YStack alignItems="center" flex={1}>
-                        <H2>Job Portal</H2>
-                    </YStack>
-                </ScrollView>
+                        <YStack flex={1} alignItems="center">
+                            {jobs.jobs.map((jobs) => (
+                                <JobPortalCard key={jobs.id} {...jobs} />
+                            ))}
+                        </YStack>
+                    </ScrollView>
             </Tabs.Content>
 
             <Tabs.Content value="rental_machines" flex={1}>
                 <ScrollView flex={1}>
-                    <YStack flex={1} alignItems="center" paddingVertical="$5">
-                        <H2>Machines on Rent</H2>
-                    </YStack>
-                </ScrollView>
+                        <YStack flex={1} alignItems="center">
+                            {rentalmachine.rentalmachine.map((rentalmachine) => (
+                                <RentalMachineCard key={rentalmachine.id} {...rentalmachine} />
+                            ))}
+                        </YStack>
+                    </ScrollView>
             </Tabs.Content>
         </Tabs>
     )

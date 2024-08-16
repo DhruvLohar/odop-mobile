@@ -44,7 +44,7 @@ export default function Explore() {
                     <YStack 
                         width={"100%"} 
                         justifyContent="center" alignItems="center"
-                        rowGap="$4"
+                        rowGap="$6"
                     >
                         {Array.from({ length: 10 }).map((_, idx) => (
                             <XStack 

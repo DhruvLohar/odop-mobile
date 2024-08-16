@@ -75,9 +75,11 @@ const filters = [
 const info = {
     "workshops": {
         title: "Live Workshops",
+        desc: "Attend and explore workshops that interests you!"
     },
     "events": {
         title: "Explore Events",
+        desc: "Meet, interact and connect with the best, in the events!"
     }
 }
 
@@ -97,7 +99,10 @@ export default function EventsPage() {
     return (
         <YStack flex={1} padding="$5">
             <XStack mb="$4" alignItems="center">
-                <H2 fontWeight={"bold"} mr="auto">{info[currentTab].title}</H2>
+                <YStack mr="auto">
+                    <H2 fontWeight={"bold"}>{info[currentTab].title}</H2>
+                    <Paragraph width={"80%"} theme={"alt2"}>{info[currentTab].desc}</Paragraph>
+                </YStack>
                 <Filter color="white" />
             </XStack>
 

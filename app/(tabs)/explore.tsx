@@ -30,6 +30,10 @@ export default function Explore() {
                     <Filter size={26} color="white" onPress={() => setOpen(true)} />
                 </XStack>
             </YStack>
+
+            <YStack>
+                <H2>All Products</H2>
+            </YStack>
         </>
     )
 }

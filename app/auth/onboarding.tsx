@@ -1,11 +1,11 @@
 // import { Text, View } from "react-native";
 
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { Image } from "react-native";
-import { 
-    Button, Card, H1, H2, H3, Paragraph, YStack 
+import {
+    Button, Card, H1, H2, H3, Paragraph, YStack
 } from "tamagui";
 
 export default function OnBoarding() {
@@ -31,20 +31,20 @@ export default function OnBoarding() {
         >
             <StatusBar style="light" />
 
-            <Image 
+            <Image
                 source={require('~/assets/Logo.png')}
-                style={{ 
-                    width: "60%", height: 100, 
+                style={{
+                    width: "60%", height: 100,
                     alignSelf: "center", marginBottom: 50,
-                    objectFit: 'cover' 
+                    objectFit: 'cover'
                 }}
             />
 
             <H2 fontWeight={"bold"} mb="$2">
-                How do you want to join 
-                our platform? 
+                How do you want to join
+                our platform?
             </H2>
-            <Paragraph 
+            <Paragraph
                 size={"$4"}
                 theme="alt2"
             >
@@ -80,12 +80,17 @@ export default function OnBoarding() {
                         </Paragraph>
                     </Card.Header>
                 </Card>
-                
-                <Button 
+
+                <Button
                     themeInverse
                     onPress={handleContinue}
                     mt="$4"
                 >Create My Account</Button>
+
+                <Button
+                    onPress={() => router.push('/auth/login')}
+                    width={"100%"}
+                >Already have an account? Log in</Button>
             </YStack>
         </YStack>
     )

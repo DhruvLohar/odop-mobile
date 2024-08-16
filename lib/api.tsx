@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-export const API_URL = "http://192.168.1.13:3000/";
+export const API_URL = "http://192.168.1.13:8000/";
 
 axios.defaults.baseURL = API_URL;
 
@@ -12,10 +12,12 @@ interface Session {
 
 interface ApiResponse<T = any> {
   data: T;
-  success?: boolean;
+  message?: string;
+  verified?: boolean;
+  success: boolean;
 }
 
-export async function postToAPI<T>(url: string, data: any): Promise<ApiResponse<T> | undefined> {
+export async function postToAPI<T>(url: string, data: any): Promise<ApiResponse<T> | any> {
   try {
     const res: AxiosResponse<ApiResponse<T>> = await axios.post(url, data);
     return res.data;
@@ -44,7 +46,7 @@ export async function axiosRequest<T>(
   url: string,
   reqParams: AxiosRequestConfig,
   sendingMedia: boolean
-): Promise<ApiResponse<T> | undefined> {
+): Promise<ApiResponse<T> | any> {
   const sessionString = await SecureStore.getItemAsync("session");
   const session: Session = sessionString ? JSON.parse(sessionString) : {};
 

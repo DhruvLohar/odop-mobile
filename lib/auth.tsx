@@ -1,6 +1,6 @@
 import React, { useEffect, ReactNode } from 'react';
 import { useStorageState } from './useStorageState';
-// import { fetchFromAPI, postToAPI } from './api';
+import { fetchFromAPI, postToAPI } from './api';
 
 // Define types for session and AuthContext
 interface User {
@@ -10,9 +10,16 @@ interface User {
 }
 
 interface AuthContextType {
-    signIn: (values: any) => Promise<boolean>;
-    signOut: () => Promise<void>;
-    signUp: (values: any) => Promise<any>;
+
+    getOTP: (id: number, type: 'artisan' | 'user') => Promise<boolean>;
+    verifyOTP: (id: number, type: 'artisan' | 'user', otp: number) => Promise<boolean>;
+
+    artisanLogin: (values: any) => Promise<boolean>;
+    userLogin: (values: any) => Promise<boolean>;
+    
+    logOut: () => Promise<void>;
+
+    registerArtisan: (values: any) => Promise<any>;
     refreshUser: () => Promise<void>;
     session: User | null;
     isLoading: boolean;
@@ -20,9 +27,15 @@ interface AuthContextType {
 
 // Define the default values for the AuthContext
 const defaultAuthContext: AuthContextType = {
-    signIn: async () => false,
-    signOut: async () => {},
-    signUp: async () => ({}),
+    artisanLogin: async () => false,
+    userLogin: async () => false,
+
+    getOTP: async () => false,
+    verifyOTP: async () => false,
+
+    logOut: async () => {},
+
+    registerArtisan: async () => ({}),
     refreshUser: async () => {},
     session: null,
     isLoading: false,
@@ -48,28 +61,63 @@ interface SessionProviderProps {
 export function SessionProvider({ children }: SessionProviderProps) {
     const [[isLoading, session], setStorageState] = useStorageState<User | null>("session");
 
-    async function signIn(values: any): Promise<boolean> {
-        // const data = await postToAPI("users/login/", values);
+    async function getOTP(id: number, type: 'artisan' | 'user') {
+        const data = await fetchFromAPI(`${type}/${id}/getOTPOnEmail/`);
 
-        // if (data.success) {
-        //     await setStorageState(data.user);
-        // }
-
-        return true; // data.success;
+        return data.success;
     }
 
-    async function signUp(values: any): Promise<any> {
-        // const data = await postToAPI("users/", values);
+    async function verifyOTP(id: number, type: 'artisan' | 'user', otp: number) {
+        const data = await postToAPI(`${type}/${id}/verifyOTPOnEmail/`, {
+            otp,
+        });
 
-        // if (data?.success) {
-        //     console.log(data.user);
-        //     await setStorageState(data.user);
-        // }
-
-        return true;// data;
+        return data?.success;
     }
 
-    async function signOut(): Promise<void> {
+    async function artisanLogin(values: any): Promise<boolean> {
+        const data = await postToAPI("artisan/signUpSignIn/", values);
+
+        console.log(data)
+        if (data?.success && data?.verified) {
+            // await setStorageState(data.user);
+            console.log(data?.user)
+        } else {
+            console.log("not verified")
+        }
+
+        return data;
+    }
+
+    async function userLogin(values: any): Promise<boolean> {
+        const data = await postToAPI("user/signUpSignIn/", values);
+
+        console.log(data)
+        if (data?.success && data?.verified) {
+            // await setStorageState(data.user);
+            console.log(data?.user)
+        } else {
+            console.log("not verified")
+        }
+    
+        return data
+    }
+
+    async function registerArtisan(values: any): Promise<any> {
+        // const data = await postToAPI("user/signUpSignIn/", values);
+
+        // console.log(data)
+        // if (data?.success && data?.verified) {
+        //     // await setStorageState(data.user);
+        //     console.log(data?.user)
+        // } else {
+        //     console.log("not verified")
+        // }
+    
+        // return data.success
+    }
+
+    async function logOut(): Promise<void> {
         // await setStorageState(null);
     }
 
@@ -87,10 +135,16 @@ export function SessionProvider({ children }: SessionProviderProps) {
     return (
         <AuthContext.Provider
             value={{
-                signIn,
-                signOut,
-                signUp,
+                getOTP,
+                verifyOTP,
+                
+                registerArtisan,
+                
+                artisanLogin,
+                userLogin,
+                
                 refreshUser,
+                logOut,
                 session,
                 isLoading,
             }}>

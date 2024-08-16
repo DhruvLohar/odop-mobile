@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 
 export const RenderSelect = (
   label: string,
-  value: string | null,
+  value: string | null | undefined,
   onValueChange: (value: string) => void,
   items: string[],
   isDisabled: boolean

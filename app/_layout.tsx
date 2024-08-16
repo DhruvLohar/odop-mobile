@@ -45,7 +45,7 @@ export default function RootLayout() {
             {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
             {/* <Stack.Screen name="order/[id]" options={{ headerShown: true, title: 'Individual order' }}/> */}
             {/* <Stack.Screen name="order/index" options={{ headerShown: true, title: 'Individual order' }}/> */}
-            <Stack.Screen name="artisan/profile/connectionRequests" options={{ headerShown: true, title: 'Connection' }} />
+            {/* <Stack.Screen name="artisan/profile/connectionRequests" options={{ headerShown: true, title: 'Connection' }} /> */}
           </Stack>
         </SessionProvider>
       </ThemeProvider>

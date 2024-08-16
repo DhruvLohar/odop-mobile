@@ -12,11 +12,6 @@ type JobPortalCardProps = {
   requirement:string
 };
 
-const imageMap: { [key: string]: any } = {
-  'Workshop1.jpg': require('../../assets/Workshops/Workshop1.jpg'),
-  'Workshop2.jpg': require('../../assets/Workshops/Workshop2.jpg'),
-};
-
 const JobPortalCard: React.FC<JobPortalCardProps> = ({id, title, description,location, company,requirement}) => {
   return (
     <YStack 

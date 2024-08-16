@@ -1,17 +1,23 @@
-[
+{
+  "events": [
     {
       "id": 1,
       "title": "Pottery Guidance",
       "rating": 4.5,
       "location": "Nashik",
-      "showTime": "28 June | 9:00 AM"
+      "showTime": "28 June | 9:00 AM",
+      "image": "Workshop1.jpg",
+      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo."
     },
     {
       "id": 2,
       "title": "Woodwork Workshop",
       "rating": 4.8,
       "location": "Pune",
-      "showTime": "24th June | 11:00 AM"
+      "showTime": "24th June | 11:00 AM",
+      "image": "Workshop2.jpg",
+      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo."
     }
   ]
+}
   

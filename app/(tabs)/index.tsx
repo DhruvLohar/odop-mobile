@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { H3,H6,Image, YStack, Paragraph, Tabs, XStack, H4, H2 } from 'tamagui';
+import { H3, H6, Image, YStack, Paragraph, Tabs, XStack, H4, H2 } from 'tamagui';
 import productsData from '../../lib/data/products.json';
-import ProductCard from '../../components/custom/ProductCard'; 
+import ProductCard from '../../components/custom/ProductCard';
 import { Location } from 'iconsax-react-native';
+import CustomCarousel from '~/components/ui/Carousel';
 
 type Category = 'Edibles' | 'Clothing' | 'Handicraft';
 
-
+const CarouselItem = ({item, index}: any) => {
+  return (
+    <>
+      <Image
+        source={item}
+        width={"100%"} height={"100%"}
+        style={{ borderRadius: 20, objectFit: 'cover' }}
+      />
+    </>
+  )
+}
 
 const HomePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category>('Edibles');
@@ -24,7 +35,7 @@ const HomePage: React.FC = () => {
           </Paragraph>
         </XStack>
 
-        <Image
+        {/* <Image
           source={require('../../assets/HomePageImage.png')}
           style={{
             width: "100%",
@@ -32,21 +43,32 @@ const HomePage: React.FC = () => {
             borderRadius: 20,
             marginVertical: 20,
           }}
+        /> */}
+        <CustomCarousel
+          data={[
+            require('~/assets/carousel/car-1.jpg'),
+            require('~/assets/carousel/car-2.jpg'),
+            require('~/assets/carousel/car-3.jpg'),
+          ]}
+          CarouselItem={CarouselItem}
         />
 
+
         <H4 width={"100%"} color="#fff">Products Nearby</H4>
-        
+
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
-          {productsNearby.map(product => (
-            <ProductCard key={product.id} {...product} />
-          ))}
+          <XStack alignItems='center' justifyContent='center' columnGap="$4">
+            {productsNearby.map(product => (
+              <ProductCard key={product.id} {...product} />
+            ))}
+          </XStack>
         </ScrollView>
 
         <YStack width={"100%"} flexDirection="row" alignItems="center" justifyContent="space-between" marginTop="$7">
           <H4 color="#fff">Explore More</H4>
           <H6 size={"$3"} theme="alt2">See More</H6>
         </YStack>
-        
+
         <YStack width="100%" flexDirection="row">
           <Tabs defaultValue="Edibles" orientation="horizontal" flexDirection="column" width="100%" height={400} marginTop="$2">
             <Tabs.List disablePassBorderRadius="bottom" aria-label="Product categories" backgroundColor="transparent" style={{ marginRight: 10 }}>
@@ -70,9 +92,11 @@ const HomePage: React.FC = () => {
             {Object.keys(categoryProducts).map((category) => (
               <Tabs.Content key={category} value={category}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10, height: "auto" }}>
-                  {(categoryProducts[category as Category] || []).map((product) => (
-                    <ProductCard key={product.id} {...product} />
-                  ))}
+                  <XStack alignItems='center' justifyContent='center' columnGap="$4">
+                    {(categoryProducts[category as Category] || []).map((product) => (
+                      <ProductCard key={product.id} {...product} />
+                    ))}
+                  </XStack>
                 </ScrollView>
               </Tabs.Content>
             ))}

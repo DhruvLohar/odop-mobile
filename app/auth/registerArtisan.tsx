@@ -18,6 +18,7 @@ import * as Yup from 'yup';
 import Stage1 from '~/components/forms/Stage1';
 import Stage2 from '~/components/forms/Stage2';
 import Stage3 from '~/components/forms/Stage3';
+import { Image } from 'react-native';
 
 type FieldNames =
   | 'name'
@@ -120,6 +121,16 @@ const RegisterArtisan = () => {
 
   return (
     <YStack width={'100%'} height={'100%'} justifyContent="center" paddingHorizontal="$5">
+
+      <Image
+        source={require('~/assets/Logo.png')}
+        style={{
+          width: "60%", height: 100,
+          alignSelf: "center", marginBottom: 50,
+          objectFit: 'cover'
+        }}
+      />
+
       <H2 fontWeight={'bold'} mb="$2">
         {['Personal Information', 'Where are you from?', 'Upload Documents'][step - 1]}
       </H2>

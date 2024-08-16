@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from "expo-router";
+import { Image } from "react-native";
 
 const schema = yup.object().shape({
     email: yup.string().required('Email is required').email('Please enter a valid email.'),
@@ -40,6 +41,15 @@ export default function Login() {
             paddingHorizontal="$5"
         >
             <StatusBar style="light" />
+
+            <Image 
+                source={require('~/assets/Logo.png')}
+                style={{ 
+                    width: "60%", height: 100, 
+                    alignSelf: "center", marginBottom: 50,
+                    objectFit: 'cover' 
+                }}
+            />
 
             <H1 fontWeight={"bold"}>Welcome Back</H1>
             <Paragraph 

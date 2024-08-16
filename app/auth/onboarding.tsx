@@ -3,6 +3,7 @@
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
+import { Image } from "react-native";
 import { 
     Button, Card, H1, H2, H3, Paragraph, YStack 
 } from "tamagui";
@@ -29,6 +30,15 @@ export default function OnBoarding() {
             paddingHorizontal="$5"
         >
             <StatusBar style="light" />
+
+            <Image 
+                source={require('~/assets/Logo.png')}
+                style={{ 
+                    width: "60%", height: 100, 
+                    alignSelf: "center", marginBottom: 50,
+                    objectFit: 'cover' 
+                }}
+            />
 
             <H2 fontWeight={"bold"} mb="$2">
                 How do you want to join 

@@ -1,0 +1,21 @@
+{
+    "connection": [
+      {
+        "id": 1,
+        "purpose": "Bulk orders",
+        "person":"John Doe",
+        "message": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo.",
+        "email": "abc@gmail.com",
+        "number":9999999999
+      },
+      {
+        "id": 2,
+        "purpose": "Retail Enquiry",
+        "person":"Aadish Doe",
+        "message": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo.",
+        "email": "xyz@gmail.com",
+        "number":8888888888
+      }
+    ]
+  }
+    

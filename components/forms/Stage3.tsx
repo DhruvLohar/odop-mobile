@@ -24,10 +24,18 @@ const Stage3 = () => {
 
   return (
     <YStack mb="$3">
-      <Button onPress={() => uploadDocument('Aadhar')} my="$2">
+      <Button
+        size={"$5"}
+        onPress={() => uploadDocument('Aadhar')}
+        my="$2" themeInverse={aadharCard}
+      >
         {!aadharCard ? 'Upload Aadhar' : `Uploaded File : ${aadharCard?.assets[0]?.name}`}
       </Button>
-      <Button onPress={() => uploadDocument('PAN')} my="$2">
+      <Button
+        size={"$5"}
+        onPress={() => uploadDocument('PAN')}
+        my="$2" themeInverse={panCard}
+      >
         {!panCard ? 'Upload Pan Card' : `Uploaded File : ${panCard?.assets[0]?.name}`}
       </Button>
     </YStack>

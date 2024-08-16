@@ -1,5 +1,4 @@
 import { Link, Tabs } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Brodcast, Calendar, Home2, SearchNormal, User } from 'iconsax-react-native';
 import { memo } from 'react';
 import { View } from 'react-native';
@@ -41,7 +40,6 @@ export default function TabLayout() {
         },
         tabBarShowLabel: false
       }}>
-      
       <Tabs.Screen
         name="index"
         options={{

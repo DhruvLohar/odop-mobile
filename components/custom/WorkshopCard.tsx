@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { H4, H6, XStack, YStack, Paragraph, Button, SizableText } from 'tamagui';
+import { H4, H6, XStack, YStack, Paragraph, Button } from 'tamagui';
 import { Calendar, Clock } from 'iconsax-react-native';
 
 type WorkshopCardProps = {
@@ -41,28 +41,28 @@ const WorkshopCard: React.FC<WorkshopCardProps> = ({ title, description, date, t
               marginRight="$2"
               alignSelf="flex-start"
             >
-              <SizableText style={{ fontWeight: '500' }}>{category}</SizableText>
+              <Text style={{ color: '#fff', fontWeight: '500' }}>{category}</Text>
             </XStack>
           ))}
         </XStack>
 
-        <H4 marginBottom="$2" style={{ fontWeight: 'bold' }}>
+        <H4 marginBottom="$2" style={{ color: '#fff', fontWeight: 'bold' }}>
           {title}
         </H4>
 
         <XStack marginBottom="$2" flex={1} alignItems='center'>
           <Calendar size="20" color="#585858" />
-          <H6 size={20} marginLeft="$2" marginRight="$5">{date}</H6>
+          <H6 size={20} color={"#585858"} marginLeft="$2" marginRight="$5">{date}</H6>
 
           <Clock size="20" color="#585858" />
-          <H6 size={20} marginLeft="$2" marginRight="$5">{time}</H6>
+          <H6 size={20} color={"#585858"} marginLeft="$2" marginRight="$5">{time}</H6>
         </XStack>
 
         <Paragraph width={"100%"} size={"$3"} theme="alt2" marginBottom={"$5"}>
           {description}
         </Paragraph>
 
-        <Button size="$4" themeInverse>
+        <Button size="$4" backgroundColor="#191919">
           Register Now
         </Button>
       </YStack>

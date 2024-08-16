@@ -43,10 +43,10 @@ function Create() {
   return (
     <YStack width={'100%'} height={'100%'} justifyContent="center" paddingHorizontal="$5" mt="$6">
       <H2 fontWeight={'bold'} mb="$2">
-        Hire Skilled Artisans
+        Apply for Work
       </H2>
       <Paragraph theme={'alt2'} fontSize={'$4'}>
-        Fill the form below to create a new Job Post
+        Work for like minded Artisans and gain more knowledge and experience
       </Paragraph>
       <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)} mt="$6">
         <Controller

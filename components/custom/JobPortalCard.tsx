@@ -20,7 +20,7 @@ const imageMap: { [key: string]: any } = {
 const JobPortalCard: React.FC<JobPortalCardProps> = ({id, title, description,location, company,requirement}) => {
   return (
     <YStack 
-      backgroundColor="#4A4A4A"
+      backgroundColor="#393939"
       borderRadius="$8"
       marginBottom="$5"
       width={"100%"}

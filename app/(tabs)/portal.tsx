@@ -4,8 +4,8 @@ import JobPortalCard from '../../components/custom/JobPortalCard';
 import jobs from '../../lib/data/Jobs.json';
 import RentalMachineCard from '../../components/custom/RentalMachineCard';
 import rentalmachine from '../../lib/data/rentalmachine.json';
-import { Filter } from "iconsax-react-native";
-
+import { Filter, Add } from "iconsax-react-native";
+import { TouchableOpacity } from "react-native";
 
 function HorizontalTabs({ setCurrentTab }: any) {
     return (
@@ -16,7 +16,6 @@ function HorizontalTabs({ setCurrentTab }: any) {
             flex={1}
             borderRadius={"$5"}
             overflow="hidden"
-
             onValueChange={setCurrentTab}
         >
             <Tabs.List
@@ -33,22 +32,22 @@ function HorizontalTabs({ setCurrentTab }: any) {
 
             <Tabs.Content value="job_portal" padding="$1" flex={1}>
                 <ScrollView flex={1}>
-                        <YStack flex={1} alignItems="center">
-                            {jobs.jobs.map((jobs) => (
-                                <JobPortalCard key={jobs.id} {...jobs} />
-                            ))}
-                        </YStack>
-                    </ScrollView>
+                    <YStack flex={1} alignItems="center">
+                        {jobs.jobs.map((jobs) => (
+                            <JobPortalCard key={jobs.id} {...jobs} />
+                        ))}
+                    </YStack>
+                </ScrollView>
             </Tabs.Content>
 
             <Tabs.Content value="rental_machines" flex={1}>
                 <ScrollView flex={1}>
-                        <YStack flex={1} alignItems="center">
-                            {rentalmachine.rentalmachine.map((rentalmachine) => (
-                                <RentalMachineCard key={rentalmachine.id} {...rentalmachine} />
-                            ))}
-                        </YStack>
-                    </ScrollView>
+                    <YStack flex={1} alignItems="center">
+                        {rentalmachine.rentalmachine.map((rentalmachine) => (
+                            <RentalMachineCard key={rentalmachine.id} {...rentalmachine} />
+                        ))}
+                    </YStack>
+                </ScrollView>
             </Tabs.Content>
         </Tabs>
     )
@@ -56,14 +55,14 @@ function HorizontalTabs({ setCurrentTab }: any) {
 
 const filters = [
     { id: "location", title: "Location", keys: ["Nearest", "Farthest"] },
-    { id: "level", title: "Level", keys: ["Begineer", "Intermidate", "Advance"] },
+    { id: "level", title: "Level", keys: ["Beginner", "Intermediate", "Advance"] },
     { id: "price", title: "Price", keys: ["High to low", "Low to high"] },
 ]
 
 const info = {
     "job_portal": {
         title: "Job Portal",
-        desc: "Look out for the jobs that suits you!"
+        desc: "Look out for the jobs that suit you!"
     },
     "rental_machines": {
         title: "Machine On Rents",
@@ -72,11 +71,10 @@ const info = {
 }
 
 export default function PortalView() {
-
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const [currentTab, setCurrentTab] = useState<"job_portal" | "rental_machines">("job_portal")
 
-    function toogleFilter(id: string) {
+    function toggleFilter(id: string) {
         if (selectedFilters.includes(id)) {
             setSelectedFilters(prev => prev.filter(item => item !== id))
         } else {
@@ -97,6 +95,21 @@ export default function PortalView() {
             <YStack flex={1}>
                 <HorizontalTabs setCurrentTab={setCurrentTab} />
             </YStack>
+
+            <TouchableOpacity 
+                style={{
+                    position: 'absolute',
+                    bottom: 20,
+                    right: 20,
+                    backgroundColor: '#ffffff',
+                    borderRadius: 50,
+                    padding: 10,
+                    elevation: 5,
+                }}
+                
+            >
+                <Add size="24" color="#000000" />
+            </TouchableOpacity>
         </YStack>
     )
 }

@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
+import { ControlledInput, ControlledTextArea } from '~/components/forms/Controllers/ControlFields';
 
 function Create() {
   // Update the Yup schema to validate the 12-hour time format with AM/PM
@@ -44,107 +45,39 @@ function Create() {
         Fill the form below to create a new Job Post
       </Paragraph>
       <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)} mt="$6">
-        <Controller
+        <ControlledInput
           control={control}
           name="title"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <Label mb="$2">Title</Label>
-              <Input
-                keyboardType="default"
-                size={'$5'}
-                borderWidth={2}
-                placeholder="Title"
-                mb="$4"
-                w={'100%'}
-                onChangeText={onChange}
-                value={value}
-              />
-            </>
-          )}
+          label="Title"
+          placeholder="Title"
+          error={errors.title?.message}
         />
-        {errors.title && (
-          <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-            {errors.title.message}
-          </Paragraph>
-        )}
 
-        <Controller
+        <ControlledTextArea
+          label="Description"
           control={control}
           name="description"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <Label mb="$2">Description</Label>
-              <TextArea
-                size={'$5'}
-                borderWidth={2}
-                placeholder="Describe about the Job, and what are your expectations from the applicants."
-                mb="$4"
-                w={'100%'}
-                onChangeText={onChange}
-                value={value}
-                numberOfLines={4}
-              />
-            </>
-          )}
+          numberOfLines={4}
+          placeholder="Describe about the Job, and what are your expectations from the applicants."
+          error={errors.description?.message}
         />
-        {errors.description && (
-          <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-            {errors.description.message}
-          </Paragraph>
-        )}
 
-        <Controller
+        <ControlledTextArea
+          label="Prequisites"
           control={control}
           name="prerequisites"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <Label mb="$2">Prerequisites</Label>
-              <TextArea
-                size={'$5'}
-                borderWidth={2}
-                placeholder="Any specific skill the applicant should have? Write it here"
-                mb="$4"
-                w={'100%'}
-                onChangeText={onChange}
-                value={value}
-                numberOfLines={4}
-              />
-            </>
-          )}
+          numberOfLines={4}
+          placeholder="Any specific skill the applicant should have? Write it here"
+          error={errors.prerequisites?.message}
         />
-        {errors.prerequisites && (
-          <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-            {errors.prerequisites.message}
-          </Paragraph>
-        )}
 
-        <YStack>
-          <Controller
-            control={control}
-            name="numberOfApplicants"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <Label mb="$2">No. of Applicants</Label>
-                <Input
-                  size={'$5'}
-                  borderWidth={2}
-                  placeholder="Number of applicants"
-                  mb="$2"
-                  w={'100%'}
-                  onChangeText={(text) => onChange(Number(text))} // Convert the text input to a number
-                  value={value?.toString()} // Convert the number to a string for the Input value
-                  keyboardType="numeric" // Ensures the keyboard is optimized for number input
-                />
-              </>
-            )}
-          />
-          {errors.numberOfApplicants && (
-            <Paragraph size={'$4'} color={'$red10'}>
-              {errors.numberOfApplicants.message}
-            </Paragraph>
-          )}
-        </YStack>
+        <ControlledInput
+          control={control}
+          label="No. Of Applicants"
+          placeholder="Number of applicants"
+          keyboardType="numeric"
+          name="numberOfApplicants"
+        />
 
         <Controller
           control={control}

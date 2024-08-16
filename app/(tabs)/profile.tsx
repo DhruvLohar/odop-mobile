@@ -1,22 +1,25 @@
 import { StatusBar } from "expo-status-bar";
 import { MoneySend, More } from "iconsax-react-native";
-import { useState } from "react";
-import { Pressable } from "react-native";
-import { Avatar, Button, Card, H2, H3, H4, H5, Image, Paragraph, Separator, SizableText, Tabs, type TabsContentProps, Theme, View, XStack, YStack } from "tamagui";
+import { useEffect, useRef, useState } from "react";
+
+import { Avatar, Button, Card, H2, H3, H4, H5, Handle, Image, Paragraph, ScrollView, Separator, SizableText, Square, Tabs, type TabsContentProps, Theme, View, XStack, YStack } from "tamagui";
 import ProfileDetails from "~/components/profile/DetailsSheet";
+import GetInTouch from "~/components/profile/GetInTouch";
 import SupportArtisan from "~/components/profile/SupportArtisanSheet";
 
-function HorizontalTabs() {
+function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: boolean }) {
+
   return (
     <Tabs
       defaultValue="products"
       orientation="horizontal"
       flexDirection="column"
-      width={'100%'}
-      height={150}
-      borderRadius={'$5'}
-      overflow="hidden">
-      <Tabs.List separator={<Separator vertical />} aria-label="Manage your account">
+      width={"100%"}
+      height={1000}
+      borderRadius={"$5"}
+      overflow="hidden"
+    >
+      <Tabs.List separator={<Separator vertical />} mb="$4">
         <Tabs.Tab flex={1} value="products">
           <SizableText fontFamily="$body">Products</SizableText>
         </Tabs.Tab>
@@ -25,12 +28,24 @@ function HorizontalTabs() {
         </Tabs.Tab>
       </Tabs.List>
 
-      <TabsContent value="products">
-        <H5>Products</H5>
-      </TabsContent>
+      <Tabs.Content value="products" flex={1}>
+        <ScrollView nestedScrollEnabled={internalScrollEnabled}>
+          <YStack alignItems="center" flex={1}>
+            {Array.from({ length: 15 }).map((_, idx) => (
+              <Square mb="$4" backgroundColor={"$red10"} key={idx} size={"$8"} />
+            ))}
+          </YStack>
+        </ScrollView>
+      </Tabs.Content>
 
-      <TabsContent value="workshops">
-        <H5>Workshops</H5>
+      <TabsContent value="workshops" flex={1}>
+        <ScrollView nestedScrollEnabled={internalScrollEnabled}>
+          <YStack alignItems="center" flex={1}>
+            {Array.from({ length: 15 }).map((_, idx) => (
+              <Square mb="$4" backgroundColor={"$blue10"} key={idx} size={"$8"} />
+            ))}
+          </YStack>
+        </ScrollView>
       </TabsContent>
     </Tabs>
   );
@@ -56,17 +71,39 @@ export default function ProfilePage() {
   const [openSupport, setOpenSupport] = useState(false);
   const [openGetInTouch, setOpenGetInTouch] = useState(false);
 
+  const separatorRef = useRef<any>(null)
+  const [internalScrollEnabled, setInternalScrollEnabled] = useState(true)
+
+  // function handleScroll(event: any) {
+  //   const yOffset = event.nativeEvent.contentOffset.y;
+
+  //   if (!internalScrollEnabled && yOffset > 300) {
+  //     // Enable internal scrolling when scrolling beyond 300px
+  //     setInternalScrollEnabled(true);
+  //   } else if (internalScrollEnabled && yOffset <= 300) {
+  //     // Disable internal scrolling when scrolling back to 300px or less
+  //     setInternalScrollEnabled(false);
+  //   }
+  // }
+
   return (
     <>
       <SupportArtisan open={openSupport} setOpen={setOpenSupport} />
 
-            <ProfileDetails
-                open={open}
-                setOpen={setOpen}
-            />
-            
-            <YStack padding="$5" rowGap="$4">
-                <StatusBar style="light" />
+      <ProfileDetails
+        open={open}
+        setOpen={setOpen}
+      />
+
+      <GetInTouch open={openGetInTouch} setOpen={setOpenGetInTouch} />
+      <StatusBar style="light" />
+
+      <ScrollView
+        // onScroll={handleScroll}
+        flexDirection="column" padding="$5" space="$4"
+        stickyHeaderIndices={[10]}
+      >
+
 
         <XStack width={'100%'} justifyContent="center" alignItems="center">
           <Avatar circular size="$11">
@@ -89,14 +126,14 @@ export default function ProfilePage() {
             </Paragraph>
           </YStack>
 
-                    <Button
-                        circular
-                        icon={() => <More rotation={90} size={22} color="white" />}
-                        padding="$2"
-                        ml="auto"
-                        onPress={() => setOpen(true)}
-                    />
-                </XStack>
+          <Button
+            circular
+            icon={() => <More rotation={90} size={22} color="white" />}
+            padding="$2"
+            ml="auto"
+            onPress={() => setOpen(true)}
+          />
+        </XStack>
 
         <XStack width={'100%'} alignItems="center">
           <Card backgroundColor={'transparent'} flex={1}>
@@ -151,11 +188,11 @@ export default function ProfilePage() {
           </Button>
         </YStack>
 
-        <Separator />
+        <Separator ref={separatorRef} />
 
-                <HorizontalTabs />
-            </YStack>
-        
-        </>
-    )
+        <HorizontalTabs internalScrollEnabled={internalScrollEnabled} />
+
+      </ScrollView>
+    </>
+  )
 }

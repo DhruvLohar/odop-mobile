@@ -4,6 +4,7 @@ import { H3,H6,Image, YStack, Paragraph, Tabs, XStack, H4, H2 } from 'tamagui';
 import productsData from '../../lib/data/products.json';
 import ProductCard from '../../components/custom/ProductCard'; 
 import { Location } from 'iconsax-react-native';
+import { StatusBar } from 'expo-status-bar';
 
 type Category = 'Edibles' | 'Clothing' | 'Handicraft';
 
@@ -15,6 +16,7 @@ const HomePage: React.FC = () => {
 
   return (
     <ScrollView>
+      <StatusBar style='light' />
       <YStack flex={1} alignItems="flex-start" justifyContent='flex-start' padding="$5">
         <H3 fontSize={"$9"} mb="$2" fontWeight={"bold"}>Good Afternoon, User</H3>
         <XStack justifyContent='center' alignItems='center' columnGap="$2">

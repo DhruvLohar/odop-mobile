@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Button, H2,H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, YStack } from "tamagui";
+import { Button, H2, H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
 import workshops from '../../lib/data/workshops.json';
 import WorkshopCard from '../../components/custom/WorkshopCard';
 import EventCard from '../../components/custom/EventCard';
 import eventsData from '../../lib/data/events.json';
+import { Filter } from "iconsax-react-native";
 
 
 type Event = {
@@ -12,7 +13,7 @@ type Event = {
     rating: number;
     location: string;
     showTime: string;
-  };
+};
 
 
 function HorizontalTabs({ setCurrentTab }: any) {
@@ -21,15 +22,15 @@ function HorizontalTabs({ setCurrentTab }: any) {
             defaultValue="workshops"
             orientation="horizontal"
             flexDirection="column"
-            width={"100%"}
-            height={500}
+            flex={1}
             borderRadius={"$5"}
             overflow="hidden"
-        
+
             onValueChange={setCurrentTab}
         >
             <Tabs.List
                 separator={<Separator vertical />}
+                mb="$4"
             >
                 <Tabs.Tab flex={1} value="workshops">
                     <SizableText fontFamily="$body">Workshops</SizableText>
@@ -40,30 +41,26 @@ function HorizontalTabs({ setCurrentTab }: any) {
             </Tabs.List>
 
             <Tabs.Content value="workshops" flex={1}>
-            <ScrollView>
-                <YStack flex={1} alignItems="center" paddingVertical="$5">
-                    
-                    {workshops.workshops.map(workshop => (
-                    <WorkshopCard 
-                        key={workshop.id}
-                        {...workshop}
-                    />
-                    ))}
-                </YStack>
+                <ScrollView flex={1}>
+                    <YStack alignItems="center" flex={1}>
+                        {workshops.workshops.map(workshop => (
+                            <WorkshopCard
+                                key={workshop.id}
+                                {...workshop}
+                            />
+                        ))}
+                    </YStack>
                 </ScrollView>
             </Tabs.Content>
 
-            <Tabs.Content value="events">
-            <ScrollView>
-                <YStack flex={1} alignItems="center" paddingVertical="$5">
-                
-        
-                {eventsData.map((event: Event) => (
-                    <EventCard key={event.id} event={event} />
-                ))}
-        
-                </YStack>
-            </ScrollView>
+            <Tabs.Content value="events" flex={1}>
+                <ScrollView flex={1}>
+                    <YStack flex={1} alignItems="center" paddingVertical="$5">
+                        {eventsData.map((event: Event) => (
+                            <EventCard key={event.id} event={event} />
+                        ))}
+                    </YStack>
+                </ScrollView>
             </Tabs.Content>
         </Tabs>
     )
@@ -78,11 +75,9 @@ const filters = [
 const info = {
     "workshops": {
         title: "Live Workshops",
-        desc: "Explore live workshops online or offline to learn from the best!"
     },
     "events": {
         title: "Explore Events",
-        desc: "Explore events to stay updated about current welfares and competitions to prove your worth!"
     }
 }
 
@@ -100,24 +95,12 @@ export default function EventsPage() {
     }
 
     return (
-        <YStack padding="$5">
-            <H2 fontWeight={"bold"} mb="$2">{info[currentTab].title}</H2>
-            <Paragraph theme={"alt2"} fontSize={"$4"}>{info[currentTab].desc}</Paragraph>
+        <YStack flex={1} padding="$5">
+            <XStack mb="$4" alignItems="center">
+                <H2 fontWeight={"bold"} mr="auto">{info[currentTab].title}</H2>
+                <Filter color="white" />
+            </XStack>
 
-
-            <ScrollView horizontal my="$4" space="$2">
-                {filters.map(item => (
-                    <Button
-                        key={item.id} 
-                        size={"$3"}
-                        borderRadius={"$radius.12"}
-                        themeInverse={selectedFilters.includes(item.id)}
-                        onPress={() => toogleFilter(item.id)}
-                    >
-                        {item.title}: {item.keys[0]}
-                    </Button>
-                ))}
-            </ScrollView>
             <YStack flex={1}>
                 <HorizontalTabs setCurrentTab={setCurrentTab} />
             </YStack>

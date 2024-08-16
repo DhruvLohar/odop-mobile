@@ -8,7 +8,7 @@ import * as DocumentPicker from 'expo-document-picker';
 function Create() {
   const [file, setFile] = useState<DocumentPicker.DocumentPickerResult | any>(null);
 
-  const uploadDocument = async (docType: 'Aadhar' | 'PAN') => {
+  const uploadDocument = async (docType: 'File') => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: ['image/*', 'application/pdf'],
@@ -75,7 +75,7 @@ function Create() {
         )}
 
         <YStack mb="$3">
-          <Button onPress={() => uploadDocument('Aadhar')} my="$2">
+          <Button onPress={() => uploadDocument('File')} my="$2">
             {!file ? 'Upload File' : `Uploaded File : ${file?.assets[0]?.name}`}
           </Button>
         </YStack>

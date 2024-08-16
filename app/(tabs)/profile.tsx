@@ -1,10 +1,29 @@
-import { StatusBar } from "expo-status-bar";
-import { MoneySend, More } from "iconsax-react-native";
-import { useState } from "react";
-import { Pressable } from "react-native";
-import { Avatar, Button, Card, H2, H3, H4, H5, Image, Paragraph, Separator, SizableText, Tabs, type TabsContentProps, Theme, View, XStack, YStack } from "tamagui";
-import ProfileDetails from "~/components/profile/DetailsSheet";
-import SupportArtisan from "~/components/profile/SupportArtisanSheet";
+import { StatusBar } from 'expo-status-bar';
+import { MoneySend, More } from 'iconsax-react-native';
+import { useState } from 'react';
+import { Pressable } from 'react-native';
+import {
+  Avatar,
+  Button,
+  Card,
+  H2,
+  H3,
+  H4,
+  H5,
+  Image,
+  Paragraph,
+  Separator,
+  SizableText,
+  Tabs,
+  type TabsContentProps,
+  Theme,
+  View,
+  XStack,
+  YStack,
+} from 'tamagui';
+import ProfileDetails from '~/components/profile/DetailsSheet';
+import GetInTouch from '~/components/profile/GetInTouch';
+import SupportArtisan from '~/components/profile/SupportArtisanSheet';
 
 function HorizontalTabs() {
   return (
@@ -60,13 +79,12 @@ export default function ProfilePage() {
     <>
       <SupportArtisan open={openSupport} setOpen={setOpenSupport} />
 
-            <ProfileDetails
-                open={open}
-                setOpen={setOpen}
-            />
-            
-            <YStack padding="$5" rowGap="$4">
-                <StatusBar style="light" />
+      <ProfileDetails open={open} setOpen={setOpen} />
+
+      <GetInTouch open={openGetInTouch} setOpen={setOpenGetInTouch} />
+
+      <YStack padding="$5" rowGap="$4">
+        <StatusBar style="light" />
 
         <XStack width={'100%'} justifyContent="center" alignItems="center">
           <Avatar circular size="$11">
@@ -89,14 +107,14 @@ export default function ProfilePage() {
             </Paragraph>
           </YStack>
 
-                    <Button
-                        circular
-                        icon={() => <More rotation={90} size={22} color="white" />}
-                        padding="$2"
-                        ml="auto"
-                        onPress={() => setOpen(true)}
-                    />
-                </XStack>
+          <Button
+            circular
+            icon={() => <More rotation={90} size={22} color="white" />}
+            padding="$2"
+            ml="auto"
+            onPress={() => setOpen(true)}
+          />
+        </XStack>
 
         <XStack width={'100%'} alignItems="center">
           <Card backgroundColor={'transparent'} flex={1}>
@@ -153,9 +171,8 @@ export default function ProfilePage() {
 
         <Separator />
 
-                <HorizontalTabs />
-            </YStack>
-        
-        </>
-    )
+        <HorizontalTabs />
+      </YStack>
+    </>
+  );
 }

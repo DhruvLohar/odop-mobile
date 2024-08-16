@@ -1,0 +1,21 @@
+{
+    "jobs": [
+      {
+        "id": 1,
+        "title": "Pottery Maker",
+        "company":"Abc Corporation",
+        "location": "Nashik",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo.",
+        "requirement": "Urgently Required"
+      },
+      {
+        "id": 2,
+        "title": "Woodwork Artist",
+        "company":"Xyz Corporation",
+        "location": "Pune",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo.",
+        "requirement": "Aaram se"
+      }
+    ]
+  }
+    

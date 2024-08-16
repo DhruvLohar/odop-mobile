@@ -24,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ name, price, location, image 
         <Image
           source={imageMap[image]}
           style={{
-            minWidth: 200,
+            minWidth: 170,
             width: "100%",
             height: 250,
             objectFit: 'cover'

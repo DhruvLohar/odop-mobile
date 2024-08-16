@@ -1,0 +1,19 @@
+{
+    "rentalmachine": [
+      {
+        "id": 1,
+        "title": "Potter maker",
+        "price":500,
+        "image": "Machine1.jpg",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo."
+      },
+      {
+        "id": 2,
+        "title": "Hatodi",
+        "price":500,
+        "image": "Machine1.jpg",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo."
+      }
+    ]
+  }
+    

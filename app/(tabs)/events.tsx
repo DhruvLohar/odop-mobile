@@ -7,15 +7,6 @@ import eventsData from '../../lib/data/events.json';
 import { Filter } from "iconsax-react-native";
 
 
-type Event = {
-    id: number;
-    title: string;
-    rating: number;
-    location: string;
-    showTime: string;
-};
-
-
 function HorizontalTabs({ setCurrentTab }: any) {
     return (
         <Tabs
@@ -55,9 +46,9 @@ function HorizontalTabs({ setCurrentTab }: any) {
 
             <Tabs.Content value="events" flex={1}>
                 <ScrollView flex={1}>
-                    <YStack flex={1} alignItems="center" paddingVertical="$5">
-                        {eventsData.map((event: Event) => (
-                            <EventCard key={event.id} event={event} />
+                    <YStack flex={1} alignItems="center">
+                        {eventsData.events.map((event) => (
+                            <EventCard key={event.id} {...event} />
                         ))}
                     </YStack>
                 </ScrollView>

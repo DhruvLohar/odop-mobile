@@ -12,7 +12,7 @@ const CarouselItem = ({item, index}: any) => {
   return (
     <>
       <Image
-        source={require(item)}
+        source={item}
         width={"100%"} height={"100%"}
         style={{ borderRadius: 20, objectFit: 'cover' }}
       />
@@ -46,9 +46,9 @@ const HomePage: React.FC = () => {
         /> */}
         <CustomCarousel
           data={[
-            '~/assets/carousel/car-1.jpg',
-            '~/assets/carousel/car-2.jpg',
-            '~/assets/carousel/car-3.jpg',
+            require('~/assets/carousel/car-1.jpg'),
+            require('~/assets/carousel/car-2.jpg'),
+            require('~/assets/carousel/car-3.jpg'),
           ]}
           CarouselItem={CarouselItem}
         />

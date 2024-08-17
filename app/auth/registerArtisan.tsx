@@ -11,6 +11,7 @@ import {
   Sheet,
   Input,
   H4,
+  Spinner,
 } from 'tamagui';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,6 +23,7 @@ import { Image } from 'react-native';
 import { axiosRequest, postToAPI } from '~/lib/api';
 import { useSession } from '~/lib/auth';
 import { toFormData } from 'axios';
+import { useRouter } from 'expo-router';
 
 type FieldNames =
   | 'name'
@@ -66,8 +68,10 @@ const RegisterArtisan = () => {
     resolver: yupResolver(schema),
   });
 
+  const router = useRouter()
   const { getOTP, verifyOTP, registerArtisan } = useSession()
   const [uid, setUID] = useState<any>()
+  const [loading, setLoading] = useState(false)
 
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33);
@@ -82,25 +86,29 @@ const RegisterArtisan = () => {
   const sizeProp = `$4` as SizeTokens;
 
   async function onSubmit(data: any) {
+    setLoading(true)
 
-    const formData = toFormData(data)
+    const formData = new FormData();
+    Object.keys(data).map(key => (
+      formData.append(key, data[key])
+    ));
     formData.append('aadhar_image', aadharCard);
     formData.append('pan_image', panCard);
-    
-    const res = await axiosRequest(`artisan/${uid}/registerArtisan/`, {
-      method: 'post',
-      data: formData
-    }, true);
 
-    console.log(res, uid)
+    const res = await registerArtisan(uid, formData);
+
     if (res?.success) {
-      
+      router.replace('/(protected)/(tabs)/')
     } else {
       alert(res.message)
     }
+
+    setLoading(false)
   };
 
   async function handleCreateArtisan() {
+    setLoading(true)
+
     const res = await postToAPI('artisan/createArtisan/', {
       email: getValues().email
     });
@@ -115,6 +123,8 @@ const RegisterArtisan = () => {
     } else {
       alert(res.message)
     }
+
+    setLoading(false)
   }
 
   const handleNext = async () => {
@@ -220,11 +230,19 @@ const RegisterArtisan = () => {
           )}
           {step < 3 ? (
             <Button onPress={handleNext} ml="auto">
-              Next
+              {loading
+                ? <Spinner size='large' />
+                : "Next"
+              }
             </Button>
           ) : (
             <Form.Trigger asChild>
-              <Button ml="auto">Final Submit</Button>
+              <Button ml="auto">
+                {loading
+                  ? <Spinner size='large' />
+                  : "Final Submit"
+                }
+              </Button>
             </Form.Trigger>
           )}
         </XStack>

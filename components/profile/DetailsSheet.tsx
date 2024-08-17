@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, H1, H4, Input, Paragraph, Sheet, XStack, YStack, Switch } from 'tamagui';
-import { ArrowDown3, Moon, Box, Edit2, Hierarchy, Logout, People } from 'iconsax-react-native';
-import { Href } from 'expo-router';
+import { ArrowDown3, Moon, Box, Edit2, Hierarchy, Logout, People, Add } from 'iconsax-react-native';
+import { Href, router } from 'expo-router';
 
 type ProfileDetailsProps = {
   open: boolean;
@@ -12,6 +12,7 @@ type ProfileDetailsProps = {
 const routes = [
   { title: 'Edit Profile', icon: Edit2, url: '/profile/edit' as Href<string> },
   { title: 'Manage Orders', icon: Box, url: '/orders' as Href<string> },
+  { title: 'Add Product', icon: Add, url: '/(protected)/product/list' as Href<string> },
   { title: 'Product Inventory', icon: Hierarchy, url: '/profile/inventory' as Href<string> },
   {
     title: 'Connection Requests',
@@ -69,7 +70,13 @@ export default function ProfileDetails({ open, setOpen, handleLogout }: ProfileD
               alignItems="center"
               pb="$4"
               borderBottomWidth={1}
-              borderBottomColor={'$gray5'}>
+              borderBottomColor={'$gray5'}
+            
+              onPress={() => {
+                setOpen(false)
+                router.push(route.url)
+              }}
+            >
               <route.icon color="white" />
               <H4>{route.title}</H4>
             </XStack>

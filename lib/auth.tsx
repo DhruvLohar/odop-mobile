@@ -1,6 +1,6 @@
 import React, { useEffect, ReactNode } from 'react';
 import { useStorageState } from './useStorageState';
-import { fetchFromAPI, postToAPI } from './api';
+import { axiosRequest, fetchFromAPI, postToAPI } from './api';
 
 // Define types for session and AuthContext
 interface User {
@@ -20,10 +20,10 @@ interface AuthContextType {
 
     artisanLogin: (values: any) => Promise<boolean>;
     userLogin: (values: any) => Promise<boolean>;
-    
+
     logOut: () => Promise<void>;
 
-    registerArtisan: (values: any) => Promise<any>;
+    registerArtisan: (uid: number, values: any) => Promise<any>;
     refreshUser: () => Promise<void>;
     session: User | null;
     isLoading: boolean;
@@ -37,10 +37,10 @@ const defaultAuthContext: AuthContextType = {
     getOTP: async () => false,
     verifyOTP: async () => false,
 
-    logOut: async () => {},
+    logOut: async () => { },
 
     registerArtisan: async () => ({}),
-    refreshUser: async () => {},
+    refreshUser: async () => { },
     session: null,
     isLoading: false,
 };
@@ -71,7 +71,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
         return data.success;
     }
 
-    async function verifyOTP(id: number, type: string | undefined, otp: number, saveDetails=true) {
+    async function verifyOTP(id: number, type: string | undefined, otp: number, saveDetails = true) {
         const data = await postToAPI(`${type}/${id}/verifyOTPOnEmail/`, {
             otp,
         });
@@ -111,22 +111,21 @@ export function SessionProvider({ children }: SessionProviderProps) {
         } else {
             console.log("not verified")
         }
-    
+
         return data
     }
 
-    async function registerArtisan(values: any): Promise<any> {
-        // const data = await postToAPI("user/signUpSignIn/", values);
+    async function registerArtisan(uid: number, values: any): Promise<any> {
+        const data = await axiosRequest(`artisan/${uid}/registerArtisan/`, {
+            method: 'post',
+            data: values
+        }, true);
 
-        // console.log(data)
-        // if (data?.success && data?.verified) {
-        //     // await setStorageState(data.user);
-        //     console.log(data?.user)
-        // } else {
-        //     console.log("not verified")
-        // }
-    
-        // return data.success
+        if (data?.success && data?.artisan) {
+            await setStorageState(data.artisan);
+        }
+
+        return data;
     }
 
     async function logOut(): Promise<void> {
@@ -149,12 +148,12 @@ export function SessionProvider({ children }: SessionProviderProps) {
             value={{
                 getOTP,
                 verifyOTP,
-                
+
                 registerArtisan,
-                
+
                 artisanLogin,
                 userLogin,
-                
+
                 refreshUser,
                 logOut,
                 session,

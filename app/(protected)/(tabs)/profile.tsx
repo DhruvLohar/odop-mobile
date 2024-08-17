@@ -37,25 +37,25 @@ function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: bool
       </Tabs.List>
 
       <Tabs.Content value="products" flex={1}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <XStack columnGap="$4">
+        <ScrollView>
+          <YStack>
             {productsNearby.map((product) => (
               <ProductCard key={product.id} {...product} />
             ))}
-          </XStack>
+          </YStack>
         </ScrollView>
       </Tabs.Content>
 
       <Tabs.Content value="workshops" flex={1}>
-        <ScrollView nestedScrollEnabled={internalScrollEnabled}>
+        <ScrollView nestedScrollEnabled={true} flex={1}>
           <YStack alignItems="center" flex={1}>
-                        {workshops.workshops.map(workshop => (
-                            <WorkshopCard
-                                key={workshop.id}
-                                {...workshop}
-                            />
-                        ))}
-                    </YStack>
+            {workshops.workshops.map(workshop => (
+              <WorkshopCard
+                key={workshop.id}
+                {...workshop}
+              />
+            ))}
+          </YStack>
         </ScrollView>
       </Tabs.Content>
     </Tabs>
@@ -108,7 +108,7 @@ export default function ProfilePage() {
       <StatusBar style="light" />
 
       <ScrollView
-        stickyHeaderIndices={[10]}
+        stickyHeaderIndices={[3]}
       >
 
         <XStack width={'100%'} justifyContent="center" alignItems="center">
@@ -165,7 +165,7 @@ export default function ProfilePage() {
             </Card>
           </XStack>
 
-          <YStack padding="$0">
+          <YStack padding="$0" mb="$6">
             <H4 mb="$1" padding="$0">
               About Me
             </H4>
@@ -194,11 +194,11 @@ export default function ProfilePage() {
               Support Artisan
             </Button>
           </YStack>
-
-          <Separator ref={separatorRef} />
-
-          <HorizontalTabs internalScrollEnabled={internalScrollEnabled} />
         </WithRole>
+
+        <Separator ref={separatorRef} marginVertical="$5" />
+
+        <HorizontalTabs internalScrollEnabled={internalScrollEnabled} />
       </ScrollView>
     </>
   )

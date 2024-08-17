@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { H3, H6, Image, YStack, Paragraph, Tabs, XStack, H4, H2 } from 'tamagui';
+import { H3, H6, Image, YStack, Paragraph, Tabs, XStack, H4, H2, Card, SizableText } from 'tamagui';
 import productsData from '../../lib/data/products.json';
 import ProductCard from '../../components/custom/ProductCard';
 import { Location } from 'iconsax-react-native';
 import CustomCarousel from '~/components/ui/Carousel';
 import Index from '~/components/ui/CircleCarousel';
+import DistrictCard from '~/components/custom/DistrictCard';
+
+const districtData = [
+  {
+    districtName: 'Lucknow',
+    imageUrl:
+      'https://images.unsplash.com/photo-1679958854536-a1bb774ef8ab?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    districtName: 'Kanpur',
+    imageUrl:
+      'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?w=1060&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    districtName: 'Agra',
+    imageUrl:
+      'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?w=1060&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    districtName: 'Varanasi',
+    imageUrl:
+      'https://images.unsplash.com/photo-1679958854536-a1bb774ef8ab?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+];
 
 type Category = 'Edibles' | 'Clothing' | 'Handicraft';
 
@@ -69,74 +93,34 @@ const HomePage: React.FC = () => {
           </XStack>
         </ScrollView>
 
-        <YStack
-          width={'100%'}
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          marginTop="$7">
-          <H4 color="#fff">Explore More</H4>
-          <H6 size={'$3'} theme="alt2">
-            See More
-          </H6>
-        </YStack>
+        <H4 color="#fff" mt="$4">
+          Explore Districts
+        </H4>
 
-        <YStack width="100%" flexDirection="row">
-          <Tabs
-            defaultValue="Edibles"
-            orientation="horizontal"
-            flexDirection="column"
-            width="100%"
-            height={400}
-            marginTop="$2">
-            <Tabs.List
-              disablePassBorderRadius="bottom"
-              aria-label="Product categories"
-              backgroundColor="transparent"
-              style={{ marginRight: 10 }}>
-              {Object.keys(categoryProducts).map((category) => (
-                <Tabs.Tab
-                  key={category}
-                  value={category}
-                  flex={1}
-                  unstyled
-                  onPress={() => setActiveCategory(category as Category)}>
-                  <XStack
-                    backgroundColor="transparent"
-                    alignItems="center"
-                    justifyContent="flex-start"
-                    width={'100%'}
-                    borderBottomWidth={2}
-                    borderBottomColor={activeCategory === category ? '$orange10' : 'transparent'}
-                    paddingVertical="$2"
-                    paddingLeft="$3">
-                    <H6
-                      size={'$2'}
-                      color={activeCategory === category ? '$orange10' : '$gray10'}
-                      fontWeight={activeCategory === category ? 'bold' : 'normal'}>
-                      {category}
-                    </H6>
-                  </XStack>
-                </Tabs.Tab>
-              ))}
-            </Tabs.List>
-
-            {Object.keys(categoryProducts).map((category) => (
-              <Tabs.Content key={category} value={category}>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={{ marginTop: 10, height: 'auto' }}>
-                  <XStack alignItems="center" justifyContent="center" columnGap="$4">
-                    {(categoryProducts[category as Category] || []).map((product) => (
-                      <ProductCard key={product.id} {...product} />
-                    ))}
-                  </XStack>
-                </ScrollView>
-              </Tabs.Content>
+        <XStack flex={1} justifyContent="space-between" w={'100%'} mt="$4">
+          <YStack w="48%" gap="$2">
+            {districtData.slice(0, 2).map((district, index) => (
+              <DistrictCard
+                key={index}
+                districtName={district.districtName}
+                imageUrl={district.imageUrl}
+                height={index % 2 == 0 ? '$20' : '$15'}
+              />
             ))}
-          </Tabs>
-        </YStack>
+          </YStack>
+
+          <YStack w="48%" gap="$2">
+            {districtData.slice(2, 4).map((district, index) => (
+              <DistrictCard
+                key={index}
+                districtName={district.districtName}
+                imageUrl={district.imageUrl}
+                height={index % 2 == 1 ? '$20' : '$15'}
+              />
+            ))}
+          </YStack>
+        </XStack>
+
         <H4 width={'100%'} color="#fff" mt="$10">
           Learn More about the Benefits
         </H4>

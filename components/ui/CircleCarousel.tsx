@@ -8,27 +8,61 @@ import { ProfileCircle } from 'iconsax-react-native';
 
 const PAGE_WIDTH = Dimensions.get('window').width; // Replace with your window width
 
-const descriptions = [
-  'A government initiative designed to promote one key product per district, boosting local economies and creating job opportunities.',
-  'Identify the primary product of your district and apply through your local development authority to be part of the ODOP scheme.',
-  'Conduct a feasibility study, create a detailed business plan, and submit your application for financial support and resources.',
-  'Enhances local craftsmanship, provides financial aid, and connects products to national and international markets.',
-  'Receive subsidies and low-interest loans to support production, marketing, and expansion of your district-specific product.',
-  'Access to national and global markets through e-commerce platforms and government-supported trade fairs.',
-  'Benefit from training programs that improve skills in production, management, and marketing for artisans and entrepreneurs.',
-  'Gain access to funding for developing production units, packaging facilities, and other necessary infrastructure.',
-  'Utilize modern technology to enhance product quality, streamline production processes, and increase efficiency.',
-  'Tap into global markets with the help of export facilitation services and international trade connections.',
-  'Ensure that your product meets high-quality standards to build trust with consumers and enhance marketability.',
-  'Adopt eco-friendly production methods that reduce environmental impact and promote sustainable practices.',
-  'Create economic opportunities for all community members, including marginalized groups, fostering inclusive growth.',
-  'Increased visibility for local products, enhanced economic development, job creation, and improved infrastructure and skills.',
-  'Engage with local authorities for application details, participate in training and development programs, and leverage government support for market access and financial assistance.',
+const userReviews = [
+  {
+    userName: 'AmitSharma',
+    review: 'The ODOP initiative boosted our local economy and job opportunities.',
+  },
+  {
+    userName: 'PriyaDesai',
+    review: 'Applying for ODOP was easy with help from the local authority.',
+  },
+  {
+    userName: 'RaviKumar',
+    review: 'Submitting our business plan was worth it for the financial support.',
+  },
+  { userName: 'AnitaReddy', review: 'ODOP’s aid has expanded our market reach significantly.' },
+  {
+    userName: 'SureshPatel',
+    review: 'Subsidies and loans from ODOP improved our production and marketing.',
+  },
+  {
+    userName: 'NehaSingh',
+    review: 'Showcasing on e-commerce platforms has opened new opportunities.',
+  },
+  {
+    userName: 'VikramMehta',
+    review: 'Training from ODOP enhanced our production and marketing skills.',
+  },
+  {
+    userName: 'SnehaJain',
+    review: 'Funding helped us upgrade production and packaging facilities.',
+  },
+  {
+    userName: 'RajeshGhosh',
+    review: 'Modern technology support increased our production efficiency.',
+  },
+  { userName: 'DeepaIyer', review: 'Export services helped us grow internationally.' },
+  {
+    userName: 'ManishVerma',
+    review: 'High-quality standards have boosted our product’s marketability.',
+  },
+  {
+    userName: 'GeetaChopra',
+    review: 'Eco-friendly methods reduced our environmental impact and impressed customers.',
+  },
+  {
+    userName: 'ArjunNair',
+    review: 'ODOP created economic opportunities for all, including marginalized groups.',
+  },
+  { userName: 'PoojaArora', review: 'Local products gained visibility and saw economic growth.' },
+  {
+    userName: 'SanjayKumar',
+    review: 'Local authority support and training improved our market access and stability.',
+  },
 ];
 
 function Index() {
-  const [isFast, setIsFast] = React.useState(false);
-  const [isAutoPlay, setIsAutoPlay] = React.useState(false);
   const itemSize = 100;
   const centerOffset = PAGE_WIDTH / 2 - itemSize / 2;
 
@@ -75,15 +109,9 @@ function Index() {
         loop
         autoPlay={true}
         autoPlayInterval={2000}
-        data={descriptions}
-        renderItem={({ index }) => (
-          <TouchableWithoutFeedback
-            key={index}
-            onPress={() => {
-              console.log(index);
-            }}
-            containerStyle={{ flex: 1 }}
-            style={{ flex: 1 }}>
+        data={userReviews}
+        renderItem={({ item, index }) => (
+          <TouchableWithoutFeedback key={index} containerStyle={{ flex: 1 }} style={{ flex: 1 }}>
             <Card
               flex={1}
               justifyContent="center"
@@ -92,20 +120,20 @@ function Index() {
               w="$18"
               p="$2"
               alignItems="center">
-              <Avatar circular size="$4" position="absolute" top="$-4">
+              <Avatar circular size="$4" position="absolute" top="$-5">
                 <Avatar.Image
                   accessibilityLabel="Cam"
                   src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
                 />
               </Avatar>
+              <SizableText pt="$4">{item.userName}</SizableText>
               <SizableText
                 color="$gray10"
                 size="$1"
                 fontWeight="100"
                 textAlign="center"
-                lineHeight={15}
-                mt="$4">
-                {descriptions[index]}
+                lineHeight={15}>
+                {`"${item.review}"`}
               </SizableText>
             </Card>
           </TouchableWithoutFeedback>

@@ -2,15 +2,20 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { MoneySend, More } from "iconsax-react-native";
 import { useEffect, useRef, useState } from "react";
-
+import workshops from '../../lib/data/workshops.json';
+import WorkshopCard from '../../components/custom/WorkshopCard';
 import { Avatar, Button, Card, H2, H3, H4, H5, Handle, Image, Paragraph, ScrollView, Separator, SizableText, Square, Tabs, type TabsContentProps, Theme, View, XStack, YStack } from "tamagui";
 import ProfileDetails from "~/components/profile/DetailsSheet";
 import GetInTouch from "~/components/profile/GetInTouch";
+import productsData from '../../lib/data/products.json';
+import ProductCard from '../../components/custom/ProductCard';
 import SupportArtisan from "~/components/profile/SupportArtisanSheet";
 import WithRole from "~/components/shared/WithRole";
 import { useSession } from "~/lib/auth";
 
 function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: boolean }) {
+
+  const { productsNearby, categoryProducts } = productsData;
 
   return (
     <Tabs
@@ -32,24 +37,27 @@ function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: bool
       </Tabs.List>
 
       <Tabs.Content value="products" flex={1}>
-        <ScrollView nestedScrollEnabled={internalScrollEnabled}>
-          <YStack alignItems="center" flex={1}>
-            {Array.from({ length: 15 }).map((_, idx) => (
-              <Square mb="$4" backgroundColor={"$red10"} key={idx} size={"$8"} />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <XStack columnGap="$4">
+            {productsNearby.map((product) => (
+              <ProductCard key={product.id} {...product} />
             ))}
-          </YStack>
+          </XStack>
         </ScrollView>
       </Tabs.Content>
 
-      <TabsContent value="workshops" flex={1}>
+      <Tabs.Content value="workshops" flex={1}>
         <ScrollView nestedScrollEnabled={internalScrollEnabled}>
           <YStack alignItems="center" flex={1}>
-            {Array.from({ length: 15 }).map((_, idx) => (
-              <Square mb="$4" backgroundColor={"$blue10"} key={idx} size={"$8"} />
-            ))}
-          </YStack>
+                        {workshops.workshops.map(workshop => (
+                            <WorkshopCard
+                                key={workshop.id}
+                                {...workshop}
+                            />
+                        ))}
+                    </YStack>
         </ScrollView>
-      </TabsContent>
+      </Tabs.Content>
     </Tabs>
   );
 }
@@ -101,7 +109,7 @@ export default function ProfilePage() {
 
       <ScrollView
         // onScroll={handleScroll}
-        flexDirection="column" padding="$5" space="$4"
+        
         stickyHeaderIndices={[10]}
       >
 

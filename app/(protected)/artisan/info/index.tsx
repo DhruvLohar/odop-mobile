@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Button, H2, H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
 import NewsCard from "~/components/custom/NewsCard";
 import news from "~/lib/data/news.json";
+import odopguide from "~/lib/data/odopguide.json"
+import OdopCard from "~/components/custom/OdopGuideCard";
+
 
 function HorizontalTabs({ currentTab, setCurrentTab }: any) {
     return (
@@ -39,10 +42,12 @@ function HorizontalTabs({ currentTab, setCurrentTab }: any) {
             <Tabs.Content value="ODOP_Guide" flex={1}>
                 <ScrollView flex={1}>
                     <YStack flex={1} alignItems="center">
-                        <H5>Heheheh</H5>
+                    {odopguide.guides.map((guides) => (
+                        <OdopCard key={guides.id} {...guides} video={guides.video} />
+                    ))}
                     </YStack>
                 </ScrollView>
-            </Tabs.Content>
+                </Tabs.Content>
         </Tabs>
     );
 }

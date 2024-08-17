@@ -48,7 +48,11 @@ export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: 
 
       <Sheet.Handle backgroundColor={'white'} />
 
-      <Sheet.Frame padding="$5" justifyContent="flex-start" alignItems="flex-start">
+      <Sheet.Frame
+        paddingHorizontal="$5"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        flex={1}>
         <H1 fontSize={'$9'} fontWeight={'bold'}>
           Get in Touch
         </H1>
@@ -57,7 +61,7 @@ export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: 
         </Paragraph>
 
         {/* Form Component */}
-        <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)}>
+        <Form width="100%" onSubmit={handleSubmit(onSubmit)}>
           {/* Dropdown for Options */}
           <Controller
             control={control}

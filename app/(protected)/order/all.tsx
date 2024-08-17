@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { ScrollView, YStack, H3 } from 'tamagui';
-import orders from '../../lib/data/orders.json';
-import OrderCard from '../../components/custom/OrderCard';
+import orders from '~/lib/data/orders.json';
+import OrderCard from '~/components/custom/OrderCard';
 
 export default function OrderPage() {
   return (

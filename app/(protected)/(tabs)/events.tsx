@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button, H2, H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
-import workshops from '../../lib/data/workshops.json';
-import WorkshopCard from '../../components/custom/WorkshopCard';
-import EventCard from '../../components/custom/EventCard';
-import eventsData from '../../lib/data/events.json';
+import workshops from '../../../lib/data/workshops.json';
+import WorkshopCard from '../../../components/custom/WorkshopCard';
+import EventCard from '../../../components/custom/EventCard';
+import eventsData from '../../../lib/data/events.json';
 import { Filter } from "iconsax-react-native";
 
 

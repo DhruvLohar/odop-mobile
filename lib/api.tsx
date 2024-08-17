@@ -62,7 +62,7 @@ export async function axiosRequest<T>(
     });
     return res.data;
   } catch (err) {
-    console.error(err);
+    console.log(JSON.stringify(err));
     return undefined;
   }
 }

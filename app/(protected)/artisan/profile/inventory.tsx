@@ -15,7 +15,7 @@ import {
 import Chart from '~/components/inventory/Chart';
 import EditForm from '~/components/inventory/EditForm';
 
-function inventory() {
+export default function ProductInventory() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -73,4 +73,3 @@ function inventory() {
   );
 }
 
-export default inventory;

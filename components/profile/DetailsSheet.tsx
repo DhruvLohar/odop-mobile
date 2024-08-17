@@ -6,6 +6,7 @@ import { Href } from 'expo-router';
 type ProfileDetailsProps = {
   open: boolean;
   setOpen: any;
+  handleLogout: () => void
 };
 
 const routes = [
@@ -17,10 +18,9 @@ const routes = [
     icon: People,
     url: '/profile/connectionRequests' as Href<string>,
   },
-  { title: 'Logout', icon: Logout, url: '/auth/logout' as Href<string> },
 ];
 
-export default function ProfileDetails({ open, setOpen }: ProfileDetailsProps) {
+export default function ProfileDetails({ open, setOpen, handleLogout }: ProfileDetailsProps) {
   return (
     <Sheet
       forceRemoveScrollEnabled={open}
@@ -74,6 +74,19 @@ export default function ProfileDetails({ open, setOpen }: ProfileDetailsProps) {
               <H4>{route.title}</H4>
             </XStack>
           ))}
+
+          <XStack
+            width={'100%'}
+            space="$3"
+            alignItems="center"
+            pb="$4"
+            borderBottomWidth={1}
+            borderBottomColor={'$gray5'}
+            onPress={handleLogout}
+          >
+            <Logout color="white" />
+            <H4>Logout</H4>
+          </XStack>
         </YStack>
       </Sheet.Frame>
     </Sheet>

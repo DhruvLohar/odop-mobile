@@ -5,14 +5,18 @@ import { fetchFromAPI, postToAPI } from './api';
 // Define types for session and AuthContext
 interface User {
     id: number;
+    role: string;
     name: string;
+    email: string;
+    phone_number: string;
+    profile_image: string;
     accessToken: string;
 }
 
 interface AuthContextType {
 
-    getOTP: (id: number, type: 'artisan' | 'user') => Promise<boolean>;
-    verifyOTP: (id: number, type: 'artisan' | 'user', otp: number) => Promise<boolean>;
+    getOTP: (id: number, type: string | undefined) => Promise<boolean>;
+    verifyOTP: (id: number, type: string | undefined, otp: number, saveDetails: boolean) => Promise<boolean>;
 
     artisanLogin: (values: any) => Promise<boolean>;
     userLogin: (values: any) => Promise<boolean>;
@@ -61,16 +65,24 @@ interface SessionProviderProps {
 export function SessionProvider({ children }: SessionProviderProps) {
     const [[isLoading, session], setStorageState] = useStorageState<User | null>("session");
 
-    async function getOTP(id: number, type: 'artisan' | 'user') {
+    async function getOTP(id: number, type: string | undefined) {
         const data = await fetchFromAPI(`${type}/${id}/getOTPOnEmail/`);
 
         return data.success;
     }
 
-    async function verifyOTP(id: number, type: 'artisan' | 'user', otp: number) {
+    async function verifyOTP(id: number, type: string | undefined, otp: number, saveDetails=true) {
         const data = await postToAPI(`${type}/${id}/verifyOTPOnEmail/`, {
             otp,
         });
+
+        if (data?.user && saveDetails) {
+            await setStorageState(data.user);
+        }
+
+        if (data?.artisan && saveDetails) {
+            await setStorageState(data.artisan);
+        }
 
         return data?.success;
     }
@@ -118,7 +130,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
     }
 
     async function logOut(): Promise<void> {
-        // await setStorageState(null);
+        await setStorageState(null);
     }
 
     async function refreshUser(): Promise<void> {

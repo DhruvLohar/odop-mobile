@@ -4,9 +4,9 @@ import { H2, H3, H6, ScrollView, XStack, YStack,Paragraph,Button } from 'tamagui
 import { Location } from 'iconsax-react-native';
 
 const images = [
-  require('../../../assets/Workshops/Workshop1.jpg'), 
-  require('../../../assets/Workshops/Workshop2.jpg'), 
-  require('../../../assets/Workshops/Workshop3.jpg'),
+  require('~/assets/Workshops/Workshop1.jpg'), 
+  require('~/assets/Workshops/Workshop2.jpg'), 
+  require('~/assets/Workshops/Workshop3.jpg'),
 ];
 
 export default function WorkshopAll() {

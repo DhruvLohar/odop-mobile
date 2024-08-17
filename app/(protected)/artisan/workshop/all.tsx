@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, YStack, H3, Paragraph } from 'tamagui';
-import workshops from '../../../lib/data/workshops.json';
-import WorkshopCard from '../../../components/custom/WorkshopCard';
+import workshops from '~/lib/data/workshops.json';
+import WorkshopCard from '~/components/custom/WorkshopCard';
 
 export default function WorkshopAll() {
   return (

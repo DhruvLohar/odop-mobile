@@ -8,11 +8,10 @@ import {
     Label,
     Paragraph,
     Separator,
-    Theme,
-    View,
     YStack,
     Sheet,
     H4,
+    Spinner,
 } from 'tamagui';
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -32,6 +31,7 @@ const options = ['Artisan', 'User'];
 export default function Login() {
 
     const router = useRouter();
+    const [loading, setLoading] = useState(false)
     const [uid, setUID] = useState<number | any>(undefined);
     const { getOTP, verifyOTP, artisanLogin, userLogin } = useSession()
 
@@ -48,13 +48,13 @@ export default function Login() {
         },
     });
 
-    const [selectedOption, setSelectedOption] = useState<string | null | undefined>(null);
     const [showOtpSheet, setShowOtpSheet] = useState(false);
     const [otpInput, setOtpInput] = useState('');
-    // const correctOtp = '123456'; // Predefined OTP for demonstration
     const sizeProp = `$4` as const;
 
     const handleLogin = async (values: any) => {
+        setLoading(true)
+
         let res: any;
         if (getValues().role === "User") {
             res = await userLogin({ email: values.email });
@@ -65,21 +65,23 @@ export default function Login() {
         if (!res?.success) {
             alert(res?.message)
         } else {
-            setUID(parseInt(res?.user?.id));
-            let otpSent = await getOTP(parseInt(res?.user?.id), 'user');
+            setUID(parseInt(res?.id));
+            let otpSent = await getOTP(parseInt(res?.id), getValues().role?.toLowerCase());
+
             if (otpSent) {
-                alert("OTP sent to your email.")
                 setShowOtpSheet(true);
             }
         }
+
+        setLoading(false)
     };
 
     async function handleOtpConfirm() {
         const res = await verifyOTP(uid, "user", parseInt(otpInput));
 
         if (res) {
-            console.log("lets go")
             setShowOtpSheet(false)
+            router.replace('/(protected)/(tabs)/')
         } else {
             alert("invalid otp")
             setOtpInput("")
@@ -116,7 +118,6 @@ export default function Login() {
                             value,
                             (value) => {
                                 onChange(value);
-                                setSelectedOption(value);
                             },
                             options,
                             false
@@ -156,8 +157,13 @@ export default function Login() {
                     </Paragraph>
                 )}
 
-                <Button mt="$5" themeInverse onPress={handleSubmit(handleLogin)}>
-                    Login
+                <Button 
+                    icon={() => loading && <Spinner size='large' />}
+                    size={'$5'}
+                    mt="$5" themeInverse 
+                    onPress={handleSubmit(handleLogin)}
+                >
+                    {!loading ? "Login" : ""}
                 </Button>
             </YStack>
 
@@ -173,16 +179,22 @@ export default function Login() {
                 open={showOtpSheet}
                 onOpenChange={setShowOtpSheet}
                 snapPointsMode="fit"
-                dismissOnSnapToBottom>
+                dismissOnSnapToBottom={false}
+                dismissOnOverlayPress={false}
+            >
                 <Sheet.Overlay animation={'lazy'} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 
                 <Sheet.Handle backgroundColor={'white'} />
-                <YStack p="$4">
-                    <H4 fontWeight={'bold'} mb="$2">
+                <YStack 
+                    p="$4" 
+                    borderTopRightRadius={"$5"} borderTopLeftRadius={"$5"} 
+                    backgroundColor={"$background"}
+                >
+                    <H4 fontWeight={'bold'}>
                         Confirm OTP
                     </H4>
-                    <Paragraph theme={'alt1'} mb="$2">
-                        Check your registered email for the OTP.
+                    <Paragraph theme={'alt1'} mb="$4">
+                        We've sent your OTP on your email.
                     </Paragraph>
                     <Input
                         placeholder="Enter OTP"

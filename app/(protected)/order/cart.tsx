@@ -1,7 +1,7 @@
 // Cart.tsx
 import React, { useState } from 'react';
 import { H2, H6, ScrollView, XStack, YStack, Button } from "tamagui";
-import CartItem, { CartItemType } from '../../components/custom/CartCard';
+import CartItem, { CartItemType } from '~/components/custom/CartCard';
 
 const initialCartItems: CartItemType[] = [
     {
@@ -10,7 +10,7 @@ const initialCartItems: CartItemType[] = [
         price: 120,
         seller: "John Doe",
         quantity: 1,
-        image: require('../../assets/Products/Product1.png')
+        image: require('~/assets/Products/Product1.png')
     },
     {
         id: 2,
@@ -18,7 +18,7 @@ const initialCartItems: CartItemType[] = [
         price: 80,
         seller: "Jane Smith",
         quantity: 1,
-        image: require('../../assets/Products/Product2.png')
+        image: require('~/assets/Products/Product2.png')
     }
 ];
 

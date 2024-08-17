@@ -20,7 +20,7 @@ const Stage2 = ({
     <YStack mb="$3">
       <Controller
         control={control}
-        name="selectedState"
+        name="state"
         render={({ field: { onChange, value } }) =>
           RenderSelect(
             'Select State',
@@ -37,13 +37,13 @@ const Stage2 = ({
       />
       {errors.selectedState && (
         <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-          {errors.selectedState.message}
+          {errors.state.message}
         </Paragraph>
       )}
 
       <Controller
         control={control}
-        name="selectedDistrict"
+        name="district"
         render={({ field: { onChange, value } }) =>
           RenderSelect(
             'Select District',
@@ -56,7 +56,7 @@ const Stage2 = ({
       />
       {errors.selectedDistrict && (
         <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-          {errors.selectedDistrict.message}
+          {errors.district.message}
         </Paragraph>
       )}
 
@@ -88,7 +88,7 @@ const Stage2 = ({
       <YStack>
         <Controller
           control={control}
-          name="pinCode"
+          name="postal_code"
           render={({ field: { onChange, onBlur, value } }) => (
             <YStack>
               <Label mb="$2">Pincode</Label>
@@ -106,7 +106,7 @@ const Stage2 = ({
         />
         {errors.pinCode && (
           <Paragraph size={'$4'} color={'$red10'} mb="$2">
-            {errors.pinCode.message}
+            {errors.postal_code.message}
           </Paragraph>
         )}
       </YStack>

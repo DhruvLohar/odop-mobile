@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button, H2, H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
-import JobPortalCard from '../../components/custom/JobPortalCard';
-import jobs from '../../lib/data/Jobs.json';
-import RentalMachineCard from '../../components/custom/RentalMachineCard';
-import rentalmachine from '../../lib/data/rentalmachine.json';
+import JobPortalCard from '../../../components/custom/JobPortalCard';
+import jobs from '../../../lib/data/Jobs.json';
+import RentalMachineCard from '../../../components/custom/RentalMachineCard';
+import rentalmachine from '../../../lib/data/rentalmachine.json';
 import { Filter, Add } from "iconsax-react-native";
 import { TouchableOpacity } from "react-native";
 

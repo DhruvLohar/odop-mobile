@@ -18,7 +18,7 @@ const imageMap: { [key: string]: any } = {
   'Workshop2.jpg': require('../../assets/Workshops/Workshop2.jpg'),
 };
 
-const EventCard: React.FC<EventCardProps> = ({id, title,rating, description,location, showTime, image }) => {
+const EventCard: React.FC<EventCardProps> = ({id, title, rating, description,location, showTime, image }) => {
   return (
     <YStack 
       backgroundColor="#222222"

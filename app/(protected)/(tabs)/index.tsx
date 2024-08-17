@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { H3, H6, Image, YStack, Paragraph, Tabs, XStack, H4, H2, Card, SizableText } from 'tamagui';
-import productsData from '../../lib/data/products.json';
-import ProductCard from '../../components/custom/ProductCard';
+import productsData from '../../../lib/data/products.json';
+import ProductCard from '../../../components/custom/ProductCard';
 import { Location } from 'iconsax-react-native';
 import CustomCarousel from '~/components/ui/Carousel';
 import Index from '~/components/ui/CircleCarousel';
 import DistrictCard from '~/components/custom/DistrictCard';
+import { StatusBar } from 'expo-status-bar';
 
 const districtData = [
   {
@@ -52,6 +53,8 @@ const HomePage: React.FC = () => {
 
   return (
     <ScrollView>
+      <StatusBar style='light' />
+
       <YStack flex={1} alignItems="flex-start" justifyContent="flex-start" padding="$5">
         <H3 fontSize={'$9'} mb="$2" fontWeight={'bold'}>
           Good Afternoon, User

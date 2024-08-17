@@ -5,6 +5,7 @@ import WorkshopCard from '../../components/custom/WorkshopCard';
 import EventCard from '../../components/custom/EventCard';
 import eventsData from '../../lib/data/events.json';
 import { Filter } from "iconsax-react-native";
+import EventsSheet from "~/components/sheets/EventsSheet"
 
 
 function HorizontalTabs({ setCurrentTab }: any) {
@@ -78,6 +79,7 @@ export default function EventsPage() {
 
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const [currentTab, setCurrentTab] = useState<"workshops" | "events">("workshops")
+    const [open, setOpen] = useState(false)
 
     function toogleFilter(id: string) {
         if (selectedFilters.includes(id)) {
@@ -88,18 +90,26 @@ export default function EventsPage() {
     }
 
     return (
+        <>
+
+        <EventsSheet
+                open={open}
+                setOpen={setOpen}
+            />
+
         <YStack flex={1} padding="$5">
             <XStack mb="$4" alignItems="center">
                 <YStack mr="auto">
                     <H2 fontWeight={"bold"}>{info[currentTab].title}</H2>
                     <Paragraph width={"80%"} theme={"alt2"}>{info[currentTab].desc}</Paragraph>
                 </YStack>
-                <Filter color="white" />
+                <Filter color="white" onPress={() => setOpen(true)} />
             </XStack>
 
             <YStack flex={1}>
                 <HorizontalTabs setCurrentTab={setCurrentTab} />
             </YStack>
         </YStack>
+        </>
     )
 }

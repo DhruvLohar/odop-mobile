@@ -39,7 +39,7 @@ export default function RootLayout() {
           screenOptions={{
             headerShown: false,
           }}>
-          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           {/* <Stack.Screen name="artisan/workshop/[id]" options={{ headerShown: true, title: 'Workshop All' }}/> */}
           {/* <Stack.Screen name="artisan/events/[id]" options={{ headerShown: true, title: 'Workshop Detail' }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
@@ -52,7 +52,7 @@ export default function RootLayout() {
           /> */}
           {/* <Stack.Screen name="artisan/portal/rentalMachine/[id]/index" options={{ headerShown: true, title: 'Machines' }} /> */}
           {/* <Stack.Screen name="artisan/brochure/[id]" options={{ headerShown: true, title: 'Brochure' }} /> */}
-          <Stack.Screen name="artisan/info/index" options={{ headerShown: true, title: 'news' }} />
+          {/* <Stack.Screen name="artisan/info/index" options={{ headerShown: true, title: 'news' }} /> */}
         </Stack>
         
         {/* </SessionProvider> */}

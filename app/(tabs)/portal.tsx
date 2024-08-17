@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, H2, H3, H5, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
+import { Button, H2, H3, H5, H6, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
 import JobPortalCard from '../../components/custom/JobPortalCard';
 import jobs from '../../lib/data/Jobs.json';
 import RentalMachineCard from '../../components/custom/RentalMachineCard';
@@ -37,7 +37,25 @@ function HorizontalTabs({ setCurrentTab }: any) {
                             <JobPortalCard key={jobs.id} {...jobs} />
                         ))}
                     </YStack>
+                    
                 </ScrollView>
+                <TouchableOpacity 
+                    style={{
+                        position: 'absolute',
+                        bottom: 5,
+                        right: 5,
+                        backgroundColor: '#ffffff',
+                        borderRadius: 15,
+                        padding: 10,
+                        elevation: 5,
+                    }}
+                    
+                >
+                    <XStack flex={1} alignItems="center">
+                        <Add size="24" color="#000000" />
+                        <H6 size="$5" marginLeft="$3" theme="alt2">Add a Job</H6>
+                    </XStack>
+                </TouchableOpacity>
             </Tabs.Content>
 
             <Tabs.Content value="rental_machines" flex={1}>
@@ -48,6 +66,23 @@ function HorizontalTabs({ setCurrentTab }: any) {
                         ))}
                     </YStack>
                 </ScrollView>
+                <TouchableOpacity 
+                    style={{
+                        position: 'absolute',
+                        bottom: 5,
+                        right: 5,
+                        backgroundColor: '#ffffff',
+                        borderRadius: 15,
+                        padding: 10,
+                        elevation: 5,
+                    }}
+                    
+                >
+                    <XStack flex={1} alignItems="center">
+                        <Add size="24" color="#000000" />
+                        <H6 size="$5" marginLeft="$3" theme="alt2">List a Machine</H6>
+                    </XStack>
+                </TouchableOpacity>
             </Tabs.Content>
         </Tabs>
     )
@@ -96,20 +131,7 @@ export default function PortalView() {
                 <HorizontalTabs setCurrentTab={setCurrentTab} />
             </YStack>
 
-            <TouchableOpacity 
-                style={{
-                    position: 'absolute',
-                    bottom: 20,
-                    right: 20,
-                    backgroundColor: '#ffffff',
-                    borderRadius: 50,
-                    padding: 10,
-                    elevation: 5,
-                }}
-                
-            >
-                <Add size="24" color="#000000" />
-            </TouchableOpacity>
+            
         </YStack>
     )
 }

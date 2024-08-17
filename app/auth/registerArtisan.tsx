@@ -98,10 +98,6 @@ const RegisterArtisan = () => {
     } else {
       alert(res.message)
     }
-
-    // reset();
-    // setStep(1);
-    // setProgress(33);
   };
 
   async function handleCreateArtisan() {

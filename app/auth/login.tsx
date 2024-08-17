@@ -77,7 +77,7 @@ export default function Login() {
     };
 
     async function handleOtpConfirm() {
-        const res = await verifyOTP(uid, "user", parseInt(otpInput));
+        const res = await verifyOTP(uid, "user", parseInt(otpInput), true);
 
         if (res) {
             setShowOtpSheet(false)

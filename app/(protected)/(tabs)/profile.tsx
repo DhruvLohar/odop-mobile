@@ -1,14 +1,14 @@
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { MoneySend, More } from "iconsax-react-native";
-import { useEffect, useRef, useState } from "react";
-import workshops from '../../lib/data/workshops.json';
-import WorkshopCard from '../../components/custom/WorkshopCard';
-import { Avatar, Button, Card, H2, H3, H4, H5, Handle, Image, Paragraph, ScrollView, Separator, SizableText, Square, Tabs, type TabsContentProps, Theme, View, XStack, YStack } from "tamagui";
+import { useRef, useState } from "react";
+import workshops from '~/lib/data/workshops.json';
+import WorkshopCard from '~/components/custom/WorkshopCard';
+import { Avatar, Button, Card, H3, H4, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
 import ProfileDetails from "~/components/profile/DetailsSheet";
 import GetInTouch from "~/components/profile/GetInTouch";
-import productsData from '../../lib/data/products.json';
-import ProductCard from '../../components/custom/ProductCard';
+import productsData from '~/lib/data/products.json';
+import ProductCard from '~/components/custom/ProductCard';
 import SupportArtisan from "~/components/profile/SupportArtisanSheet";
 import WithRole from "~/components/shared/WithRole";
 import { useSession } from "~/lib/auth";
@@ -108,8 +108,6 @@ export default function ProfilePage() {
       <StatusBar style="light" />
 
       <ScrollView
-        // onScroll={handleScroll}
-        
         stickyHeaderIndices={[10]}
       >
 

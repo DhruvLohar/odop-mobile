@@ -31,7 +31,7 @@ export const ProductCategories = [
   },
 ];
 
-export const ProductRawMaterials = {
+export const ProductRawMaterials: any = {
   food: [
     { value: 'mango', label: 'Mango Based Product' },
     { value: 'banana', label: 'Banana Based Product' },
@@ -66,4 +66,7 @@ export const ProductRawMaterials = {
     { value: 'sikki', label: 'Sikki Based Handicrafts' },
     { value: 'plastic', label: 'Plastic Based Handicrafts' },
   ],
+  other: [
+    {value: 'Other', label: 'Made with love'}
+  ]
 };

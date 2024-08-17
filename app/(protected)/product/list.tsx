@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { YStack, H2, Paragraph, Form, Button, ScrollView, Input } from 'tamagui';
-import { useForm, useWatch, Controller } from 'react-hook-form';
+import { YStack, H2, Paragraph, Form, Button, ScrollView, Input, H3 } from 'tamagui';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
@@ -9,8 +9,9 @@ import { ControlledInput, ControlledTextArea } from '~/components/forms/Controll
 import ProductSheet from '~/components/productListForm/ProductCategorySheet';
 import RawMaterialSheet from '~/components/productListForm/RawMaterialSheet';
 import ProductDetailsSheet from '~/components/productListForm/ProductDetailsSheet';
+import { axiosRequest } from '~/lib/api';
 
-function Create() {
+function CreateProduct() {
   const [open, setOpen] = useState(false);
   const [openRawMaterials, setOpenRawMaterials] = useState(false);
   const [openProductDetails, setOpenProductDetails] = useState(false);
@@ -26,11 +27,6 @@ function Create() {
     price: yup.number().required('Price is required'),
     quantity: yup.number().required('Quantity is required'),
     is_customizable: yup.boolean().default(false),
-    customize_note: yup.string().when('is_customizable', {
-      is: true,
-      then: (schema) => schema.default('none').required('Customize note is required'),
-      otherwise: (schema) => schema.notRequired(),
-    }),
     category: yup.string().required('Category is required'),
     raw_material: yup.string().required('Raw material is required'),
     product_details: yup.object().shape({}), // No validation for product details, as it can be dynamic
@@ -46,20 +42,21 @@ function Create() {
     resolver: yupResolver(schema),
   });
 
-  const isCustomizable = useWatch({
-    control,
-    name: 'is_customizable',
-    defaultValue: false,
-  });
-
-  const onSubmit = (data: any) => {
+  async function onSubmit(data: any){
     const formData = {
       ...data,
       product_details: productDetails, // Include the product details in the final data
     };
-    console.log(formData);
-    if (formData) {
-      setTimeout(() => reset(), 3000);
+
+    const res = await axiosRequest('product/', {
+      method: 'post',
+      data: formData
+    }, false);
+
+    if (res.success) {
+      alert("Product was uploaded, wait before we review and list on the marketplace")
+    } else {
+      alert(res.message)
     }
   };
 
@@ -76,6 +73,7 @@ function Create() {
       <RawMaterialSheet
         open={openRawMaterials}
         setOpen={setOpenRawMaterials}
+        selectedCategory={selectedCategory}
         onSelectRawMaterial={(rawMaterial) => {
           setSelectedRawMaterial(rawMaterial);
           setValue('raw_material', rawMaterial);
@@ -94,7 +92,7 @@ function Create() {
           List a New Product
         </H2>
         <Paragraph theme={'alt2'} fontSize={'$4'}>
-          Fill the form below in order to list your product on the National Marketplace
+          Fill the form below in order to list your product on the ODOP Marketplace
         </Paragraph>
         <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)} mt="$6">
           <ControlledInput
@@ -109,7 +107,7 @@ function Create() {
             control={control}
             name="description"
             label="Description"
-            placeholder="Describe about the Job, and what are your expectations from the applicants."
+            placeholder="Describe about the product, material used, etc ..."
             error={errors.description?.message}
           />
 
@@ -117,7 +115,7 @@ function Create() {
             control={control}
             name="back_story"
             label="Back Story"
-            placeholder="Any specific skill the applicant should have? Write it here"
+            placeholder="Back story for this product that you would like to share"
             error={errors.back_story?.message}
           />
 
@@ -148,23 +146,13 @@ function Create() {
             </Paragraph>
           )}
 
-          {isCustomizable && (
-            <ControlledTextArea
-              control={control}
-              name="customize_note"
-              label="Customize Note"
-              placeholder="Add any customization notes here"
-              error={errors.customize_note?.message}
-            />
-          )}
-
           <Dimensions errors={errors} control={control} />
 
           <ControlledInput
             control={control}
             name="quantity"
             label="Product Quantity"
-            placeholder="Quantity of the Product"
+            placeholder="Number of products you currently have to sell online"
             error={errors.quantity?.message}
             keyboardType="numeric"
           />
@@ -174,10 +162,13 @@ function Create() {
             name="category"
             render={({ field: { value } }) => (
               <>
-                <Button mb="$2" onPress={() => setOpen(true)}>
-                  Choose From the Categories
+                <Button mb="$2" onPress={() => setOpen(true)} themeInverse={Boolean(value)}> 
+                  {value
+                    ? `Selected Category: ${value}`
+                    : 'Choose your Product Category'
+                  }
                 </Button>
-                {value && <Paragraph my="$2">Selected Category: {value}</Paragraph>}
+
                 {errors.category && (
                   <Paragraph size={'$4'} color={'$red10'} mt="$2">
                     {errors.category.message}
@@ -192,8 +183,13 @@ function Create() {
             name="raw_material"
             render={({ field: { value } }) => (
               <>
-                <Button onPress={() => setOpenRawMaterials(true)}>Choose Raw Material</Button>
-                {value && <Paragraph mt="$2">Selected Raw Material: {value}</Paragraph>}
+                <Button onPress={() => setOpenRawMaterials(true)} themeInverse={Boolean(value)}>
+                  {value
+                    ? `Selected Raw Material: ${value}`
+                    : 'Select raw material for your product'
+                  }
+                </Button>
+                
                 {errors.raw_material && (
                   <Paragraph size={'$4'} color={'$red10'} mt="$2">
                     {errors.raw_material.message}
@@ -208,7 +204,7 @@ function Create() {
           </Button>
           {Object.keys(productDetails).length > 0 && (
             <YStack mt="$4">
-              <H2>Product Details:</H2>
+              <H3 theme={"alt2"}>Product Details:</H3>
               {Object.entries(productDetails).map(([key, value], index) => (
                 <Paragraph key={index} mt="$2">
                   {key}: {value}
@@ -228,4 +224,4 @@ function Create() {
   );
 }
 
-export default Create;
+export default CreateProduct;

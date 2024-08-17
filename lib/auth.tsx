@@ -10,7 +10,7 @@ interface User {
     email: string;
     phone_number: string;
     profile_image: string;
-    accessToken: string;
+    access_token: string;
 }
 
 interface AuthContextType {

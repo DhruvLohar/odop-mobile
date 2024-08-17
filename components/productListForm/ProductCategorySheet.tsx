@@ -38,7 +38,7 @@ export default function ProductSheet({ open, setOpen, onSelectCategory }: Produc
                 borderRadius="$3"
                 key={i}
                 onPress={() => {
-                  onSelectCategory(item.label);
+                  onSelectCategory(item.value);
                   setOpen(false);
                 }}>
                 <YStack>

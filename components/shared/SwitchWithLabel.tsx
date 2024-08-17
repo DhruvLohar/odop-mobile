@@ -10,8 +10,8 @@ export function SwitchWithLabel(props: {
   const id = `switch-${props.size.toString().slice(1)}-${props.defaultChecked ?? ''}`;
 
   return (
-    <XStack width={270} alignItems="center" gap="$4">
-      <Label minWidth={100} justifyContent="flex-end" size={props.size} htmlFor={id}>
+    <XStack borderWidth={2} borderColor={"$red1"} p="$4" alignItems="center" gap="$4">
+      <Label width={"75%"} lineHeight={"$1"} justifyContent="flex-end" htmlFor={id}>
         {props.label}
       </Label>
       <Separator minHeight={20} vertical />

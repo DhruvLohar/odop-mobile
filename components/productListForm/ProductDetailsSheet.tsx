@@ -34,7 +34,7 @@ const schema = yup.object(
     (acc, question) => {
       acc[question.label as keyof ProductDetailsForm] = yup
         .string()
-        .required(`${question.label} is required`);
+        .optional();
       return acc;
     },
     {} as Record<keyof ProductDetailsForm, yup.StringSchema<string | undefined>>

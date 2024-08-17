@@ -6,7 +6,7 @@ export const API_URL = "http://192.168.1.13:8000/";
 axios.defaults.baseURL = API_URL;
 
 interface Session {
-  accessToken?: string;
+  access_token?: string;
   // Add other session properties if needed
 }
 
@@ -31,8 +31,8 @@ export async function fetchFromAPI<T>(url: string): Promise<ApiResponse<T> | { s
   try {
     const sessionString = await SecureStore.getItemAsync("session");
     const session: Session = sessionString ? JSON.parse(sessionString) : {};
-    if (session.accessToken) {
-      axios.defaults.headers.common.Authorization = `Bearer ${session.accessToken}`;
+    if (session.access_token) {
+      axios.defaults.headers.common.Authorization = `Bearer ${session.access_token}`;
     }
     const res: AxiosResponse<ApiResponse<T>> = await axios.get(url);
     return res.data;
@@ -55,7 +55,7 @@ export async function axiosRequest<T>(
       url: API_URL + url,
       ...reqParams,
       headers: {
-        Authorization: `Bearer ${session.accessToken}`,
+        Authorization: `Bearer ${session.access_token}`,
         Accept: "application/json",
         "Content-Type": sendingMedia ? "multipart/form-data" : "application/json",
       },

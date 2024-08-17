@@ -13,7 +13,7 @@ const Dimensions: React.FC<DimensionsProps> = ({ control, errors }) => {
       <H4 mb="$2">Dimensions</H4>
       <Controller
         control={control}
-        name="dimension.height"
+        name="dimensions.height"
         render={({ field: { onChange, value } }) => (
           <XStack alignItems="center" justifyContent="space-between" space="$2">
             <Label>Height:</Label>
@@ -31,7 +31,7 @@ const Dimensions: React.FC<DimensionsProps> = ({ control, errors }) => {
       />
       <Controller
         control={control}
-        name="dimension.weight"
+        name="dimensions.weight"
         render={({ field: { onChange, value } }) => (
           <XStack alignItems="center" justifyContent="space-between" space="$2">
             <Label>Weight:</Label>
@@ -49,7 +49,7 @@ const Dimensions: React.FC<DimensionsProps> = ({ control, errors }) => {
       />
       <Controller
         control={control}
-        name="dimension.width"
+        name="dimensions.width"
         render={({ field: { onChange, value } }) => (
           <XStack alignItems="center" justifyContent="space-between" space="$2">
             <Label>Width:</Label>
@@ -67,7 +67,7 @@ const Dimensions: React.FC<DimensionsProps> = ({ control, errors }) => {
       />
       <Controller
         control={control}
-        name="dimension.length"
+        name="dimensions.length"
         render={({ field: { onChange, value } }) => (
           <XStack alignItems="center" justifyContent="space-between" space="$2">
             <Label>Length:</Label>
@@ -85,26 +85,26 @@ const Dimensions: React.FC<DimensionsProps> = ({ control, errors }) => {
       />
 
       {/* Error messages for dimension fields */}
-      {errors.dimension && (
+      {errors.dimensions && (
         <YStack>
-          {errors.dimension.height && (
+          {errors.dimensions.height && (
             <Paragraph size={'$4'} color={'$red10'}>
-              {errors.dimension.height.message}
+              {errors.dimensions.height.message}
             </Paragraph>
           )}
-          {errors.dimension.weight && (
+          {errors.dimensions.weight && (
             <Paragraph size={'$4'} color={'$red10'}>
-              {errors.dimension.weight.message}
+              {errors.dimensions.weight.message}
             </Paragraph>
           )}
-          {errors.dimension.width && (
+          {errors.dimensions.width && (
             <Paragraph size={'$4'} color={'$red10'}>
-              {errors.dimension.width.message}
+              {errors.dimensions.width.message}
             </Paragraph>
           )}
-          {errors.dimension.length && (
+          {errors.dimensions.length && (
             <Paragraph size={'$4'} color={'$red10'}>
-              {errors.dimension.length.message}
+              {errors.dimensions.length.message}
             </Paragraph>
           )}
         </YStack>

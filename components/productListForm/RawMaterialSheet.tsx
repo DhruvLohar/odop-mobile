@@ -6,14 +6,19 @@ import { ProductRawMaterials } from '~/lib/constants/AddProductFormData';
 type RawMaterialSheetProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
+  selectedCategory: 'food' | 'handicraft' | 'clothing' | 'artwork' | 'other' | any;
   onSelectRawMaterial: (rawMaterial: string) => void;
 };
 
 export default function RawMaterialSheet({
   open,
   setOpen,
+  selectedCategory,
   onSelectRawMaterial,
 }: RawMaterialSheetProps) {
+
+  const category = ProductRawMaterials[selectedCategory] || [];
+
   return (
     <Sheet
       forceRemoveScrollEnabled={open}
@@ -33,30 +38,23 @@ export default function RawMaterialSheet({
         </Paragraph>
         <ScrollView w="100%">
           <YStack width={'100%'} my="$6">
-            {Object.entries(ProductRawMaterials).map(([category, items]) => (
-              <YStack key={category} mb="$6">
-                <H2 fontSize="$6" mb="$4">
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </H2>
-                {items.map((item) => (
-                  <Card
-                    width="100%"
-                    padding="$4"
-                    marginBottom="$4"
-                    borderRadius="$3"
-                    key={item.value}
-                    onPress={() => {
-                      onSelectRawMaterial(item.value);
-                      setOpen(false); // Close the sheet after selection
-                    }}>
-                    <YStack>
-                      <H2 fontWeight="bold" fontSize="$6" color={'whitesmoke'}>
-                        {item.label}
-                      </H2>
-                    </YStack>
-                  </Card>
-                ))}
-              </YStack>
+            {category.map((item: any) => (
+              <Card
+                width="100%"
+                padding="$4"
+                marginBottom="$4"
+                borderRadius="$3"
+                key={item.value}
+                onPress={() => {
+                  onSelectRawMaterial(item.value);
+                  setOpen(false); // Close the sheet after selection
+                }}>
+                <YStack>
+                  <H2 fontWeight="bold" fontSize="$6" color={'whitesmoke'}>
+                    {item.label}
+                  </H2>
+                </YStack>
+              </Card>
             ))}
           </YStack>
         </ScrollView>

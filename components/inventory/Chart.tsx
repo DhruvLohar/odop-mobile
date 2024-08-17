@@ -43,20 +43,16 @@ function Chart() {
     <YStack pt="$4" alignItems="center">
       {/* Added padding to the right */}
       <LineChart
-        areaChart
         curved
         data={data1.data}
         isAnimated
         data2={data2.data}
-        hideDataPoints
         spacing={43}
-        startFillColor1="#8a56ce"
-        startFillColor2="#56acce"
-        endFillColor1="#8a56ce"
-        endFillColor2="#56acce"
-        startOpacity={0.5}
-        endOpacity={0.1}
+        color1="#34d2eb"
+        color2="#9234eb"
         endSpacing={0}
+        dataPointsColor1="#34d2eb"
+        dataPointsColor2="#9234eb"
         initialSpacing={0}
         noOfSections={4}
         yAxisColor="#FFFFFF" // Changed yAxisColor to white for dark mode
@@ -64,7 +60,6 @@ function Chart() {
         rulesType="solid"
         rulesColor="#333333" // Changed rulesColor to a darker shade for dark mode
         yAxisTextStyle={{ color: '#ffffff', marginRight: 8, paddingBottom: 4 }} // Changed text color for better visibility in dark mode
-        yAxisLabelSuffix="%"
         xAxisColor="#AAAAAA" // Changed xAxisColor for better visibility in dark mode
         pointerConfig={{
           pointerStripUptoDataPoint: true,

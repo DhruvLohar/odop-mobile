@@ -1,0 +1,18 @@
+{
+  "guides": [
+    {
+      "id": 1,
+      "title": "Workshop 1",
+      "description": "Description for Workshop 1",
+      "image": "Workshop1.jpg",
+      "video": "Workshop1.mp4"
+    },
+    {
+      "id": 2,
+      "title": "Workshop 2",
+      "description": "Description for Workshop 2",
+      "image": "Workshop2.jpg",
+      "video": "Workshop2.mp4"
+    }
+  ]
+}

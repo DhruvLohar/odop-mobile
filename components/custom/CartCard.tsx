@@ -9,7 +9,7 @@ export interface CartItemType {
     price: number;
     seller: string;
     quantity: number;
-    image: any; // You might want to use a more specific type for images
+    image: any;
   }
 
 interface CartItemProps {

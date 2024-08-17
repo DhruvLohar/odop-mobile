@@ -46,11 +46,15 @@ export default function RootLayout() {
           {/* <Stack.Screen name="order/[id]" options={{ headerShown: true, title: 'Individual order' }}/> */}
           {/* <Stack.Screen name="order/index" options={{ headerShown: true, title: 'Individual order' }}/> */}
           {/* <Stack.Screen name="artisan/profile/connectionRequests" options={{ headerShown: true, title: 'Connection' }} /> */}
-          <Stack.Screen
+          {/* <Stack.Screen
             name="artisan/profile/inventory"
             options={{ headerShown: true, title: 'Inventory' }}
-          />
+          /> */}
+          {/* <Stack.Screen name="artisan/portal/rentalMachine/[id]/index" options={{ headerShown: true, title: 'Machines' }} /> */}
+          {/* <Stack.Screen name="artisan/brochure/[id]" options={{ headerShown: true, title: 'Brochure' }} /> */}
+          <Stack.Screen name="artisan/info/index" options={{ headerShown: true, title: 'news' }} />
         </Stack>
+        
         {/* </SessionProvider> */}
       </ThemeProvider>
     </TamaguiProvider>

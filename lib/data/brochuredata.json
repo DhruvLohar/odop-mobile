@@ -1,0 +1,32 @@
+{
+  "logo": "assets/brochure/ODOP1.png",
+  "title": "ONE DISTRICT ONE PRODUCT",
+  "introduction": {
+    "text": "Lorem ipsum dolor sit amet consectetur. Non risus sed morbi facilisis sagittis eget id. Risus mi urna elementum tristique maecenas aliquam nulla. Aliquam morbi vulputate integer interdum ut in quis. Consectetur aliquam quisque leo cras elementum vestibulum tristique tincidunt. Faucibus proin fermentum odio libero. Sit sapien nascetur egestas quis consectetur ut.",
+    "image": "assets/brochure/ODOP2.png"
+  },
+  "storeInfo": {
+    "phone": "9898989898",
+    "address": "12, Near this near that, Bihar - 400000",
+    "images": {
+      "storefront": "assets/brochure/Rectangle3.png",
+      "map": "assets/brochure/Rectangle2.png"
+    }
+  },
+  "productCategories": [
+    {
+      "name": "Belts",
+      "description": "Lorem ipsum dolor sit amet consectetur. Non risus sed morbi facilisis sagittis eget",
+      "image": "assets/brochure/Rectangle4.png"
+    },
+    {
+      "name": "Watch Belts",
+      "description": "Lorem ipsum dolor sit amet consectetur. Non risus sed morbi facilisis sagittis eget",
+      "image": "assets/brochure/Rectangle5.png"
+    }
+  ],
+  "materialsAndCraftsmen": {
+    "text": "Lorem ipsum dolor sit amet consectetur. Non risus sed morbi facilisis sagittis eget id. Risus mi urna elementum tristique maecenas aliquam nulla. Aliquam morbi vulputate integer interdum ut in quis.",
+    "image": "assets/brochure/Rectangle9.png"
+  }
+}

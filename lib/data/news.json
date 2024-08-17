@@ -1,0 +1,17 @@
+{
+    "news": [
+      {
+        "id": 1,
+        "title": "ODOP strikes again",
+        "image": "Workshop1.jpg",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo."
+      },
+      {
+        "id": 2,
+        "title": "ODOP strikes again part 2",
+        "image": "Workshop2.jpg",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, explicabo."
+      }
+    ]
+  }
+    

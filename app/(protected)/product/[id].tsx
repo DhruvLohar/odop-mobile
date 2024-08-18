@@ -20,7 +20,7 @@ import {
   YStack,
 } from 'tamagui';
 import AddressInfo from '~/components/sheets/AddressInfoSheet';
-import { Router, useRouter } from 'expo-router';
+import { useRouter, Href } from 'expo-router';
 
 function Info({ title, content }: { title: string; content: string }) {
   return (
@@ -32,6 +32,8 @@ function Info({ title, content }: { title: string; content: string }) {
 }
 
 function HorizontalTabs() {
+  const router = useRouter();
+
   return (
     <Tabs
       defaultValue="details"
@@ -89,7 +91,10 @@ function HorizontalTabs() {
             </Paragraph>
           </YStack>
         </XStack>
-        <Button width={'100%'} my="$4">
+        <Button
+          width={'100%'}
+          my="$4"
+          onPress={() => router.push('/(protected)/artisan/profile/AadishGotekar' as Href)}>
           Visit Profile
         </Button>
       </TabsContent>

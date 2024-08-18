@@ -19,7 +19,7 @@ export default function ProtectedLayout() {
       />
       <Stack.Screen
         name="artisan/portal/rentalMachine/book/[id]"
-        options={{ headerShown: true, title: 'Machine Details' }}
+        options={{ headerShown: true, title: 'Machine Booking' }}
       />
 
       <Stack.Screen
@@ -36,7 +36,10 @@ export default function ProtectedLayout() {
         options={{ headerShown: true, title: 'Event Details' }}
       />
 
-      <Stack.Screen name="district/[id]" options={{ headerShown: true, title: 'Event Details' }} />
+      <Stack.Screen
+        name="district/[id]"
+        options={{ headerShown: true, title: 'District Details' }}
+      />
 
       <Stack.Screen
         name="artisan/profile/connectionRequests"
@@ -50,6 +53,7 @@ export default function ProtectedLayout() {
         name="artisan/profile/inventory"
         options={{ headerShown: true, title: 'Product Inventory' }}
       />
+      <Stack.Screen name="artisan/profile/[id]" options={{ headerShown: true, title: 'Profile' }} />
 
       <Stack.Screen name="artisan/info/[id]" options={{ headerShown: true, title: 'Details' }} />
       <Stack.Screen

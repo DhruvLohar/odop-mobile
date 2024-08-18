@@ -21,6 +21,7 @@ import rentalmachine from '~/lib/data/rentalmachine.json';
 import { Filter, Add } from 'iconsax-react-native';
 import { TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import PortalSheet from '~/components/sheets/PortalSheet';
 
 function HorizontalTabs({ setCurrentTab }: any) {
   const router = useRouter();
@@ -107,7 +108,6 @@ function HorizontalTabs({ setCurrentTab }: any) {
 
 const filters = [
   { id: 'location', title: 'Location', keys: ['Nearest', 'Farthest'] },
-  { id: 'level', title: 'Level', keys: ['Beginner', 'Intermediate', 'Advance'] },
   { id: 'price', title: 'Price', keys: ['High to low', 'Low to high'] },
 ];
 
@@ -123,6 +123,7 @@ const info = {
 };
 
 export default function PortalView() {
+  const [open, setOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [currentTab, setCurrentTab] = useState<'job_portal' | 'rental_machines'>('job_portal');
 
@@ -136,6 +137,7 @@ export default function PortalView() {
 
   return (
     <YStack flex={1} padding="$5">
+      <PortalSheet open={open} setOpen={setOpen} filters={filters} />
       <XStack mb="$4" alignItems="center">
         <YStack mr="auto">
           <H2 fontWeight={'bold'}>{info[currentTab].title}</H2>
@@ -143,7 +145,7 @@ export default function PortalView() {
             {info[currentTab].desc}
           </Paragraph>
         </YStack>
-        <Filter color="white" />
+        <Filter color="white" onPress={() => setOpen(true)} />
       </XStack>
 
       <YStack flex={1}>

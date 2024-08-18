@@ -13,7 +13,7 @@ const DistrictCard: React.FC<DistrictCardProps> = ({ imageUrl, districtName, hei
   const router = useRouter();
 
   function handleEvent() {
-    router.push(`/(protected)/artisan/district/${districtName}` as Href);
+    router.push(`/(protected)/district/${districtName}` as Href);
   }
 
   return (

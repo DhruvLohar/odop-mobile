@@ -24,10 +24,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ name, price, location, image 
         <Image
           source={imageMap[image]}
           style={{
-            minWidth: 170,
+            minWidth: 180,
             width: "100%",
-            height: 250,
-            objectFit: 'cover'
+            height: 230,
+            objectFit: 'cover',
+            borderRadius: 15
           }}
         />
         <H6 size={"$6"} mt="$2">{name}</H6>

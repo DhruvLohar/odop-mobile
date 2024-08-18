@@ -49,7 +49,7 @@ export default function Explore() {
                         {Array.from({ length: 10 }).map((_, idx) => (
                             <XStack 
                                 key={idx}
-                                width={"100%"} 
+                                width={"100%"}
                                 alignItems="center" justifyContent="space-between"
                             >
                                 {productsNearby.slice(0, 2).map(product => (

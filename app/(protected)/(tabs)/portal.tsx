@@ -50,26 +50,15 @@ function HorizontalTabs({ setCurrentTab }: any) {
             ))}
           </YStack>
         </ScrollView>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            bottom: 5,
-            right: 5,
-            backgroundColor: '#ffffff',
-            borderRadius: 15,
-            padding: 10,
-            elevation: 5,
-          }}
-          onPress={() => {
-            router.push('/(protected)/artisan/portal/job/create');
-          }}>
-          <XStack flex={1} alignItems="center">
-            <Add size="24" color="#000000" />
-            <H6 size="$5" marginLeft="$3" theme="alt2">
-              Add a Job
-            </H6>
-          </XStack>
-        </TouchableOpacity>
+        <Button
+          themeInverse
+          position='absolute' bottom={5} right={5}
+          borderRadius={60}
+          icon={() => <Add size={24} color="#000000" />}
+          onPress={() => router.push('/(protected)/artisan/portal/job/create')}
+        >
+          Add a Job
+        </Button>
       </Tabs.Content>
 
       <Tabs.Content value="rental_machines" flex={1}>
@@ -80,26 +69,15 @@ function HorizontalTabs({ setCurrentTab }: any) {
             ))}
           </YStack>
         </ScrollView>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            bottom: 5,
-            right: 5,
-            backgroundColor: '#ffffff',
-            borderRadius: 15,
-            padding: 10,
-            elevation: 5,
-          }}
-          onPress={() => {
-            router.push('/(protected)/artisan/portal/rentalMachine/create');
-          }}>
-          <XStack flex={1} alignItems="center">
-            <Add size="24" color="#000000" />
-            <H6 size="$5" marginLeft="$3" theme="alt2">
-              List a Machine
-            </H6>
-          </XStack>
-        </TouchableOpacity>
+        <Button
+          themeInverse
+          position='absolute' bottom={5} right={5}
+          borderRadius={60}
+          icon={() => <Add size={24} color="#000000" />}
+          onPress={() => router.push('/(protected)/artisan/portal/rentalMachine/create')}
+        >
+          List a Machine
+        </Button>
       </Tabs.Content>
     </Tabs>
   );

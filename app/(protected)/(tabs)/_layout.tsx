@@ -40,94 +40,93 @@ export default function TabLayout() {
   return (
     <>
       <ChatBot
-                open={open}
-                setOpen={setOpen}
-            />
+        open={open}
+        setOpen={setOpen}
+      />
 
-            <NotificationsSheet
-              open={Noti}
-              setOpen={setNotiOpen}
-              />
-    <Tabs
-      screenOptions={{
-        tabBarStyle: {
-          height: 65
-        },
-        tabBarLabelStyle: {
-          fontSize: 15,
-          fontWeight: 500,
-          color: "white"
-        },
-        tabBarShowLabel: false,
-        headerStyle: {
-          backgroundColor: "transparent",
-        },
-        headerTitleAlign: "center",
-        headerTitleStyle: {
-          fontSize: 16
-        }
-      }}>
-
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: '',
-          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Home2} />,
-
-          headerStyle: {
-            height: 120,
-            backgroundColor: "transparent"
+      <NotificationsSheet
+        open={Noti}
+        setOpen={setNotiOpen}
+      />
+      <Tabs
+        screenOptions={{
+          tabBarStyle: {
+            height: 65
           },
+          tabBarLabelStyle: {
+            fontSize: 15,
+            fontWeight: 500,
+            color: "white"
+          },
+          tabBarShowLabel: false,
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontSize: 16
+          }
+        }}>
 
-          headerLeft: () => <Image
-            source={require('~/assets/Logo.png')}
-            width={100} height={50}
-            style={{ objectFit: "contain", marginLeft: 24 }}
-          />,
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: '',
+            tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Home2} />,
 
-          headerRight: () => (
-            <XStack space="$4" marginRight={24}>
-              <Android color='white' onPress={() => setOpen(true)} />
-              <Notification color='white' onPress={() => setNotiOpen(true)} />
-            </XStack>
-          )
-        }}
-      />
+            headerStyle: {
+              height: 120,
+              backgroundColor: "transparent"
+            },
 
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={SearchNormal} />,
-        }}
-      />
+            headerLeft: () => <Image
+              source={require('~/assets/Logo.png')}
+              width={100} height={50}
+              style={{ objectFit: "contain", marginLeft: 24 }}
+            />,
 
-      <Tabs.Screen
-        name="events"
-        options={{
-          title: 'Workshops & Events',
-          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Calendar} />,
-        }}
-      />
+            headerRight: () => (
+              <XStack space="$4" marginRight={24}>
+                <Android color='white' onPress={() => setOpen(true)} />
+                <Notification color='white' onPress={() => setNotiOpen(true)} />
+              </XStack>
+            )
+          }}
+        />
 
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'My Profile',
-          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={User} />,
-        }}
-      />
+        <Tabs.Screen
+          name="explore"
+          options={{
+            title: 'Explore',
+            tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={SearchNormal} />,
+          }}
+        />
 
-      <Tabs.Screen
-        name="portal"
-        options={{
-          title: 'Job Portal & Rental Machines',
-          tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Brodcast} />,
-          href: session?.role === "user" ? null : "/(protected)/(tabs)/portal"
-        }}
-      />
+        <Tabs.Screen
+          name="portal"
+          options={{
+            title: 'Job Portal & Rental Machines',
+            tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Brodcast} />,
+            href: session?.role === "user" ? null : "/(protected)/(tabs)/portal"
+          }}
+        />
 
-    </Tabs>
+        <Tabs.Screen
+          name="events"
+          options={{
+            title: 'Workshops & Events',
+            tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Calendar} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'My Profile',
+            tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={User} />,
+          }}
+        />
+      </Tabs>
     </>
   );
 }

@@ -109,9 +109,10 @@ export default function ProfilePage() {
 
       <ScrollView
         stickyHeaderIndices={[3]}
+        paddingHorizontal="$5"
       >
 
-        <XStack width={'100%'} justifyContent="center" alignItems="center">
+        <XStack width={'100%'} mb="$4" justifyContent="center" alignItems="center">
           <Avatar circular size="$11">
             <Avatar.Image
               accessibilityLabel="Nate Wienert"

@@ -18,6 +18,14 @@ export default function ProtectedLayout() {
         options={{ headerShown: true, title: 'Machine Details' }}
       />
       <Stack.Screen
+        name="artisan/portal/rentalMachine/create"
+        options={{ headerShown: true, title: 'List a Machine for rent' }}
+      />
+      <Stack.Screen
+        name="artisan/portal/job/create"
+        options={{ headerShown: true, title: 'Create New Job' }}
+      />
+      <Stack.Screen
         name="artisan/portal/rentalMachine/book/[id]"
         options={{ headerShown: true, title: 'Machine Details' }}
       />

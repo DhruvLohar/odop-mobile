@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 import { Card, YStack, SizableText, SizeTokens } from 'tamagui';
+import { useRouter, Href } from 'expo-router';
 
 type DistrictCardProps = {
   imageUrl: string;
@@ -9,8 +10,14 @@ type DistrictCardProps = {
 };
 
 const DistrictCard: React.FC<DistrictCardProps> = ({ imageUrl, districtName, height }) => {
+  const router = useRouter();
+
+  function handleEvent() {
+    router.push(`/(protected)/artisan/district/${districtName}` as Href);
+  }
+
   return (
-    <Card h={height} w={'100%'} overflow="hidden">
+    <Card h={height} w={'100%'} overflow="hidden" onPress={handleEvent}>
       <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
       <View style={styles.overlay} />
       <YStack

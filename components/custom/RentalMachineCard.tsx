@@ -1,7 +1,9 @@
 import React from 'react';
-import { View,Image } from 'react-native';
-import { H3,H4, XStack, YStack, Paragraph,Button, H5 } from 'tamagui';
+import { View, Image } from 'react-native';
+import { H3, H4, XStack, YStack, Paragraph, Button, H5 } from 'tamagui';
 import { Star1 } from 'iconsax-react-native';
+import { useRouter } from 'expo-router';
+import { Href } from 'expo-router';
 
 type RentalMachineCardProps = {
   id: number;
@@ -16,41 +18,46 @@ const imageMap: { [key: string]: any } = {
   'Workshop2.jpg': require('../../assets/Workshops/Workshop2.jpg'),
 };
 
-const RentalMachineCard: React.FC<RentalMachineCardProps> = ({id, title,price, description, image }) => {
+const RentalMachineCard: React.FC<RentalMachineCardProps> = ({
+  id,
+  title,
+  price,
+  description,
+  image,
+}) => {
+  const router = useRouter();
   return (
-    <YStack 
-      backgroundColor="#222222"
-      borderRadius="$3"
-      marginBottom="$5"
-      width={"100%"}
-    >
+    <YStack backgroundColor="#222222" borderRadius="$3" marginBottom="$5" width={'100%'}>
       <Image
         source={imageMap[image]}
         style={{ width: '100%', height: 200, borderRadius: 10, marginBottom: 20 }}
       />
-      <YStack  paddingHorizontal="$3" paddingBottom="$3">
-      <H3 
-        fontWeight={700}
-        marginBottom={"$2"}
-      >
-        {title}
-      </H3>
+      <YStack paddingHorizontal="$3" paddingBottom="$3">
+        <H3
+          fontWeight={700}
+          marginBottom={'$2'}
+          onPress={() => router.push(`/(protected)/artisan/portal/rentalMachine/${id}` as Href)}>
+          {title}
+        </H3>
 
-      <Paragraph width={"100%"} size={"$3"} theme="alt2" marginBottom={"$3"}>
+        <Paragraph width={'100%'} size={'$3'} theme="alt2" marginBottom={'$3'}>
           {description}
         </Paragraph>
 
-        <XStack  flex={1} justifyContent='space-between' alignItems='center' width={"100%"}>
+        <XStack flex={1} justifyContent="space-between" alignItems="center" width={'100%'}>
           <H4 fontWeight={800}>${price}/day</H4>
-          <Button size="$4" backgroundColor="#191919">
+          <Button
+            size="$4"
+            backgroundColor="#191919"
+            onPress={() =>
+              router.push(`/(protected)/artisan/portal/rentalMachine/book/${id}` as Href)
+            }>
             Rent Now
-            </Button>
+          </Button>
         </XStack>
-
-      
       </YStack>
     </YStack>
   );
-}
+};
 
 export default RentalMachineCard;

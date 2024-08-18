@@ -10,6 +10,7 @@ import ProductSheet from '~/components/productListForm/ProductCategorySheet';
 import RawMaterialSheet from '~/components/productListForm/RawMaterialSheet';
 import ProductDetailsSheet from '~/components/productListForm/ProductDetailsSheet';
 import { axiosRequest } from '~/lib/api';
+import ImageUploader from '~/components/shared/ImageAdd';
 
 function CreateProduct() {
   const [open, setOpen] = useState(false);
@@ -19,6 +20,7 @@ function CreateProduct() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedRawMaterial, setSelectedRawMaterial] = useState('');
   const [productDetails, setProductDetails] = useState({});
+  const [images, setImages] = useState<any[]>([]);
 
   const schema = yup.object().shape({
     title: yup.string().required(),
@@ -42,23 +44,34 @@ function CreateProduct() {
     resolver: yupResolver(schema),
   });
 
-  async function onSubmit(data: any){
-    const formData = {
-      ...data,
-      product_details: productDetails, // Include the product details in the final data
-    };
+  async function onSubmit(data: any) {
+    const formData = new FormData();
 
-    const res = await axiosRequest('product/', {
-      method: 'post',
-      data: formData
-    }, false);
+    // Append form data fields
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    // Append each image in the array
+    images.forEach((image, index) => {
+      formData.append(`images[${index}]`, image);
+    });
+
+    const res = await axiosRequest(
+      'product/',
+      {
+        method: 'post',
+        data: formData,
+      },
+      true
+    );
 
     if (res.success) {
-      alert("Product was uploaded, wait before we review and list on the marketplace")
+      alert('Product was uploaded, wait before we review and list on the marketplace');
     } else {
-      alert(res.message)
+      alert(res.message);
     }
-  };
+  }
 
   return (
     <ScrollView mt="$6">
@@ -111,6 +124,8 @@ function CreateProduct() {
             error={errors.description?.message}
           />
 
+          <ImageUploader images={images} setImages={setImages} />
+
           <ControlledTextArea
             control={control}
             name="back_story"
@@ -162,11 +177,8 @@ function CreateProduct() {
             name="category"
             render={({ field: { value } }) => (
               <>
-                <Button mb="$2" onPress={() => setOpen(true)} themeInverse={Boolean(value)}> 
-                  {value
-                    ? `Selected Category: ${value}`
-                    : 'Choose your Product Category'
-                  }
+                <Button mb="$2" onPress={() => setOpen(true)} themeInverse={Boolean(value)}>
+                  {value ? `Selected Category: ${value}` : 'Choose your Product Category'}
                 </Button>
 
                 {errors.category && (
@@ -186,10 +198,9 @@ function CreateProduct() {
                 <Button onPress={() => setOpenRawMaterials(true)} themeInverse={Boolean(value)}>
                   {value
                     ? `Selected Raw Material: ${value}`
-                    : 'Select raw material for your product'
-                  }
+                    : 'Select raw material for your product'}
                 </Button>
-                
+
                 {errors.raw_material && (
                   <Paragraph size={'$4'} color={'$red10'} mt="$2">
                     {errors.raw_material.message}
@@ -204,7 +215,7 @@ function CreateProduct() {
           </Button>
           {Object.keys(productDetails).length > 0 && (
             <YStack mt="$4">
-              <H3 theme={"alt2"}>Product Details:</H3>
+              <H3 theme={'alt2'}>Product Details:</H3>
               {Object.entries(productDetails).map(([key, value], index) => (
                 <Paragraph key={index} mt="$2">
                   {key}: {value}

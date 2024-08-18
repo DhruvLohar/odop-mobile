@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   H2,
@@ -22,9 +22,27 @@ import { Filter, Add } from 'iconsax-react-native';
 import { TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import PortalSheet from '~/components/sheets/PortalSheet';
+import { axiosRequest } from '~/lib/api';
 
 function HorizontalTabs({ setCurrentTab }: any) {
   const router = useRouter();
+
+  const [rentalMachines, setRentalMachines] = useState<any[]>([])
+
+  async function fetchRentalMachines() {
+    const res = await axiosRequest('community/rental_machines/', {
+      method: 'get'
+    }, false);
+
+    if (res?.success) {
+      setRentalMachines(res.rental_machines)
+    }
+  }
+
+  useEffect(() => {
+    fetchRentalMachines()
+  }, [])
+
   return (
     <Tabs
       defaultValue="job_portal"
@@ -65,7 +83,7 @@ function HorizontalTabs({ setCurrentTab }: any) {
       <Tabs.Content value="rental_machines" flex={1}>
         <ScrollView flex={1}>
           <YStack flex={1} alignItems="center">
-            {rentalmachine.rentalmachine.map((rentalmachine) => (
+            {rentalMachines.map((rentalmachine: RentalMachine) => (
               <RentalMachineCard key={rentalmachine.id} {...rentalmachine} />
             ))}
           </YStack>

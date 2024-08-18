@@ -6,20 +6,22 @@ import * as yup from 'yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
 import ImageUploader from '~/components/shared/ImageAdd';
+import { axiosRequest } from '~/lib/api';
 
 function Create() {
   const schema = yup.object().shape({
     title: yup.string().required('Title is required'),
     description: yup.string().required('Description is required'),
-    startTime: yup.string().required('Start Time is required'),
-    endTime: yup.string().required('End Time is required'),
-    availnow: yup.boolean().default(false),
+    rate: yup.number().required('Rate is required'),
+    starting_time: yup.string().required('Start Time is required'),
+    ending_time: yup.string().required('End Time is required'),
+    is_active: yup.boolean().default(false),
   });
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [mode, setMode] = useState<'date' | 'time'>('time');
   const [show, setShow] = useState(false);
-  const [currentField, setCurrentField] = useState<'startTime' | 'endTime' | null>(null);
+  const [currentField, setCurrentField] = useState<'starting_time' | 'ending_time' | null>(null);
   const [images, setImages] = useState<any[]>([]);
 
   const {
@@ -31,38 +33,46 @@ function Create() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      startTime: '',
-      endTime: '',
-      availnow: false,
+      starting_time: '',
+      ending_time: '',
+      rate: 50,
+      is_active: false,
     },
   });
 
   const onChange = (event: any, selectedDate?: Date) => {
     setShow(false);
     if (currentField && selectedDate) {
+      const hours = selectedDate.getHours().toString().padStart(2, '0');
+      const minutes = selectedDate.getMinutes().toString().padStart(2, '0');
+      const seconds = selectedDate.getSeconds().toString().padStart(2, '0');
+
+      // Format the time as "HH:MM:SS"
+      const formattedTimeBackend = `${hours}:${minutes}:${seconds}`;
+
       const formattedTime = selectedDate.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
       });
 
-      if (currentField === 'startTime') {
+      if (currentField === 'starting_time') {
         setStartDate(selectedDate);
-        setValue('startTime', formattedTime); // Update the form value
-      } else if (currentField === 'endTime') {
+        setValue('starting_time', formattedTimeBackend); // Update the form value
+      } else if (currentField === 'ending_time') {
         setEndDate(selectedDate);
-        setValue('endTime', formattedTime); // Update the form value
+        setValue('ending_time', formattedTimeBackend); // Update the form value
       }
     }
   };
 
-  const showTimepicker = (field: 'startTime' | 'endTime') => {
+  const showTimepicker = (field: 'starting_time' | 'ending_time') => {
     setCurrentField(field);
     setShow(true);
     setMode('time');
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const formData = new FormData();
 
     // Append form data fields
@@ -71,11 +81,19 @@ function Create() {
     });
 
     images.forEach((image, index) => {
-      formData.append(`images[${index}]`, image);
+      formData.append(`machine_images[]`, image);
     });
 
-    console.log(formData);
-    setTimeout(() => reset(), 3000);
+    const res = await axiosRequest('community/rental_machines/', {
+      method: 'post',
+      data: formData
+    }, true);
+
+    if (res?.success) {
+      alert("Your machine was listed")
+    } else {
+      alert(res?.message)
+    }
   };
 
   return (
@@ -89,6 +107,9 @@ function Create() {
           increase their productivity.
         </Paragraph>
         <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)} mt="$6">
+
+          <ImageUploader images={images} setImages={setImages} />
+
           <Controller
             control={control}
             name="title"
@@ -139,30 +160,55 @@ function Create() {
             </Paragraph>
           )}
 
+          <Controller
+            control={control}
+            name="rate"
+            render={({ field: { onChange, value } }) => (
+              <>
+                <Label mb="$2">Rate (per hour)</Label>
+                <Input
+                  keyboardType="numeric"
+                  size={'$5'}
+                  borderWidth={2}
+                  placeholder="Rate of this machine per hour"
+                  mb="$4"
+                  w={'100%'}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+          />
+          {errors.rate && (
+            <Paragraph size={'$4'} color={'$red10'} mt="$-4">
+              {errors.rate.message}
+            </Paragraph>
+          )}
+
           <XStack w="100%" justifyContent="space-between" alignItems="center" mb="$4">
             <YStack flex={1} mr="$2">
               <Controller
                 control={control}
-                name="startTime"
+                name="starting_time"
                 render={({ field: { value } }) => (
                   <>
                     <Label mb="$2">Start Time</Label>
-                    <Button onPress={() => showTimepicker('startTime')}>
+                    <Button onPress={() => showTimepicker('starting_time')}>
                       {startDate
                         ? startDate.toLocaleTimeString('en-US', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true,
-                          })
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: true,
+                        })
                         : 'Select Start Time'}
                     </Button>
                     <Input value={value} style={{ display: 'none' }} editable={false} />
                   </>
                 )}
               />
-              {errors.startTime && (
+              {errors.starting_time && (
                 <Paragraph size={'$4'} color={'$red10'}>
-                  {errors.startTime.message}
+                  {errors.starting_time.message}
                 </Paragraph>
               )}
             </YStack>
@@ -170,34 +216,34 @@ function Create() {
             <YStack flex={1} ml="$2">
               <Controller
                 control={control}
-                name="endTime"
+                name="ending_time"
                 render={({ field: { value } }) => (
                   <>
                     <Label mb="$2">End Time</Label>
-                    <Button onPress={() => showTimepicker('endTime')}>
+                    <Button onPress={() => showTimepicker('ending_time')}>
                       {endDate
                         ? endDate.toLocaleTimeString('en-US', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true,
-                          })
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: true,
+                        })
                         : 'Select End Time'}
                     </Button>
                     <Input value={value} style={{ display: 'none' }} editable={false} />
                   </>
                 )}
               />
-              {errors.endTime && (
+              {errors.ending_time && (
                 <Paragraph size={'$4'} color={'$red10'}>
-                  {errors.endTime.message}
+                  {errors.ending_time.message}
                 </Paragraph>
               )}
             </YStack>
           </XStack>
-          <ImageUploader images={images} setImages={setImages} />
+
           <Controller
             control={control}
-            name="availnow"
+            name="is_active"
             render={({ field: { onChange, value } }) => (
               <SwitchWithLabel
                 size="$2"
@@ -207,9 +253,9 @@ function Create() {
               />
             )}
           />
-          {errors.availnow && (
+          {errors.is_active && (
             <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.availnow.message}
+              {errors.is_active.message}
             </Paragraph>
           )}
 

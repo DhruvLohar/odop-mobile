@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, YStack, XStack, Text, Card, H4 } from 'tamagui';
-import { CloseCircle, AddCircle } from 'iconsax-react-native';
+import { Button, YStack, XStack, Text, Card, H4, Paragraph } from 'tamagui';
+import { CloseCircle, AddCircle, Add } from 'iconsax-react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { Avatar } from 'tamagui';
 
@@ -25,9 +25,20 @@ export default function ImageUploader({ images = [], setImages }: ImageUploaderP
         copyToCacheDirectory: true,
       });
 
-      if (result.assets) {
-        const selectedImages = result.assets.slice(0, 4 - images.length);
-        setImages([...images, ...selectedImages]);
+      if (!result.canceled && result.assets) {
+        const selectedImages: any[] = result.assets.slice(0, 4 - images.length);
+        
+        selectedImages.map((img: any) => {
+          const data = {
+            uri: img?.uri,
+            type: img?.mimeType,
+            name: img?.name,
+          }
+          
+          setImages(prev => [...prev, data])
+        })
+        
+        // setImages([...images, ...selectedImages]);
       }
     } catch (error) {
       console.error('Failed to upload image:', error);
@@ -41,17 +52,18 @@ export default function ImageUploader({ images = [], setImages }: ImageUploaderP
 
   return (
     <>
-      <H4 mt="$4">Add Images (Max 4)</H4>
+      <H4 mt="$4">Add/Upload Images</H4>
+      <Paragraph theme="alt2">You can add upto 4 images. Make sure each image is of size less than 5mb.</Paragraph>
       <XStack w="100%" my="$4" alignItems="center">
         <Button
-          size="$2"
+          size="$6"
           onPress={uploadImage}
-          bg={'transparent'}
-          w={'fit'}
+          circular
+          themeInverse={images.length <= 4}
           disabled={images.length >= 4}
-          icon={() => <AddCircle size="32" color="#d9e3f0" variant="Bold" />}
+          icon={() => <Add size="32" color="black" />}
         />
-        <XStack space="$2">
+        <XStack space="$3">
           {images.map((image, index) => (
             <Card key={index} bg="transparent">
               <XStack alignItems="center" justifyContent="space-between">

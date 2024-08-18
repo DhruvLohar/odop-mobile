@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { Filter } from "iconsax-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { Button, H2, H5, Input, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
 import ProductCard from "~/components/custom/ProductCard";
 import FiltersSheet from "~/components/sheets/FiltersSheet";
+import { axiosRequest } from "~/lib/api";
 import productsData from '~/lib/data/products.json';
 
 export default function Explore() {
@@ -12,9 +13,43 @@ export default function Explore() {
     const [open, setOpen] = useState(false)
     const { productsNearby, categoryProducts } = productsData;
 
-    const renderItem = ({ item }: any) => (
-        <ProductCard key={item.id} {...item} />
+    const [products, setProducts] = useState<any[]>([])
+
+    const renderItem = (data: any) => (
+
+        <XStack
+            key={data.index}
+            width={'100%'} alignItems="center" justifyContent="space-between"
+        >
+            {data.item?.map((product: Product, idx: number) => (
+                <ProductCard key={idx} {...product} />
+            ))}
+        </XStack>
     );
+
+    const chunkArray = (array: any[], size: number): any[] => {
+        const result = [];
+        
+        for (let i = 0; i < array.length; i += size) {
+            result.push(array.slice(i, i + size));
+        }
+
+        return result;
+    };
+
+    async function fetchProducts() {
+        const res = await axiosRequest('product/', {
+            method: 'get'
+        }, false);
+
+        if (res || res.length > 0) {
+            setProducts(res)
+        }
+    }
+
+    useEffect(() => {
+        fetchProducts()
+    }, [])
 
     return (
         <>
@@ -40,25 +75,21 @@ export default function Explore() {
                     <Filter size={26} color="white" onPress={() => setOpen(true)} />
                 </XStack>
 
-                <ScrollView>
-                    <YStack 
-                        width={"100%"} 
+                {/* <ScrollView> */}
+                {products && products.length > 0 && (
+                    <YStack
+                        width={"100%"}
                         justifyContent="center" alignItems="center"
                         rowGap="$6"
                     >
-                        {Array.from({ length: 10 }).map((_, idx) => (
-                            <XStack 
-                                key={idx}
-                                width={"100%"}
-                                alignItems="center" justifyContent="space-between"
-                            >
-                                {productsNearby.slice(0, 2).map(product => (
-                                    <ProductCard key={product.id} {...product} />
-                                ))}
-                            </XStack>
-                        ))}
+                        <FlatList
+                            data={chunkArray(products, 2)}
+                            renderItem={renderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
                     </YStack>
-                </ScrollView>
+                )}
+                {/* </ScrollView> */}
             </YStack>
         </>
     )

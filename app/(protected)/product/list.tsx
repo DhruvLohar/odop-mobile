@@ -54,8 +54,9 @@ function CreateProduct() {
 
     // Append each image in the array
     images.forEach((image, index) => {
-      formData.append(`images[${index}]`, image);
+      formData.append(`product_images[]`, image);
     });
+    console.log(formData)
 
     const res = await axiosRequest(
       'product/',
@@ -66,10 +67,10 @@ function CreateProduct() {
       true
     );
 
-    if (res.success) {
+    if (res?.success) {
       alert('Product was uploaded, wait before we review and list on the marketplace');
     } else {
-      alert(res.message);
+      alert(res?.message);
     }
   }
 
@@ -108,6 +109,8 @@ function CreateProduct() {
           Fill the form below in order to list your product on the ODOP Marketplace
         </Paragraph>
         <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)} mt="$6">
+          <ImageUploader images={images} setImages={setImages} />
+
           <ControlledInput
             control={control}
             name="title"
@@ -123,8 +126,6 @@ function CreateProduct() {
             placeholder="Describe about the product, material used, etc ..."
             error={errors.description?.message}
           />
-
-          <ImageUploader images={images} setImages={setImages} />
 
           <ControlledTextArea
             control={control}

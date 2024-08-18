@@ -4,9 +4,14 @@ import { CloseCircle, AddCircle } from 'iconsax-react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { Avatar } from 'tamagui';
 
-export default function ImageUploader() {
-  const [images, setImages] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
+interface ImageUploaderProps {
+  images: Array<{ uri: string; name?: string; type?: string }>;
+  setImages: React.Dispatch<
+    React.SetStateAction<Array<{ uri: string; name?: string; type?: string }>>
+  >;
+}
 
+export default function ImageUploader({ images = [], setImages }: ImageUploaderProps) {
   const uploadImage = async () => {
     try {
       if (images.length >= 4) {
@@ -46,13 +51,12 @@ export default function ImageUploader() {
           disabled={images.length >= 4}
           icon={() => <AddCircle size="32" color="#d9e3f0" variant="Bold" />}
         />
-
         <XStack space="$2">
           {images.map((image, index) => (
             <Card key={index} bg="transparent">
               <XStack alignItems="center" justifyContent="space-between">
                 <Avatar circular size="$6" borderWidth={1} borderColor={'$backgroundFocus'}>
-                  <Avatar.Image accessibilityLabel="Nate Wienert" src={image.uri} />
+                  <Avatar.Image accessibilityLabel="Uploaded image" src={image.uri} />
                   <Avatar.Fallback delayMs={600} backgroundColor="$blue10" />
                 </Avatar>
                 <Button

@@ -1,23 +1,66 @@
 import React, { useState } from 'react';
-import { Button, Card, H1, H4, Input, Paragraph, Sheet, XStack, YStack, Switch } from 'tamagui';
-import { ArrowDown3, Moon, Box, Edit2, Hierarchy, Logout, People, Add } from 'iconsax-react-native';
+import {
+  Button,
+  Card,
+  H1,
+  H4,
+  Input,
+  Paragraph,
+  Sheet,
+  XStack,
+  YStack,
+  Switch,
+  ScrollView,
+} from 'tamagui';
+import {
+  ArrowDown3,
+  Moon,
+  Box,
+  Edit2,
+  Hierarchy,
+  Logout,
+  People,
+  Add,
+  Judge,
+  Briefcase,
+  UserTick,
+} from 'iconsax-react-native';
 import { Href, router } from 'expo-router';
 
 type ProfileDetailsProps = {
   open: boolean;
   setOpen: any;
-  handleLogout: () => void
+  handleLogout: () => void;
 };
 
 const routes = [
-  { title: 'Edit Profile', icon: Edit2, url: '/profile/edit' as Href<string> },
-  { title: 'Manage Orders', icon: Box, url: '/orders' as Href<string> },
+  { title: 'Edit Profile', icon: Edit2, url: '/(protected)/artisan/profile/edit' as Href<string> },
+  {
+    title: 'Create Workshop',
+    icon: Judge,
+    url: '/artisan/workshop/host' as Href<string>,
+  },
+  {
+    title: 'Create Job',
+    icon: Briefcase,
+    url: '/(protected)/artisan/portal/job/create' as Href<string>,
+  },
+  {
+    title: 'Rent a Machine',
+    icon: UserTick,
+    url: '/(protected)/artisan/portal/rentalMachine/create' as Href<string>,
+  },
+  { title: 'Manage Orders', icon: Box, url: '/(protected)/order/all' as Href<string> },
   { title: 'Add Product', icon: Add, url: '/(protected)/product/list' as Href<string> },
-  { title: 'Product Inventory', icon: Hierarchy, url: '/profile/inventory' as Href<string> },
+  {
+    title: 'Product Inventory',
+    icon: Hierarchy,
+    url: '/artisan/profile/inventory' as Href<string>,
+  },
   {
     title: 'Connection Requests',
     icon: People,
-    url: '/profile/connectionRequests' as Href<string>,
+    url: '/artisan/profile/connectionRequests' as Href<string>,
   },
 ];
 
@@ -28,7 +71,6 @@ export default function ProfileDetails({ open, setOpen, handleLogout }: ProfileD
       modal
       open={open}
       onOpenChange={setOpen}
-      snapPointsMode="fit"
       dismissOnSnapToBottom
       zIndex={100_000}>
       <Sheet.Overlay animation={'lazy'} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
@@ -43,58 +85,57 @@ export default function ProfileDetails({ open, setOpen, handleLogout }: ProfileD
           Manage everything easily in just one tap.
         </Paragraph>
 
-        <YStack width={'100%'} mt="$8" rowGap="$5">
-          <XStack
-            width={'100%'}
-            space="$3"
-            alignItems="center"
-            pb="$4"
-            justifyContent="space-between"
-            borderBottomWidth={1}
-            borderBottomColor={'$gray5'}>
-            <XStack space="$3" alignItems="center">
-              <Moon color="#ffffff" />
-              <H4>Theme</H4>
+        <ScrollView>
+          <YStack width={'100%'} mt="$8" rowGap="$5">
+            <XStack
+              width={'100%'}
+              space="$3"
+              alignItems="center"
+              pb="$4"
+              justifyContent="space-between"
+              borderBottomWidth={1}
+              borderBottomColor={'$gray5'}>
+              <XStack space="$3" alignItems="center">
+                <Moon color="#ffffff" />
+                <H4>Theme</H4>
+              </XStack>
+
+              <Switch size="$3">
+                <Switch.Thumb animation="bouncy" />
+              </Switch>
             </XStack>
 
-            <Switch size="$3">
-              <Switch.Thumb animation="bouncy" />
-            </Switch>
-          </XStack>
+            {routes.map((route, idx) => (
+              <XStack
+                key={idx}
+                width={'100%'}
+                space="$3"
+                alignItems="center"
+                pb="$4"
+                borderBottomWidth={1}
+                borderBottomColor={'$gray5'}
+                onPress={() => {
+                  setOpen(false);
+                  router.push(route.url);
+                }}>
+                <route.icon color="white" />
+                <H4>{route.title}</H4>
+              </XStack>
+            ))}
 
-          {routes.map((route, idx) => (
             <XStack
-              key={idx}
               width={'100%'}
               space="$3"
               alignItems="center"
               pb="$4"
               borderBottomWidth={1}
               borderBottomColor={'$gray5'}
-            
-              onPress={() => {
-                setOpen(false)
-                router.push(route.url)
-              }}
-            >
-              <route.icon color="white" />
-              <H4>{route.title}</H4>
+              onPress={handleLogout}>
+              <Logout color="white" />
+              <H4>Logout</H4>
             </XStack>
-          ))}
-
-          <XStack
-            width={'100%'}
-            space="$3"
-            alignItems="center"
-            pb="$4"
-            borderBottomWidth={1}
-            borderBottomColor={'$gray5'}
-            onPress={handleLogout}
-          >
-            <Logout color="white" />
-            <H4>Logout</H4>
-          </XStack>
-        </YStack>
+          </YStack>
+        </ScrollView>
       </Sheet.Frame>
     </Sheet>
   );

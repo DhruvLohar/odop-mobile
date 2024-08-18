@@ -18,11 +18,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { RadioGroup } from 'tamagui';
 import { RadioGroupItemWithLabel } from '~/components/shared/RadioButtonwithLabel';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
+import ImageUploader from '~/components/shared/ImageAdd';
 
 function Create() {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [images, setImages] = useState<any[]>([]);
 
   const schema = yup.object().shape({
     title: yup.string().required(),
@@ -86,10 +88,19 @@ function Create() {
   };
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    if (data) {
-      setTimeout(() => reset(), 3000);
-    }
+    const formData = new FormData();
+
+    // Append form data fields
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    images.forEach((image, index) => {
+      formData.append(`images[${index}]`, image);
+    });
+
+    console.log(formData);
+    setTimeout(() => reset(), 3000);
   };
 
   return (
@@ -151,7 +162,7 @@ function Create() {
               {errors.description.message}
             </Paragraph>
           )}
-
+          <ImageUploader images={images} setImages={setImages} />
           <Controller
             control={control}
             name="address"

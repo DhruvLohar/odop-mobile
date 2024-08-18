@@ -1,12 +1,15 @@
-import { ReactNode } from "react";
-import { useSession } from "~/lib/auth";
+import { ReactNode } from 'react';
+import { useSession } from '~/lib/auth';
 
-export default function WithRole(
-    { role, children }: { role: 'user' | 'artisan', children: ReactNode }
-) {
-    
-    const { session } = useSession()
+export default function WithRole({
+  role,
+  children,
+}: {
+  role: 'user' | 'artisan';
+  children: ReactNode;
+}) {
+  const { session } = useSession();
 
-    return (session?.role === role) ? children : null;
-
+  return session?.role === role ? children : null;
+  //   return children;
 }

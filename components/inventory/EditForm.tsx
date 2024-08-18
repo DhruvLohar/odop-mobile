@@ -37,6 +37,7 @@ const schema = yup.object().shape({
 export default function EditForm({ open, setOpen }: { open: boolean; setOpen: any }) {
   const [startDate, setStartDate] = useState<Date | undefined>(new Date('2024-08-17'));
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [images, setImages] = useState<any[]>([]);
 
   const {
     control,
@@ -82,10 +83,21 @@ export default function EditForm({ open, setOpen }: { open: boolean; setOpen: an
     setShowDatePicker(true);
   };
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    setTimeout(() => reset(), 1000);
-  };
+  async function onSubmit(data: any) {
+    const formData = new FormData();
+
+    // Append form data fields
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    images.forEach((image, index) => {
+      formData.append(`images[${index}]`, image);
+    });
+
+    console.log(formData);
+    setTimeout(() => reset(), 3000);
+  }
 
   return (
     <Sheet
@@ -93,7 +105,6 @@ export default function EditForm({ open, setOpen }: { open: boolean; setOpen: an
       modal
       open={open}
       onOpenChange={setOpen}
-      snapPointsMode="fit"
       dismissOnSnapToBottom>
       <Sheet.Overlay animation={'lazy'} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 
@@ -103,86 +114,86 @@ export default function EditForm({ open, setOpen }: { open: boolean; setOpen: an
         paddingHorizontal="$5"
         paddingVertical="$3"
         justifyContent="flex-start"
-        alignItems="flex-start"
-        flex={1}>
+        alignItems="flex-start">
         <H4 fontWeight={'bold'}>Edit details to be displayed</H4>
-
         <Form width="100%" h="100%" onSubmit={handleSubmit(onSubmit)}>
-          <ImageUploader />
-          <ControlledInput
-            control={control}
-            name="title"
-            label="Title"
-            placeholder="Title"
-            error={errors.title?.message}
-          />
+          <ScrollView mb="$6">
+            <ImageUploader images={images} setImages={setImages} />
+            <ControlledInput
+              control={control}
+              name="title"
+              label="Title"
+              placeholder="Title"
+              error={errors.title?.message}
+            />
 
-          <ControlledInput
-            control={control}
-            name="quantity"
-            label="Quantity"
-            placeholder="Quantity"
-            error={errors.quantity?.message}
-          />
+            <ControlledInput
+              control={control}
+              name="quantity"
+              label="Quantity"
+              placeholder="Quantity"
+              error={errors.quantity?.message}
+            />
 
-          <ControlledTextArea
-            control={control}
-            name="description"
-            label="Description"
-            placeholder="Describe the event and any expectations."
-            error={errors.description?.message}
-          />
-
-          <Controller
-            control={control}
-            name="is_customizable"
-            render={({ field: { onChange, value } }) => (
-              <SwitchWithLabel
-                size="$2"
-                label="Enabling this would allow users to ask for customizations"
-                onChange={onChange}
-                value={value || false}
-              />
-            )}
-          />
-          {errors.is_customizable && (
-            <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.is_customizable.message}
-            </Paragraph>
-          )}
-
-          {isCustomizable && (
             <ControlledTextArea
               control={control}
-              name="customize_note"
-              label="Customize Note"
-              placeholder="Add any customization notes here"
-              error={errors.customize_note?.message}
+              name="description"
+              label="Description"
+              placeholder="Describe the event and any expectations."
+              error={errors.description?.message}
             />
-          )}
 
-          <Controller
-            control={control}
-            name="eventTime"
-            render={({ field: { value } }) => (
-              <>
-                <Label mb="$2">Event Date</Label>
-                <Button onPress={showDatepicker}>{value || 'Select Date'}</Button>
-                <Input value={value} style={{ display: 'none' }} editable={false} />
-              </>
+            <Controller
+              control={control}
+              name="is_customizable"
+              render={({ field: { onChange, value } }) => (
+                <SwitchWithLabel
+                  size="$2"
+                  label="Enabling this would allow users to ask for customizations"
+                  onChange={onChange}
+                  value={value || false}
+                />
+              )}
+            />
+            {errors.is_customizable && (
+              <Paragraph size={'$4'} color={'$red10'} mt="$-4">
+                {errors.is_customizable.message}
+              </Paragraph>
             )}
-          />
-          {errors.eventTime && (
-            <Paragraph size={'$4'} color={'$red10'}>
-              {errors.eventTime.message}
-            </Paragraph>
-          )}
 
-          <Form.Trigger asChild>
-            <Button my="$6" themeInverse width={'100%'}>
-              SUBMIT
-            </Button>
-          </Form.Trigger>
+            {isCustomizable && (
+              <ControlledTextArea
+                control={control}
+                name="customize_note"
+                label="Customize Note"
+                placeholder="Add any customization notes here"
+                error={errors.customize_note?.message}
+              />
+            )}
+
+            <Controller
+              control={control}
+              name="eventTime"
+              render={({ field: { value } }) => (
+                <>
+                  <Label mb="$2">Event Date</Label>
+                  <Button onPress={showDatepicker}>{value || 'Select Date'}</Button>
+                  <Input value={value} style={{ display: 'none' }} editable={false} />
+                </>
+              )}
+            />
+            {errors.eventTime && (
+              <Paragraph size={'$4'} color={'$red10'}>
+                {errors.eventTime.message}
+              </Paragraph>
+            )}
+
+            <Form.Trigger asChild>
+              <Button my="$6" themeInverse width={'100%'}>
+                SUBMIT
+              </Button>
+            </Form.Trigger>
+          </ScrollView>
         </Form>
         {showDatePicker && (
           <DateTimePicker

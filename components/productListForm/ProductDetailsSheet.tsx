@@ -24,7 +24,6 @@ const questions = [
   { label: 'TraditionSince', placeholder: 'e.g., 1862' },
   { label: 'ArtStyle', placeholder: 'e.g., Greek' },
   { label: 'MaterialsUsed', placeholder: 'e.g., Marble, Gold' },
-  { label: 'OriginCountry', placeholder: 'e.g., Greece' },
   { label: 'SpecialTechniques', placeholder: 'e.g., Hand-carved' },
 ];
 
@@ -32,9 +31,7 @@ const questions = [
 const schema = yup.object(
   questions.reduce(
     (acc, question) => {
-      acc[question.label as keyof ProductDetailsForm] = yup
-        .string()
-        .optional();
+      acc[question.label as keyof ProductDetailsForm] = yup.string().optional();
       return acc;
     },
     {} as Record<keyof ProductDetailsForm, yup.StringSchema<string | undefined>>

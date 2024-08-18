@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
-import { Button, H1, Input, Label, Paragraph, Sheet, TextArea, Form, YStack } from 'tamagui';
+import React from 'react';
+import { Button, H1, H4, Input, Label, Paragraph, Sheet, Form, YStack } from 'tamagui';
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'expo-router';
+import ImageUploader from '../shared/ImageAdd';
 
 // Define the schema
 const schema = yup.object().shape({
-  address: yup.string().required('Address is required'),
-  pincode: yup
+  name: yup.string().required('Name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  phoneNumber: yup
     .string()
-    .matches(/^[0-9]{6}$/, 'Pincode must be 6 digits')
-    .required('Pincode is required'),
-  customMessage: yup.string().when('is_customizable', {
-    is: true,
-    then: (schema) => schema.default('none').required('Custom message is required'),
-    otherwise: (schema) => schema.notRequired(),
-  }),
+    .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
+    .required('Phone number is required'),
 });
 
-export default function AddressSheet({ open, setOpen }: { open: boolean; setOpen: any }) {
-  const [isCustomizable] = useState<boolean>(false); // Hardcoded to true
-  const router = useRouter();
-
+export default function WorkshopRegister({
+  open,
+  setOpen,
+  title,
+}: {
+  open: boolean;
+  setOpen: any;
+  title: string;
+}) {
   const {
     control,
     formState: { errors },
@@ -34,7 +35,6 @@ export default function AddressSheet({ open, setOpen }: { open: boolean; setOpen
   // Handle form submission
   const onSubmit = (data: any) => {
     console.log(data);
-    router.replace('/(protected)/order/checkout');
     setOpen(false);
   };
 
@@ -56,22 +56,25 @@ export default function AddressSheet({ open, setOpen }: { open: boolean; setOpen
         alignItems="flex-start"
         flex={1}>
         <H1 fontSize={'$9'} fontWeight={'bold'}>
-          Address Information
+          Register Now
         </H1>
+
+        {/* Title Display */}
+        <H4>{`Registering for ${title}`}</H4>
 
         {/* Form Component */}
         <Form width="100%" onSubmit={handleSubmit(onSubmit)}>
-          {/* Address Input */}
+          {/* Name Input */}
           <Controller
             control={control}
-            name="address"
+            name="name"
             render={({ field: { onChange, value } }) => (
               <>
-                <Label mb="$2">Address</Label>
+                <Label mb="$2">Name</Label>
                 <Input
                   size={'$5'}
                   borderWidth={2}
-                  placeholder="Enter your address"
+                  placeholder="Enter your name"
                   mb="$4"
                   w={'100%'}
                   onChangeText={onChange}
@@ -80,23 +83,49 @@ export default function AddressSheet({ open, setOpen }: { open: boolean; setOpen
               </>
             )}
           />
-          {errors.address && (
+          {errors.name && (
             <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.address.message}
+              {errors.name.message}
             </Paragraph>
           )}
 
-          {/* Pincode Input */}
+          {/* Email Input */}
           <Controller
             control={control}
-            name="pincode"
+            name="email"
             render={({ field: { onChange, value } }) => (
               <>
-                <Label mb="$2">Pincode</Label>
+                <Label mb="$2">Email</Label>
                 <Input
                   size={'$5'}
                   borderWidth={2}
-                  placeholder="Enter your pincode"
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                  mb="$4"
+                  w="100%"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+          />
+          {errors.email && (
+            <Paragraph size={'$4'} color={'$red10'} mt="$-4">
+              {errors.email.message}
+            </Paragraph>
+          )}
+
+          {/* Phone Number Input */}
+          <Controller
+            control={control}
+            name="phoneNumber"
+            render={({ field: { onChange, value } }) => (
+              <>
+                <Label mb="$2">Phone Number</Label>
+                <Input
+                  size={'$5'}
+                  borderWidth={2}
+                  placeholder="Enter your phone number"
                   keyboardType="numeric"
                   mb="$4"
                   w="100%"
@@ -106,37 +135,9 @@ export default function AddressSheet({ open, setOpen }: { open: boolean; setOpen
               </>
             )}
           />
-          {errors.pincode && (
+          {errors.phoneNumber && (
             <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.pincode.message}
-            </Paragraph>
-          )}
-
-          {/* Conditional TextArea */}
-          {isCustomizable && (
-            <Controller
-              control={control}
-              name="customMessage"
-              render={({ field: { onChange, value } }) => (
-                <>
-                  <Label mb="$2">Custom Message</Label>
-                  <TextArea
-                    size={'$5'}
-                    borderWidth={2}
-                    placeholder="Enter a custom message"
-                    mb="$4"
-                    w="100%"
-                    h="$20"
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                </>
-              )}
-            />
-          )}
-          {errors.customMessage && (
-            <Paragraph size={'$4'} color={'$red10'} mt="$4">
-              {errors.customMessage.message}
+              {errors.phoneNumber.message}
             </Paragraph>
           )}
 

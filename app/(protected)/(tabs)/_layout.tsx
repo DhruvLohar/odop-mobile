@@ -1,8 +1,10 @@
 import { Link, Tabs } from 'expo-router';
 import { Android, Brodcast, Calendar, Home2, Notification, SearchNormal, User } from 'iconsax-react-native';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Image, XStack } from 'tamagui';
+import ChatBot from '~/components/sheets/Chatbot';
+import NotificationsSheet from '~/components/sheets/NotificationSheet';
 import { useSession } from '~/lib/auth';
 
 
@@ -12,6 +14,7 @@ type TabIcon = {
 }
 
 const TabIcon = memo(({ Icon, focused }: TabIcon) => {
+
 
   return (
     <View style={{
@@ -31,8 +34,20 @@ const TabIcon = memo(({ Icon, focused }: TabIcon) => {
 export default function TabLayout() {
 
   const { session } = useSession()
+  const [open, setOpen] = useState(false)
+  const [Noti, setNotiOpen] = useState(false)
 
   return (
+    <>
+      <ChatBot
+                open={open}
+                setOpen={setOpen}
+            />
+
+            <NotificationsSheet
+              open={Noti}
+              setOpen={setNotiOpen}
+              />
     <Tabs
       screenOptions={{
         tabBarStyle: {
@@ -72,8 +87,8 @@ export default function TabLayout() {
 
           headerRight: () => (
             <XStack space="$4" marginRight={24}>
-              <Android color='white' />
-              <Notification color='white' />
+              <Android color='white' onPress={() => setOpen(true)} />
+              <Notification color='white' onPress={() => setNotiOpen(true)} />
             </XStack>
           )
         }}
@@ -113,5 +128,6 @@ export default function TabLayout() {
       />
 
     </Tabs>
+    </>
   );
 }

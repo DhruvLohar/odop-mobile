@@ -2,6 +2,7 @@ import React from 'react';
 import { View,Image } from 'react-native';
 import { H6,H4, XStack, YStack, Paragraph } from 'tamagui';
 import { Star1 } from 'iconsax-react-native';
+import { useRouter } from 'expo-router';
 
 type EventCardProps = {
   id: number;
@@ -19,6 +20,12 @@ const imageMap: { [key: string]: any } = {
 };
 
 const EventCard: React.FC<EventCardProps> = ({id, title, rating, description,location, showTime, image }) => {
+  const router = useRouter()
+
+    function handleEvent() {
+        
+        router.push('/(protected)/artisan/events/${id}')
+    }
   return (
     <YStack 
       backgroundColor="#222222"
@@ -34,6 +41,7 @@ const EventCard: React.FC<EventCardProps> = ({id, title, rating, description,loc
       <H4 
         fontWeight={700}
         marginBottom={"$2"}
+        onPress={handleEvent}
       >
         {title}
       </H4>

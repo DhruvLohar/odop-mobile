@@ -7,9 +7,13 @@ import OdopCard from "~/components/custom/OdopGuideCard";
 
 
 function HorizontalTabs({ currentTab, setCurrentTab }: any) {
+
+
+    
+    
     return (
         <Tabs
-            value={currentTab} // Controlled value
+            value={currentTab}
             orientation="horizontal"
             flexDirection="column"
             flex={1}

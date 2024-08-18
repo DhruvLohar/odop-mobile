@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { } from 'react-native';
 import { H3, H4, Paragraph, YStack, Image } from 'tamagui';
@@ -15,6 +16,14 @@ const imageMap: { [key: string]: any } = {
 };
 
 const NewsCard: React.FC<NewsCardProps> = ({ id, title, description, image }) => {
+
+  const router = useRouter()
+
+    function singleinfo() {
+        
+        router.push('/(protected)/artisan/info/${id}')
+    }
+    
   return (
     <YStack
       borderRadius="$7"
@@ -25,6 +34,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, description, image }) =>
     >
       <YStack position="relative" width="100%" height={300}>
         <Image
+          
           source={imageMap[image]}
           style={{
             width: '100%',
@@ -53,6 +63,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, description, image }) =>
         borderRadius="$7"
       >
         <H3
+          onPress={singleinfo}
           fontWeight={700}
           color="#fff"
         >

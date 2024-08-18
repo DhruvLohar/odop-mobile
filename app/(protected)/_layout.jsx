@@ -21,6 +21,8 @@ export default function ProtectedLayout() {
             <Stack.Screen name="artisan/workshop/[id]" options={{ headerShown: true, title: 'Workshop Details' }} />
             <Stack.Screen name="artisan/brochure/[id]" options={{ headerShown: true, title: 'Products Brochure' }} />
 
+            <Stack.Screen name="artisan/events/[id]" options={{ headerShown: true, title: 'Event Details' }} />
+
             <Stack.Screen name="artisan/profile/connectionRequests" options={{ headerShown: true, title: 'Get In Touch Requests' }} />
             <Stack.Screen name="artisan/profile/edit" options={{ headerShown: true, title: 'Edit Your Profile' }} />
             <Stack.Screen name="artisan/profile/inventory" options={{ headerShown: true, title: 'Product Inventory' }} />

@@ -17,18 +17,18 @@ function StackLayout() {
   const segments = useSegments()
   const router = useRouter()
 
-  useEffect(() => {
-    const accessingProtectedRoutes = segments[0] === '(protected)'
+  // useEffect(() => {
+  //   const accessingProtectedRoutes = segments[0] === '(protected)'
     
-    if (!session && accessingProtectedRoutes) {
-      router.replace('/auth/onboarding');
-    }
+  //   if (!session && accessingProtectedRoutes) {
+  //     router.replace('/auth/onboarding');
+  //   }
 
-    if (session && !accessingProtectedRoutes) {
-      router.replace('/(protected)/(tabs)/')
-    }
+  //   if (session && !accessingProtectedRoutes) {
+  //     router.replace('/(protected)/(tabs)/')
+  //   }
     
-  }, [segments, session])
+  // }, [segments, session])
 
   return (
     <Stack

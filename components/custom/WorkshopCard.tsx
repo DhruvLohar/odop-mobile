@@ -3,6 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { H4, H6, XStack, YStack, Paragraph, Button } from 'tamagui';
 import { Calendar, Clock } from 'iconsax-react-native';
 import WorkshopRegister from '../sheets/RegisterWorkshopSheet';
+import { useRouter } from 'expo-router';
 
 type WorkshopCardProps = {
   title: string;
@@ -26,12 +27,19 @@ const WorkshopCard: React.FC<WorkshopCardProps> = ({
   categories,
   image,
 }) => {
+  const router = useRouter()
+
+    function handleWorkshop() {
+        
+        router.push('/(protected)/artisan/workshop/${id}')
+    }
   const [open, setOpen] = useState(false);
   return (
     <>
       <WorkshopRegister open={open} setOpen={setOpen} title={title} />
       <YStack backgroundColor="#222222" borderRadius="$3" marginBottom="$5" width={'100%'}>
         <Image
+          
           source={imageMap[image]}
           style={{ width: '100%', height: 200, borderRadius: 10, marginBottom: 20 }}
         />
@@ -51,7 +59,7 @@ const WorkshopCard: React.FC<WorkshopCardProps> = ({
             ))}
           </XStack>
 
-          <H4 marginBottom="$2" style={{ color: '#fff', fontWeight: 'bold' }}>
+          <H4 marginBottom="$2" style={{ color: '#fff', fontWeight: 'bold' }}  onPress={handleWorkshop}>
             {title}
           </H4>
 

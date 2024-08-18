@@ -8,6 +8,7 @@ import CustomCarousel from '~/components/ui/Carousel';
 import Index from '~/components/ui/CircleCarousel';
 import DistrictCard from '~/components/custom/DistrictCard';
 import { StatusBar } from 'expo-status-bar';
+import KnowMoreCard from "~/components/custom/KnowMoreCard"
 
 const districtData = [
   {
@@ -128,6 +129,11 @@ const HomePage: React.FC = () => {
           Learn More about the Benefits
         </H4>
         <Index />
+
+        <YStack width="100%" marginTop="$3">
+          <H4 marginBottom="$7">Catch the latest NEWS of ODOP</H4>
+          <KnowMoreCard/>
+        </YStack>
       </YStack>
     </ScrollView>
   );

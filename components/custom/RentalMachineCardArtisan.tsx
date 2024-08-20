@@ -25,25 +25,15 @@ const RentalMachineCard: React.FC<RentalMachine> = (machine) => {
         <H3
           fontWeight={700}
           marginBottom={'$2'}
-          onPress={() => router.push(`/(protected)/artisan/portal/rentalMachine/${machine.id}` as Href)}>
+          onPress={() =>
+            router.push(`/(protected)/artisan/portal/rentalMachine/${machine.id}` as Href)
+          }>
           {machine?.title}
         </H3>
 
         <Paragraph width={'100%'} size={'$3'} theme="alt2" marginBottom={'$3'}>
           {machine?.description}
         </Paragraph>
-
-        <XStack flex={1} justifyContent="space-between" alignItems="center" width={'100%'}>
-          <H4 fontWeight={800}>₹{machine?.rate} / hour</H4>
-          <Button
-            size="$4"
-            backgroundColor="#191919"
-            onPress={() =>
-              router.push(`/(protected)/artisan/portal/rentalMachine/book/${machine?.id}` as Href)
-            }>
-            Rent Now
-          </Button>
-        </XStack>
       </YStack>
     </YStack>
   );

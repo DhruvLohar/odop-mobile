@@ -1,5 +1,5 @@
-import { Link, Tabs } from 'expo-router';
-import { Android, Brodcast, Calendar, Home2, Notification, SearchNormal, User } from 'iconsax-react-native';
+import { Link, Tabs, useRouter } from 'expo-router';
+import { Android, Briefcase, Brodcast, Calendar, Home2, Notification, SearchNormal, ShoppingCart, User } from 'iconsax-react-native';
 import { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Image, XStack } from 'tamagui';
@@ -34,6 +34,7 @@ const TabIcon = memo(({ Icon, focused }: TabIcon) => {
 export default function TabLayout() {
 
   const { session } = useSession()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [Noti, setNotiOpen] = useState(false)
 
@@ -87,6 +88,7 @@ export default function TabLayout() {
 
             headerRight: () => (
               <XStack space="$4" marginRight={24}>
+                <ShoppingCart color="white" onPress={() => router.push('/(protected)/order/cart')} />
                 <Android color='white' onPress={() => setOpen(true)} />
                 <Notification color='white' onPress={() => setNotiOpen(true)} />
               </XStack>
@@ -106,7 +108,7 @@ export default function TabLayout() {
           name="portal"
           options={{
             title: 'Job Portal & Rental Machines',
-            tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Brodcast} />,
+            tabBarIcon: ({ focused }) => <TabIcon focused={focused} Icon={Briefcase} />,
             href: session?.role === "user" ? null : "/(protected)/(tabs)/portal"
           }}
         />

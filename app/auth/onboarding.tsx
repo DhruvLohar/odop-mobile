@@ -16,11 +16,11 @@ export default function OnBoarding() {
 
 
     function handleContinue() {
-        // if (selectedState === 0) {
-            router.push('/(protected)/(tabs)/')
-        // } else {
-        //     router.push('/auth/registerArtisan')
-        // }
+        if (selectedState === 0) {
+            router.push('/auth/login')
+        } else {
+            router.push('/auth/registerArtisan')
+        }
     }
 
     return (

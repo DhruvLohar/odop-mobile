@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
 import { ControlledInput, ControlledTextArea } from '~/components/forms/Controllers/ControlFields';
 import PortalSheet from '~/components/sheets/PortalSheet';
+import { axiosRequest } from '~/lib/api';
 
 function Create() {
   // Update the Yup schema to validate the 12-hour time format with AM/PM
@@ -26,11 +27,11 @@ function Create() {
     title: yup.string().required(),
     description: yup.string().required(),
     prerequisites: yup.string().required(),
-    numberOfApplicants: yup
+    vacancy: yup
       .number()
       .required('Number of Applicants is required')
       .min(1, 'Require at least 1 applicant'),
-    availnow: yup.boolean().default(false),
+    is_active: yup.boolean().default(false),
   });
 
   const {
@@ -43,10 +44,24 @@ function Create() {
   });
 
   // Handle form submission
-  const onSubmit = (data: any) => {
-    console.log(data);
-    if (data) {
-      setTimeout(() => reset(), 3000);
+  const onSubmit = async (data: any) => {
+
+    const formData = new FormData()
+
+    Object.keys(data).map((key) => {
+      formData.append(key, data[key]);
+    })
+
+    console.log(formData)
+    const res = await axiosRequest('community/job/', {
+      method: 'post',
+      data: formData
+    }, false);
+
+    if (res?.success) {
+      alert("Job post was created")
+    } else {
+      alert(res?.message)
     }
   };
 
@@ -91,12 +106,12 @@ function Create() {
             label="No. Of Applicants"
             placeholder="Number of applicants"
             keyboardType="numeric"
-            name="numberOfApplicants"
+            name="vacancy"
           />
 
           <Controller
             control={control}
-            name="availnow"
+            name="is_active"
             render={({ field: { onChange, value } }) => (
               <SwitchWithLabel
                 size="$2"
@@ -106,15 +121,15 @@ function Create() {
               />
             )}
           />
-          {errors.availnow && (
+          {errors.is_active && (
             <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.availnow.message}
+              {errors.is_active.message}
             </Paragraph>
           )}
 
           <Form.Trigger asChild>
             <Button my="$6" themeInverse width={'100%'}>
-              SUBMIT
+              Post Now
             </Button>
           </Form.Trigger>
         </Form>

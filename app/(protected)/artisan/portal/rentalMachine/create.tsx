@@ -174,7 +174,7 @@ function Create() {
                   mb="$4"
                   w={'100%'}
                   onChangeText={onChange}
-                  value={value}
+                  value={value.toString()}
                 />
               </>
             )}

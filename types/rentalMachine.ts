@@ -9,4 +9,5 @@ interface RentalMachine {
     created_at: string; // Created at is an ISO 8601 string
     modified_at: string; // Modified at is an ISO 8601 string
     artisan: number; // Artisan is a number (likely an ID)
+    rate: number;
 }

@@ -18,7 +18,7 @@ export default function Individualorder() {
                     </YStack>
 
                     <YStack alignSelf="flex-start" width={"100%"}>
-                        <H6 size={16} color={"#585858"} marginLeft="$2">Order Date</H6>
+                        <H6 size={16} color={"#585858"} marginLeft="$2">Product Details</H6>
                         <XStack  flex={1} justifyContent="space-between">
                             <H6 size={16} marginLeft="$2">Wood Craft</H6>
                             <H6 size={16} marginLeft="$2">$256</H6>

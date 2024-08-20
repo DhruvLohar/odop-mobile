@@ -34,7 +34,7 @@ const RentalMachineCard: React.FC<RentalMachine> = (machine) => {
         </Paragraph>
 
         <XStack flex={1} justifyContent="space-between" alignItems="center" width={'100%'}>
-          <H4 fontWeight={800}>₹50 / hour</H4>
+          <H4 fontWeight={800}>₹{machine.rate} / hour</H4>
           <Button
             size="$4"
             backgroundColor="#191919"

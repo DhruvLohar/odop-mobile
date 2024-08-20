@@ -8,11 +8,23 @@ type FilterSheetProps = {
   filters: {
     id: string;
     title: string;
-    keys: string[];
+    keys: {
+      id: string;
+      value: string;
+    }[];
   }[];
+  currentFilters: {
+    [key: string]: string
+  };
+  setCurrentFilters: any
 };
 
-export default function PortalSheet({ open, setOpen, filters }: FilterSheetProps) {
+export default function PortalSheet({
+  open, setOpen, filters,
+  currentFilters,
+  setCurrentFilters
+}: FilterSheetProps) {
+
   return (
     <Sheet
       forceRemoveScrollEnabled={open}
@@ -21,7 +33,8 @@ export default function PortalSheet({ open, setOpen, filters }: FilterSheetProps
       onOpenChange={setOpen}
       snapPointsMode="fit"
       dismissOnSnapToBottom
-      zIndex={100_000}>
+      zIndex={100_000}
+    >
       <Sheet.Overlay animation={'lazy'} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 
       <Sheet.Handle backgroundColor={'white'} />
@@ -38,10 +51,13 @@ export default function PortalSheet({ open, setOpen, filters }: FilterSheetProps
           {filters.map((item, i) => (
             <CustomSelect
               key={item.id}
-              value={''}
-              setValue={undefined}
+              value={currentFilters[item.id]}
+              setValue={(e: string) => setCurrentFilters((prev: Record<string, string>) => ({
+                ...prev,
+                [item.id]: e,
+              }))}
               label={item.title}
-              options={item.keys.map((key) => ({ id: key, value: key }))}
+              options={item.keys}
             />
           ))}
         </YStack>

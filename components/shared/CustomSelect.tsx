@@ -70,7 +70,7 @@ export default function CustomSelect({
                                         <Select.Item
                                             index={i}
                                             key={item.id}
-                                            value={item.value}
+                                            value={item.id.toString()}
                                         >
                                             <Select.ItemText>{item.value}</Select.ItemText>
                                             <Select.ItemIndicator marginLeft="auto">

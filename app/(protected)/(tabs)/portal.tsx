@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Button,
   H2,
@@ -24,7 +24,7 @@ import { useRouter } from 'expo-router';
 import PortalSheet from '~/components/sheets/PortalSheet';
 import { axiosRequest } from '~/lib/api';
 
-function HorizontalTabs({ setCurrentTab }: any) {
+function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
   const router = useRouter();
 
   const [rentalMachines, setRentalMachines] = useState<any[]>([])
@@ -38,6 +38,26 @@ function HorizontalTabs({ setCurrentTab }: any) {
       setRentalMachines(res.rental_machines)
     }
   }
+
+  useEffect(() => {
+    console.log(currentFilters)
+  }, [currentFilters])
+
+  const filteredRentalMachines = useMemo(() => {
+
+    let filteredData = rentalMachines;
+
+    if (currentFilters['price'] != 'none') {
+      if (currentFilters['price'] === 'lth') {
+        filteredData = rentalMachines.sort((a, b) => a.rate - b.rate);
+      } else if (currentFilters['price'] === 'htl') {
+        filteredData = rentalMachines.sort((a, b) => b.rate - a.rate);
+      }
+    }
+
+    return filteredData;
+
+  }, [rentalMachines, currentFilters])
 
   useEffect(() => {
     fetchRentalMachines()
@@ -83,7 +103,7 @@ function HorizontalTabs({ setCurrentTab }: any) {
       <Tabs.Content value="rental_machines" flex={1}>
         <ScrollView flex={1}>
           <YStack flex={1} alignItems="center">
-            {rentalMachines.map((rentalmachine: RentalMachine) => (
+            {filteredRentalMachines.map((rentalmachine: RentalMachine) => (
               <RentalMachineCard key={rentalmachine.id} {...rentalmachine} />
             ))}
           </YStack>
@@ -103,8 +123,15 @@ function HorizontalTabs({ setCurrentTab }: any) {
 }
 
 const filters = [
-  { id: 'location', title: 'Location', keys: ['Nearest', 'Farthest'] },
-  { id: 'price', title: 'Price', keys: ['High to low', 'Low to high'] },
+  { id: 'location', title: 'Location', keys: [
+    {id: 'near', value: 'Near' },
+    {id: 'far', value: 'Far' },
+  ] },
+  { id: 'price', title: 'Price', keys: [
+    {id: 'htl', value: "High To Low"},
+    {id: 'lth', value: "Low To High"},
+    {id: 'none', value: "None"},
+  ] },
 ];
 
 const info = {
@@ -120,20 +147,21 @@ const info = {
 
 export default function PortalView() {
   const [open, setOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [currentFilters, setCurrentFilters] = useState<{ [key: string]: string }>({
+    'price': 'none'
+  });
   const [currentTab, setCurrentTab] = useState<'job_portal' | 'rental_machines'>('job_portal');
-
-  function toggleFilter(id: string) {
-    if (selectedFilters.includes(id)) {
-      setSelectedFilters((prev) => prev.filter((item) => item !== id));
-    } else {
-      setSelectedFilters((prev) => [id, ...prev]);
-    }
-  }
 
   return (
     <YStack flex={1} padding="$5">
-      <PortalSheet open={open} setOpen={setOpen} filters={filters} />
+
+      <PortalSheet 
+        open={open} setOpen={setOpen} 
+        filters={filters} 
+        currentFilters={currentFilters}
+        setCurrentFilters={setCurrentFilters}
+      />
+      
       <XStack mb="$4" alignItems="center">
         <YStack mr="auto">
           <H2 fontWeight={'bold'}>{info[currentTab].title}</H2>
@@ -145,7 +173,10 @@ export default function PortalView() {
       </XStack>
 
       <YStack flex={1}>
-        <HorizontalTabs setCurrentTab={setCurrentTab} />
+        <HorizontalTabs
+          currentFilters={currentFilters} 
+          setCurrentTab={setCurrentTab} 
+        />
       </YStack>
     </YStack>
   );

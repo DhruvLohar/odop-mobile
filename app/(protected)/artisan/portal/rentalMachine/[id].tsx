@@ -71,7 +71,7 @@ export default function RentalMachinePage() {
               Price:
             </H5>
             <Paragraph size="$7" fontWeight="500">
-              {rentalMachine?.rate} / hr
+            ₹{rentalMachine?.rate} / hr
             </Paragraph>
           </XStack>
 

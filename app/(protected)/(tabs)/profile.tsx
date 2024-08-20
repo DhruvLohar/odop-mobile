@@ -23,7 +23,7 @@ function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: bool
       orientation="horizontal"
       flexDirection="column"
       width={"100%"}
-      height={1000}
+      height={2000}
       borderRadius={"$5"}
       overflow="hidden"
     >

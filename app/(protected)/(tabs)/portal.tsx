@@ -17,9 +17,7 @@ import {
 import JobPortalCard from '~/components/custom/JobPortalCard';
 import jobs from '~/lib/data/Jobs.json';
 import RentalMachineCard from '~/components/custom/RentalMachineCard';
-import rentalmachine from '~/lib/data/rentalmachine.json';
 import { Filter, Add } from 'iconsax-react-native';
-import { TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import PortalSheet from '~/components/sheets/PortalSheet';
 import { axiosRequest } from '~/lib/api';

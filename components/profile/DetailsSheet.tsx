@@ -24,6 +24,7 @@ import {
   Judge,
   Briefcase,
   UserTick,
+  WalletMoney
 } from 'iconsax-react-native';
 import { Href, router } from 'expo-router';
 
@@ -61,6 +62,16 @@ const routes = [
     title: 'Connection Requests',
     icon: People,
     url: '/artisan/profile/connectionRequests' as Href<string>,
+  },
+  {
+    title: 'My Listed Jobs',
+    icon: WalletMoney,
+    url: '/artisan/portal/job/listedJobs' as Href<string>,
+  },
+  {
+    title: 'My Listed Machines',
+    icon: WalletMoney,
+    url: '/artisan/portal/rentalMachine/listedMachines' as Href<string>,
   },
 ];
 

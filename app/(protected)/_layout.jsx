@@ -33,6 +33,8 @@ export default function ProtectedLayout() {
 
       <Stack.Screen name="artisan/portal/job/listedJobs" options={{ headerShown: true, title: 'My Listed Jobs' }} />
 
+      <Stack.Screen name="certificate/viewCertificate" options={{ headerShown: true, title: 'Check Certificate' }} />
+
 
       <Stack.Screen
         name="artisan/workshop/[id]"

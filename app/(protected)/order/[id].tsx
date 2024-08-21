@@ -1,7 +1,13 @@
+import { router, useRouter } from "expo-router";
 import { View,Text } from "react-native";
-import { H2, H5,H6, ScrollView, XStack, YStack } from "tamagui";
+import { Button, H2, H5,H6, ScrollView, XStack, YStack } from "tamagui";
 
 export default function Individualorder() {
+    const router = useRouter();
+
+    function handleRoute() {
+        router.push(`/(protected)/certificate/viewCertificate`);
+    }
     return (
         <ScrollView>
             <YStack flex={1} alignItems="center" paddingHorizontal="$5" paddingVertical="$3">
@@ -61,6 +67,13 @@ export default function Individualorder() {
 
                 </YStack>
             </YStack>
+
+            <YStack paddingHorizontal="$5">
+            <Button onPress={handleRoute}>
+                View Certificate
+            </Button>
+            </YStack>
+            
 
         </ScrollView>
     )

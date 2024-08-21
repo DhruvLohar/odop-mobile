@@ -76,6 +76,8 @@ export default function ProtectedLayout() {
       />
       <Stack.Screen name="artisan/profile/[id]" options={{ headerShown: true, title: 'Profile' }} />
 
+      <Stack.Screen name="artisan/walkthrough/artisanwalkthrough" options={{ headerShown: true, title: 'Walkthrough' }} />
+
       
 
       <Stack.Screen name="artisan/info/[id]" options={{ headerShown: true, title: 'Details' }} />

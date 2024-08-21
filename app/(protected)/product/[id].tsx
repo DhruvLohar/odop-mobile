@@ -130,7 +130,11 @@ export default function ProductPage() {
       l: 14,
     },
     id: 1,
-    images: ['https://arunakullu.com/wp-content/uploads/2024/01/71F3Vs3jiuL._SY741_.jpg'],
+    images: [
+      'https://arunakullu.com/wp-content/uploads/2021/03/71ibfRYrdfL._UL1500_.jpg.webp',
+      'https://arunakullu.com/wp-content/uploads/2021/03/715RVbP9nRL._UL1500_.jpg.webp',
+      'https://arunakullu.com/wp-content/uploads/2021/03/81DbgJSAytL._UL1500_.jpg.webp',
+    ],
     is_customizable: true,
     is_verified: true,
     modified_at: '2024-01-15T00:00:00Z',
@@ -143,7 +147,7 @@ export default function ProductPage() {
     raw_material: 'Wool',
     restock_date: null,
     tax_percent: 5,
-    title: 'Kashmiri Wool Silks',
+    title: 'Khadi Coat',
   };
 
   return (
@@ -160,14 +164,22 @@ export default function ProductPage() {
           <Paragraph>{product.category}</Paragraph>
         </XStack>
 
-        {product.images[0] ? (
-          <Image
-            source={{ uri: product.images[0] }}
-            width={'100%'}
-            height={550}
-            style={{ objectFit: 'cover', marginVertical: 20, borderRadius: 25 }}
-          />
-        ) : null}
+
+        {product.images.length > 0 && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} my="$5">
+            <XStack gap="$2">
+              {product.images.map((imageUri, index) => (
+                <Image
+                  key={index}
+                  source={{ uri: imageUri }}
+                  width={380}
+                  height={550}
+                  style={{ objectFit: 'cover', borderRadius: 25 }}
+                />
+              ))}
+            </XStack>
+          </ScrollView>
+        )}
 
         <H1 fontSize={'$8'}>{product.title}</H1>
         <SizableText fontSize={'$10'} lineHeight={'$10'}>

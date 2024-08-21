@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import KnowMoreCard from '~/components/custom/KnowMoreCard';
 import { useSession } from '~/lib/auth';
 import { productsHome } from '~/lib/data/productsHome';
+import WalkthroughCard from '~/components/custom/WalkthroughCard';
 
 const districtData = [
   {
@@ -132,7 +133,12 @@ const HomePage: React.FC = () => {
           </YStack>
         </XStack>
 
-        <H4 width={'100%'} color="#fff" mt="$10">
+        <YStack width="100%" marginTop="$7">
+          <H4 marginBottom="$3">Explore how this app works</H4>
+          <WalkthroughCard/>
+        </YStack>
+
+        <H4 width={'100%'} color="#fff" mt="$7">
           Learn More about the Benefits
         </H4>
         <Index />
@@ -141,6 +147,8 @@ const HomePage: React.FC = () => {
           <H4 marginBottom="$7">Catch the latest NEWS of ODOP</H4>
           <KnowMoreCard />
         </YStack>
+
+        
       </YStack>
     </ScrollView>
   );

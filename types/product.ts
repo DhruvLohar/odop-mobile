@@ -12,6 +12,8 @@ interface Artisan {
     name: string;
     phone_number: string;
     profile_image: string | null;
+    state: string;
+    district: string;
 }
 
 interface Product {

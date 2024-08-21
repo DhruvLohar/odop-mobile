@@ -1,82 +1,64 @@
 import React, { useState } from 'react';
 import { View, Text, Image } from 'react-native';
-import { H4, H6, XStack, YStack, Paragraph, Button } from 'tamagui';
+import { H4, H6, XStack, YStack, Paragraph, Button, SizableText } from 'tamagui';
 import { Calendar, Clock } from 'iconsax-react-native';
 import WorkshopRegister from '../sheets/RegisterWorkshopSheet';
 import { useRouter } from 'expo-router';
+import { MEDIA_URL } from '~/lib/api';
 
-type WorkshopCardProps = {
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  categories: string[];
-  image: string;
-};
-
-const imageMap: { [key: string]: any } = {
-  'Workshop1.jpg': require('../../assets/Workshops/Workshop1.jpg'),
-  'Workshop2.jpg': require('../../assets/Workshops/Workshop2.jpg'),
-};
-
-const WorkshopCard: React.FC<WorkshopCardProps> = ({
-  title,
-  description,
-  date,
-  time,
-  categories,
-  image,
-}) => {
+const WorkshopCard: React.FC<Workshop> = (workshop) => {
   const router = useRouter()
-
-    function handleWorkshop() {
-        
-        router.push('/(protected)/artisan/workshop/${id}')
-    }
   const [open, setOpen] = useState(false);
+
+  function handleWorkshop() {
+    router.push(`/(protected)/artisan/workshop/${workshop.id}`)
+  }
+
+
   return (
     <>
-      <WorkshopRegister open={open} setOpen={setOpen} title={title} />
+      <WorkshopRegister open={open} setOpen={setOpen} title={workshop.title} />
       <YStack backgroundColor="#222222" borderRadius="$3" marginBottom="$5" width={'100%'}>
         <Image
-          
-          source={imageMap[image]}
-          style={{ width: '100%', height: 200, borderRadius: 10, marginBottom: 20 }}
+
+          source={{ uri: MEDIA_URL + workshop.images[0] }}
+          style={{ width: '100%', height: 220, borderRadius: 10, marginBottom: 20, objectFit: 'cover' }}
         />
         <YStack paddingHorizontal="$3" paddingBottom="$3">
           <XStack marginBottom="$2">
-            {categories.map((category, index) => (
+            {workshop.tags.map((tags, index) => (
               <XStack
                 key={index}
                 backgroundColor="#191919"
-                borderRadius={20}
-                paddingHorizontal="$3"
-                paddingVertical="$1"
+                borderRadius={200}
+                margin
+                paddingHorizontal="$5"
+                paddingVertical="$2"
                 marginRight="$2"
                 alignSelf="flex-start">
-                <Text style={{ color: '#fff', fontWeight: '500' }}>{category}</Text>
+                <SizableText fontSize={"$2"}>{tags}</SizableText>
               </XStack>
             ))}
           </XStack>
 
-          <H4 marginBottom="$2" style={{ color: '#fff', fontWeight: 'bold' }}  onPress={handleWorkshop}>
-            {title}
+          <H4 marginBottom="$2" style={{ color: '#fff', fontWeight: 'bold' }} onPress={handleWorkshop}>
+            {workshop.title}
           </H4>
 
           <XStack marginBottom="$2" flex={1} alignItems="center">
             <Calendar size="20" color="#585858" />
             <H6 size={20} color={'#585858'} marginLeft="$2" marginRight="$5">
-              {date}
+              {new Date(workshop.date).toLocaleDateString('en-US')}
             </H6>
 
             <Clock size="20" color="#585858" />
             <H6 size={20} color={'#585858'} marginLeft="$2" marginRight="$5">
-              {time}
+              {new Date(workshop.date).toLocaleTimeString('en-US')}
             </H6>
           </XStack>
 
           <Paragraph width={'100%'} size={'$3'} theme="alt2" marginBottom={'$5'}>
-            {description}
+            {workshop.description}
           </Paragraph>
 
           <Button size="$4" backgroundColor="#191919" onPress={() => setOpen(true)}>

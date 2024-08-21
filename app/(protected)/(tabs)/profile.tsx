@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { MoneySend, More } from 'iconsax-react-native';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import workshops from '~/lib/data/workshops.json';
 import WorkshopCard from '~/components/custom/WorkshopCard';
 import {
@@ -28,8 +28,10 @@ import WithRole from '~/components/shared/WithRole';
 import { useSession } from '~/lib/auth';
 import { productsHome } from '~/lib/data/productsHome';
 import { FlatList } from 'react-native';
-function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: boolean }) {
-  const { productsNearby, categoryProducts } = productsData;
+import { axiosRequest } from '~/lib/api';
+
+
+function HorizontalTabs({ workshops, products }: any) {
 
   const renderItem = (data: any) => (
     <XStack key={data.index} alignItems="center" justifyContent="space-between" space="$4">
@@ -55,7 +57,8 @@ function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: bool
       width={'100%'}
       height={2000}
       borderRadius={'$5'}
-      overflow="hidden">
+      overflow="hidden"
+    >
       <Tabs.List separator={<Separator vertical />} mb="$4">
         <Tabs.Tab flex={1} value="products">
           <SizableText fontFamily="$body">Products</SizableText>
@@ -66,64 +69,69 @@ function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: bool
       </Tabs.List>
 
       <Tabs.Content value="products" flex={1}>
-        <ScrollView>
-          <YStack>
-            {productsHome && productsHome.length > 0 && (
-              <YStack width={'100%'} justifyContent="center" alignItems="center" rowGap="$4">
-                <FlatList
-                  data={chunkArray(productsHome, 2)}
-                  renderItem={renderItem}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </YStack>
-            )}
-          </YStack>
-        </ScrollView>
+        <YStack>
+          {products && products.length > 0 ? (
+            <YStack width={'100%'} justifyContent="center" alignItems="center" rowGap="$4">
+              <FlatList
+                data={chunkArray(products, 2)}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </YStack>
+          ) : <SizableText>No Products Listed.</SizableText>}
+        </YStack>
       </Tabs.Content>
 
       <Tabs.Content value="workshops" flex={1}>
-        <ScrollView nestedScrollEnabled={true} flex={1}>
-          <YStack alignItems="center" flex={1}>
-            {workshops.workshops.map((workshop) => (
-              <WorkshopCard key={workshop.id} {...workshop} />
-            ))}
-          </YStack>
-        </ScrollView>
+        {workshops?.length > 0 ? (
+          <ScrollView nestedScrollEnabled={true} flex={1}>
+            <YStack alignItems="center" flex={1}>
+              {workshops.map((workshop: Workshop) => (
+                <WorkshopCard key={workshop.id} {...workshop} />
+              ))}
+            </YStack>
+          </ScrollView>
+        ) : (<SizableText>No Workshops Attended / Hosted</SizableText>)}
       </Tabs.Content>
     </Tabs>
   );
 }
 
-const TabsContent = (props: TabsContentProps) => {
-  return (
-    <Tabs.Content
-      key="tab3"
-      padding="$2"
-      alignItems="center"
-      justifyContent="center"
-      flex={1}
-      borderWidth={0}
-      {...props}>
-      {props.children}
-    </Tabs.Content>
-  );
-};
-
 export default function ProfilePage() {
-  const { logOut } = useSession();
+  const { session, logOut } = useSession();
   const router = useRouter();
+
+  const [profile, setProfile] = useState<Artisan>();
+  const [products, setProducts] = useState<Product[]>([])
+  const [workshops, setWorkshops] = useState<Workshop[]>([])
 
   const [open, setOpen] = useState(false);
   const [openSupport, setOpenSupport] = useState(false);
   const [openGetInTouch, setOpenGetInTouch] = useState(false);
 
   const separatorRef = useRef<any>(null);
-  const [internalScrollEnabled, setInternalScrollEnabled] = useState(true);
 
   async function handleLogout() {
     await logOut();
     router.replace('/auth/onboarding');
   }
+
+  async function fetchProfileData() {
+    const res = await axiosRequest(`${session?.role}/${session?.id}/`, { method: 'get' }, false);
+
+    if (res?.success) {
+      setProfile(res?.profile)
+
+      if (session?.role === "artisan") {
+        setProducts(res?.products);
+        setWorkshops(res?.workshops)
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchProfileData()
+  }, [])
 
   return (
     <>
@@ -138,21 +146,20 @@ export default function ProfilePage() {
         <XStack width={'100%'} mb="$4" justifyContent="center" alignItems="center">
           <Avatar circular size="$11">
             <Avatar.Image
-              accessibilityLabel="Nate Wienert"
-              src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?&w=100&h=100&dpr=2&q=80"
+              src={profile?.profile_image as string}
             />
             <Avatar.Fallback delayMs={600} backgroundColor="$blue10" />
           </Avatar>
 
           <YStack marginLeft="$5">
-            <H3 fontWeight={'bold'}>Aadish Gotekar</H3>
+            <H3 fontWeight={'bold'}>{session?.name}</H3>
             <Paragraph
               flexDirection="row"
               alignItems="center"
               fontSize={'$5'}
               theme={'alt2'}
               fontWeight={'bold'}>
-              Cottonapur, Nigeria
+              {profile?.district}, {profile?.state}
             </Paragraph>
           </YStack>
 
@@ -222,7 +229,10 @@ export default function ProfilePage() {
 
         <Separator ref={separatorRef} marginVertical="$5" />
 
-        <HorizontalTabs internalScrollEnabled={internalScrollEnabled} />
+        <HorizontalTabs
+          products={products}
+          workshops={workshops}
+        />
       </ScrollView>
     </>
   );

@@ -13,15 +13,16 @@ import { MEDIA_URL } from '~/lib/api';
 const ProductCard: React.FC<Product> = (product) => {
   return (
     <Link href={`/product/${product.id}`}>
-      <YStack backgroundColor="$backgroundStrong">
+      <YStack backgroundColor="$backgroundStrong" maxWidth={200}>
         {product?.images?.length > 0 && (
           <Image
-            // source={{ uri: MEDIA_URL + product.images[0] }}
-            source={{
-              uri: 'https://rukminim2.flixcart.com/image/850/1000/xif0q/shawl/g/f/o/free-flower-shawl-mehroon-krew-original-imaghrza9zqtgcz4.jpeg?q=90&crop=false',
-            }}
+            source={{ uri: MEDIA_URL + product.images[0] }}
+            // source={{
+            //   uri: 'https://rukminim2.flixcart.com/image/850/1000/xif0q/shawl/g/f/o/free-flower-shawl-mehroon-krew-original-imaghrza9zqtgcz4.jpeg?q=90&crop=false',
+            // }}
             style={{
               minWidth: 180,
+              maxWidth: 200,
               width: '100%',
               height: 230,
               objectFit: 'cover',
@@ -29,16 +30,16 @@ const ProductCard: React.FC<Product> = (product) => {
             }}
           />
         )}
-        <H6 width={'40%'} fontSize={'$5'} mt="$2" numberOfLines={2}>
+        <H6 fontSize={'$5'} mt="$2" numberOfLines={2}>
           {product.title}
         </H6>
         <XStack theme="alt2" alignItems="center" mt="$1" mb="$2">
           <Location size={18} color="#ffffffa7" />
           <Paragraph fontWeight={'bold'} ml="$2">
-            Burari, Uttar Pradesh
+            {product.artisan.district}, {product.artisan.state}
           </Paragraph>
         </XStack>
-        <H3>₹{product.price * 10}</H3>
+        <H3>₹{product.price}</H3>
       </YStack>
     </Link>
   );

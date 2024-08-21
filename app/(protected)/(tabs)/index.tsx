@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { H3, H6, Image, YStack, Paragraph, Tabs, XStack, H4, H2, Card, SizableText } from 'tamagui';
 import productsData from '../../../lib/data/products.json';
@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import KnowMoreCard from '~/components/custom/KnowMoreCard';
 import { useSession } from '~/lib/auth';
 import { productsHome } from '~/lib/data/productsHome';
+import { axiosRequest } from '~/lib/api';
 
 const districtData = [
   {
@@ -56,13 +57,29 @@ const HomePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category>('Edibles');
   const { productsNearby, categoryProducts } = productsData;
 
+  const [products, setProducts] = useState<Product[]>([])
+
+  async function fetchProducts() {
+    const res = await axiosRequest('product/', {
+      method: 'get',
+    }, false);
+
+    if (res) {
+      setProducts(res)
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
   return (
     <ScrollView>
       <StatusBar style="light" />
 
       <YStack flex={1} alignItems="flex-start" justifyContent="flex-start" paddingHorizontal="$5">
-        <YStack>
-          <H4 theme="alt2" fontSize={'$6'}>Good Afternoon,</H4>
+        <YStack mt="$4" mb="$2">
+          <H4 theme="alt2" fontSize={'$8'} mb="$2">Good Afternoon,</H4>
           <H4 fontSize={'$9'} marginBottom="$2" fontWeight={'bold'}>
             {session?.name}
           </H4>
@@ -92,15 +109,19 @@ const HomePage: React.FC = () => {
           CarouselItem={CarouselItem}
         />
 
-        <H4 width={'100%'} color="#fff">
+        <H4 width={'100%'} color="#fff" mb="$2">
           Products Nearby
         </H4>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
           <XStack alignItems="center" justifyContent="center" columnGap="$4">
-            {productsHome.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
+            {products.length > 0 ? (
+              <>
+                {products.map(product => (
+                  <ProductCard key={product.id} {...product} />
+                ))}
+              </>
+            ) : <SizableText>No Products Available</SizableText>}
           </XStack>
         </ScrollView>
 
@@ -133,12 +154,11 @@ const HomePage: React.FC = () => {
         </XStack>
 
         <H4 width={'100%'} color="#fff" mt="$10">
-          Learn More about the Benefits
+          Success Stories of our artisans
         </H4>
         <Index />
 
         <YStack width="100%" marginTop="$3">
-          <H4 marginBottom="$7">Catch the latest NEWS of ODOP</H4>
           <KnowMoreCard />
         </YStack>
       </YStack>

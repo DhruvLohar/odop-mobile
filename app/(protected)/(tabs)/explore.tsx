@@ -24,13 +24,14 @@ import { productsHome } from '~/lib/data/productsHome';
 
 export default function Explore() {
   const [open, setOpen] = useState(false);
-  const { productsNearby, categoryProducts } = productsData;
 
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const renderItem = (data: any) => (
-    <XStack key={data.index} alignItems="center" justifyContent="space-between" space="$4">
-      {data.item?.map((product: Product, idx: number) => <ProductCard key={idx} {...product} />)}
+    <XStack flex={1} key={data.index} alignItems="center" justifyContent="space-between" space="$4" mb="$4" minHeight={300}>
+      {data.item?.map((product: Product, idx: number) => (
+        <ProductCard key={product.id} {...product} />
+      ))}
     </XStack>
   );
 
@@ -83,10 +84,10 @@ export default function Explore() {
         </XStack>
 
         {/* <ScrollView> */}
-        {productsHome && productsHome.length > 0 && (
-          <YStack width={'100%'} justifyContent="center" alignItems="center" rowGap="$4">
+        {products && products.length > 0 && (
+          <YStack width={'100%'} justifyContent="center" alignItems="center" rowGap="$4" paddingBottom="$10">
             <FlatList
-              data={chunkArray(productsHome, 2)}
+              data={chunkArray(products, 2)}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />

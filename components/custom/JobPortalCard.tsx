@@ -12,7 +12,7 @@ const JobPortalCard: React.FC<JobPosting> = (job) => {
       <YStack width={'100%'} height={50}>
         <XStack flex={1} alignItems="center" paddingHorizontal="$3">
           <InfoCircle size={20} color="#ffffff" />
-          <H6 marginLeft="$3" color={"white"}>hiring in artwork category</H6>
+          <H6 marginLeft="$3" fontSize={"$4"} color={"white"}>hiring in artwork category</H6>
         </XStack>
       </YStack>
       <YStack padding="$4" borderRadius="$8" backgroundColor="#222222">
@@ -30,7 +30,7 @@ const JobPortalCard: React.FC<JobPosting> = (job) => {
           <XStack marginLeft="$5" flex={1} alignItems="center">
             <Location size="14" color="#585858" />
             <H6 color="#585858" size={8} marginLeft={'$2'}>
-              Burar, Uttar Pradesh
+              {job.artisan.district}, {job.artisan.state}
             </H6>
           </XStack>
         </XStack>

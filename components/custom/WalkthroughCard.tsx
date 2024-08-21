@@ -2,7 +2,7 @@ import { Href, useRouter } from 'expo-router';
 import React from 'react';
 import { YStack, Paragraph, Image, Card, H4, H6, H3, H5, Button } from 'tamagui';
 
-export default function KnowMoreCard() {
+export default function WalkthroughCard() {
 
     const router = useRouter()
 
@@ -21,13 +21,24 @@ export default function KnowMoreCard() {
                 padding="$4"
                 alignItems="center"
             >
-                <H5>Explore how this works!!!😄</H5>
+                <Image
+                    source={require('~/assets/Walkthrough.png')}
+                    style={{
+                        width: "60%",
+                        height: 120,
+                        borderRadius: 10,
+                        marginVertical: 5,
+                    }}
+                    />
+                    <H4>
+                        Get started with ODOP
+                    </H4>
                 <H6
                     theme="alt2"
                     size="$2"
                     fontWeight="100"
                     textAlign="center"
-                    marginTop="$2"
+                    // marginTop="$2"
                 >
                     Discover about this app by following the Walkthrough
                 </H6>

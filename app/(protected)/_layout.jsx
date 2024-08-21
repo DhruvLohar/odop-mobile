@@ -82,7 +82,7 @@ export default function ProtectedLayout() {
 
       <Stack.Screen name="artisan/info/[id]" options={{ headerShown: true, title: 'Details' }} />
       <Stack.Screen
-        name="artisan/info/index"
+        name="artisan/info/all"
         options={{ headerShown: true, title: 'Know more about ODOP' }}
       />
 

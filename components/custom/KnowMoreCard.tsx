@@ -8,7 +8,7 @@ export default function KnowMoreCard() {
 
     function handleExplore() {
         
-        router.push('/(protected)/artisan/info')
+        router.push('/(protected)/artisan/info/all')
     }
 
     return (

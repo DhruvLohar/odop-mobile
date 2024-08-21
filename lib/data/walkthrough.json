@@ -1,0 +1,35 @@
+{
+    "steps": [
+      {
+        "id": 1,
+        "title": "Profile Management",
+        "description": "Edit profile and manage all personal details.",
+        "action": "Update Profile"
+      },
+      {
+        "id": 2,
+        "title": "Product Management",
+        "description": "List, update, and manage your products.",
+        "action": "Manage Products"
+      },
+      {
+        "id": 3,
+        "title": "Community Management",
+        "description": "Handle workshops and community interactions.",
+        "action": "Manage Community"
+      },
+      {
+        "id": 4,
+        "title": "List a Job or Machine",
+        "description": "Post job listings or rental machines.",
+        "action": "Post Listing"
+      },
+      {
+        "id": 5,
+        "title": "Order Management",
+        "description": "Track and manage your orders.",
+        "action": "Track Orders"
+      }
+    ]
+  }
+  

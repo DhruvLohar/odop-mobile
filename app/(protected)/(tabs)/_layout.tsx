@@ -1,8 +1,9 @@
 import { Link, Tabs, useRouter } from 'expo-router';
-import { Android, Briefcase, Brodcast, Calendar, Home2, Notification, SearchNormal, ShoppingCart, User } from 'iconsax-react-native';
+import { Android, Briefcase, Brodcast, Calendar, Home2, Messages1, Notification, SearchNormal, ShoppingCart, User } from 'iconsax-react-native';
 import { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Image, XStack } from 'tamagui';
+import WithRole from '~/components/shared/WithRole';
 import ChatBot from '~/components/sheets/Chatbot';
 import NotificationsSheet from '~/components/sheets/NotificationSheet';
 import { useSession } from '~/lib/auth';
@@ -88,7 +89,12 @@ export default function TabLayout() {
 
             headerRight: () => (
               <XStack space="$4" marginRight={24}>
-                <ShoppingCart color="white" onPress={() => router.push('/(protected)/order/cart')} />
+                <WithRole role='user'>
+                  <ShoppingCart color="white" onPress={() => router.push('/(protected)/order/cart')} />
+                </WithRole>
+                <WithRole role='artisan'>
+                  <Messages1 color="white" onPress={() => router.push('/(protected)/artisan/Forums/AllForums')} />
+                </WithRole>
                 <Android color='white' onPress={() => setOpen(true)} />
                 <Notification color='white' onPress={() => setNotiOpen(true)} />
               </XStack>

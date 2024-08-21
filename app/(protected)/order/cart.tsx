@@ -1,41 +1,14 @@
-// Cart.tsx
 import React, { useState } from 'react';
-import { H2, H6, ScrollView, XStack, YStack, Button } from 'tamagui';
-import CartItem, { CartItemType } from '~/components/custom/CartCard';
+import { H2, H6, ScrollView, XStack, YStack, Button, Paragraph } from 'tamagui';
+import CartItem from '~/components/custom/CartCard';
 import AddressInfo from '~/components/sheets/AddressInfoSheet';
-
-const initialCartItems: CartItemType[] = [
-  {
-    id: 1,
-    name: 'Wood Craft',
-    price: 120,
-    seller: 'John Doe',
-    quantity: 1,
-    image: require('~/assets/Products/Product1.png'),
-  },
-  {
-    id: 2,
-    name: 'Ceramic Vase',
-    price: 80,
-    seller: 'Jane Smith',
-    quantity: 1,
-    image: require('~/assets/Products/Product2.png'),
-  },
-];
+import { useCart } from '~/app/context/CartContext';
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState<CartItemType[]>(initialCartItems);
   const [open, setOpen] = useState(false);
 
-  const removeItemFromCart = (itemId: number) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-  };
-
-  const updateItemQuantity = (itemId: number, newQuantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) => (item.id === itemId ? { ...item, quantity: newQuantity } : item))
-    );
-  };
+  // Using the cart context
+  const { cartItems } = useCart();
 
   // Calculate the subtotal
   const calculateSubtotal = () => {
@@ -55,64 +28,67 @@ export default function Cart() {
           Your cart: Save, Review, and checkout with ease
         </H6>
 
-        {cartItems.map((item) => (
-          <CartItem
-            key={item.id}
-            item={item}
-            onRemove={removeItemFromCart}
-            onQuantityChange={updateItemQuantity}
-          />
-        ))}
+        {cartItems.length === 0 ? (
+          <Paragraph marginTop="$5" fontSize={16} color="#585858">
+            No items in cart
+          </Paragraph>
+        ) : (
+          cartItems.map((item) => (
+            <CartItem key={item.id} item={item} />
+          ))
+        )}
 
-        <YStack marginTop="$7" width={'100%'}>
-          <H2 width={'100%'} fontWeight={700} marginBottom={'$5'}>
-            Calculated Costing
-          </H2>
-          <XStack justifyContent="space-between" width="100%" paddingHorizontal={'$5'}>
-            <H6 size={14} width={'30%'} color={'#585858'} fontWeight={700}>
-              Subtotal
-            </H6>
-            <H6 size={14} marginLeft={'$5'} fontWeight={700}>
-              ${subtotal.toFixed(2)}
-            </H6>
-          </XStack>
-          <XStack
-            justifyContent="space-between"
-            width="100%"
-            marginTop={'$2'}
-            paddingHorizontal={'$5'}>
-            <H6 size={14} width={'30%'} color={'#585858'} fontWeight={700}>
-              Shipping
-            </H6>
-            <H6 size={14} marginLeft={'$5'} fontWeight={700}>
-              FREE
-            </H6>
-          </XStack>
+        {cartItems.length > 0 && (
+          <YStack marginTop="$7" width={'100%'}>
+            <H2 width={'100%'} fontWeight={700} marginBottom={'$5'}>
+              Calculated Costing
+            </H2>
+            <XStack justifyContent="space-between" width="100%" paddingHorizontal={'$5'}>
+              <H6 size={14} width={'30%'} color={'#585858'} fontWeight={700}>
+                Subtotal
+              </H6>
+              <H6 size={14} marginLeft={'$5'} fontWeight={700}>
+                ${subtotal.toFixed(2)}
+              </H6>
+            </XStack>
+            <XStack
+              justifyContent="space-between"
+              width="100%"
+              marginTop={'$2'}
+              paddingHorizontal={'$5'}>
+              <H6 size={14} width={'30%'} color={'#585858'} fontWeight={700}>
+                Shipping
+              </H6>
+              <H6 size={14} marginLeft={'$5'} fontWeight={700}>
+                FREE
+              </H6>
+            </XStack>
 
-          <XStack
-            justifyContent="space-between"
-            width="100%"
-            marginTop={'$5'}
-            paddingHorizontal={'$5'}>
-            <H6 size={14} width={'30%'} fontWeight={700}>
-              Order Total
-            </H6>
-            <H6 size={14} marginLeft={'$5'} fontWeight={700}>
-              ${subtotal.toFixed(2)}
-            </H6>
-          </XStack>
+            <XStack
+              justifyContent="space-between"
+              width="100%"
+              marginTop={'$5'}
+              paddingHorizontal={'$5'}>
+              <H6 size={14} width={'30%'} fontWeight={700}>
+                Order Total
+              </H6>
+              <H6 size={14} marginLeft={'$5'} fontWeight={700}>
+                ${subtotal.toFixed(2)}
+              </H6>
+            </XStack>
 
-          <Button
-            size="$5"
-            borderRadius={20}
-            backgroundColor="#191919"
-            marginTop={'$7'}
-            onPress={() => {
-              setOpen(true);
-            }}>
-            Checkout
-          </Button>
-        </YStack>
+            <Button
+              size="$5"
+              borderRadius={20}
+              backgroundColor="#191919"
+              marginTop={'$7'}
+              onPress={() => {
+                setOpen(true);
+              }}>
+              Checkout
+            </Button>
+          </YStack>
+        )}
       </YStack>
     </ScrollView>
   );

@@ -8,7 +8,9 @@ import CustomCarousel from '~/components/ui/Carousel';
 import Index from '~/components/ui/CircleCarousel';
 import DistrictCard from '~/components/custom/DistrictCard';
 import { StatusBar } from 'expo-status-bar';
-import KnowMoreCard from "~/components/custom/KnowMoreCard"
+import KnowMoreCard from '~/components/custom/KnowMoreCard';
+import { useSession } from '~/lib/auth';
+import { productsHome } from '~/lib/data/productsHome';
 
 const districtData = [
   {
@@ -49,17 +51,22 @@ const CarouselItem = ({ item, index }: any) => {
 };
 
 const HomePage: React.FC = () => {
+  const { session } = useSession();
+
   const [activeCategory, setActiveCategory] = useState<Category>('Edibles');
   const { productsNearby, categoryProducts } = productsData;
 
   return (
     <ScrollView>
-      <StatusBar style='light' />
+      <StatusBar style="light" />
 
-      <YStack flex={1} alignItems="flex-start" justifyContent="flex-start" padding="$5">
-        <H3 fontSize={'$9'} mb="$2" fontWeight={'bold'}>
-          Good Afternoon, User
-        </H3>
+      <YStack flex={1} alignItems="flex-start" justifyContent="flex-start" paddingHorizontal="$5">
+        <YStack>
+          <H4 theme="alt2" fontSize={'$6'}>Good Afternoon,</H4>
+          <H4 fontSize={'$9'} marginBottom="$2" fontWeight={'bold'}>
+            {session?.name}
+          </H4>
+        </YStack>
         <XStack justifyContent="center" alignItems="center" columnGap="$2">
           <Location size={20} color="#ffffffAA" />
           <Paragraph theme={'alt2'} fontSize={'$5'}>
@@ -91,7 +98,7 @@ const HomePage: React.FC = () => {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
           <XStack alignItems="center" justifyContent="center" columnGap="$4">
-            {productsNearby.map((product) => (
+            {productsHome.map((product) => (
               <ProductCard key={product.id} {...product} />
             ))}
           </XStack>
@@ -132,7 +139,7 @@ const HomePage: React.FC = () => {
 
         <YStack width="100%" marginTop="$3">
           <H4 marginBottom="$7">Catch the latest NEWS of ODOP</H4>
-          <KnowMoreCard/>
+          <KnowMoreCard />
         </YStack>
       </YStack>
     </ScrollView>

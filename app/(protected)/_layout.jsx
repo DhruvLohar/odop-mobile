@@ -29,6 +29,15 @@ export default function ProtectedLayout() {
         name="artisan/portal/rentalMachine/book/[id]"
         options={{ headerShown: true, title: 'Machine Booking' }}
       />
+      <Stack.Screen name="artisan/portal/rentalMachine/listedMachines" options={{ headerShown: true, title: 'My Listed Machine' }} />
+
+      <Stack.Screen name="artisan/portal/job/listedJobs" options={{ headerShown: true, title: 'My Listed Jobs' }} />
+
+      <Stack.Screen name="certificate/viewCertificate" options={{ headerShown: true, title: 'Check Certificate' }} />
+
+
+      <Stack.Screen name="artisan/Forums/AllForums" options={{ headerShown: true, title: 'All Forums' }} />
+
 
       <Stack.Screen
         name="artisan/workshop/[id]"
@@ -67,6 +76,8 @@ export default function ProtectedLayout() {
       />
       <Stack.Screen name="artisan/profile/[id]" options={{ headerShown: true, title: 'Profile' }} />
 
+      
+
       <Stack.Screen name="artisan/info/[id]" options={{ headerShown: true, title: 'Details' }} />
       <Stack.Screen
         name="artisan/info/index"
@@ -83,6 +94,10 @@ export default function ProtectedLayout() {
         name="product/list"
         options={{ headerShown: true, title: 'List your product' }}
       />
+
+      
+
+
     </Stack>
   );
 }

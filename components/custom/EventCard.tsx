@@ -8,9 +8,9 @@ type EventCardProps = {
   id: number;
   description: string;
   title: string;
-  rating: number;
   location: string;
-  showTime: string;
+  date: string;
+  time: string;
   image: string;
 };
 
@@ -22,10 +22,10 @@ const imageMap: { [key: string]: any } = {
 const EventCard: React.FC<EventCardProps> = ({
   id,
   title,
-  rating,
   description,
   location,
-  showTime,
+  date,
+  time,
   image,
 }) => {
   const router = useRouter();
@@ -44,22 +44,20 @@ const EventCard: React.FC<EventCardProps> = ({
           {title}
         </H4>
 
-        <XStack flex={1} alignItems="center" marginBottom={'$2'}>
-          <Star1 size="14" color="#dce775" />
-          <H6 marginLeft={'$3'} fontWeight={700}>
-            {rating}
-          </H6>
-        </XStack>
-
         <Paragraph width={'100%'} size={'$3'} theme="alt2" marginBottom={'$3'}>
           {description}
         </Paragraph>
 
         <YStack gap={'$1'}>
           <XStack flex={1} justifyContent="space-between" width={'100%'}>
-            <H6 size={14} color={'#585858'} fontWeight={700}>
-              {showTime}
-            </H6>
+            <XStack>
+              <H6 size={14} color={'#585858'} fontWeight={700} mr={'$2'}>
+                {date}
+              </H6>
+              <H6 size={14} color={'#585858'} fontWeight={700}>
+                {time}
+              </H6>
+            </XStack>
             <H6 size={14} color={'#585858'} fontWeight={700}>
               {location}
             </H6>

@@ -212,7 +212,7 @@ export default function ProductPage() {
 
         <Button
           themeInverse
-          width={'48%'}
+          width={'80%'}
           onPress={() => {
             setOpen(true);
           }}>

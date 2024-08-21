@@ -1,25 +1,79 @@
-import { Android, Send2 } from "iconsax-react-native";
+import { Android, Microphone, Microphone2, Send2 } from "iconsax-react-native";
 import React, { useRef, useState } from "react";
 import { KeyboardAvoidingView, TextInput, TouchableOpacity, ScrollView as RNScrollView } from "react-native";
 import { Card, H2, Paragraph, Sheet, XStack, YStack } from "tamagui";
+import { axiosRequest } from "~/lib/api";
 
 type FilterSheetProps = {
   open: boolean,
   setOpen: any
 }
 
+interface ChatbotResponse {
+  type: 'response' | 'intent';
+  response: string | null;
+  self: boolean;
+  payload: {
+    page: 'workshop' | 'events' | 'job_portal' | 'rental_machine' | 'odop_scheme' | 'orders';
+    action: 'edit' | 'create' | 'view';
+  } | null;
+}
+
 export default function FiltersSheet({
   open, setOpen
 }: FilterSheetProps) {
 
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<ChatbotResponse[]>([
+    {
+      type: 'response',
+      self: false,
+      payload: null,
+      response: "Hello there! How can I help you today ..."
+    }
+  ]);
   const [inputValue, setInputValue] = useState("");
-  const scrollViewRef = useRef<RNScrollView>(null); 
+  const scrollViewRef = useRef<RNScrollView>(null);
 
+  async function fetchResponse(prompt: string) {
+    const res = await axiosRequest('artisan/getChatbotResponse/', {
+      method: 'post',
+      data: {
+        prompt
+      }
+    }, false);
+
+    if (res?.success) {
+      if (res.type === "response") {
+        setMessages(prev => [...prev, {
+          type: 'response',
+          self: false,
+          payload: null,
+          response: res?.response
+        }])
+      }
+    }
+  }
+
+  function addArtisanResponse(resp: string) {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      {
+        type: 'response',
+        response: resp,
+        self: true,
+        payload: null
+      }
+    ]);
+  }
+
+
+  // USE THIS FUCNTION AS REFERENCE
   const handleSend = () => {
     if (inputValue.trim()) {
-      setMessages((prevMessages) => [...prevMessages, inputValue]);
+
+      addArtisanResponse(inputValue.trim())
       setInputValue("");
+
       setTimeout(() => {
         if (scrollViewRef.current) {
           scrollViewRef.current.scrollToEnd({ animated: true });
@@ -61,11 +115,9 @@ export default function FiltersSheet({
           flex={1}
           width="100%"
         >
-          <XStack justifyContent="space-between" alignItems="center" mb="$4">
-            <XStack alignItems="center">
-              <Android size="24" color="#ffffff"/>
-              <H2 ml="$3" color="white">ChatBot</H2>
-            </XStack>
+          <XStack alignSelf="center" alignItems="center" mb="$4">
+            <Android size="24" color="#ffffff" />
+            <H2 ml="$3" color="white">ODOP ChatBot</H2>
           </XStack>
 
           <RNScrollView
@@ -76,13 +128,25 @@ export default function FiltersSheet({
             {messages.length === 0 ? (
               <Paragraph color="gray">No messages yet.</Paragraph>
             ) : (
-              <YStack space="$3" flex={1} alignItems="flex-end">
-                {messages.map((msg, index) => (
-                  <Card key={index} padding="$3" backgroundColor="#181818" borderRadius="$4" maxWidth={"75%"}>
-                    <Paragraph color="white">{msg}</Paragraph>
-                  </Card>
+              <>
+                {messages.map((msg: ChatbotResponse, index: number) => (
+                  <XStack
+                    key={index}
+                    width={"100%"}
+                    justifyContent={!msg.self ? 'flex-start' : 'flex-end'}
+                    mb="$1"
+                  >
+                    <Card
+                      padding="$3"
+                      backgroundColor={!msg.self ? "white" : "#181818"}
+                      borderRadius="$4"
+                      maxWidth={"75%"}
+                    >
+                      <Paragraph color={!msg.self ? "black" : "white"}>{msg.response}</Paragraph>
+                    </Card>
+                  </XStack>
                 ))}
-              </YStack>
+              </>
             )}
           </RNScrollView>
 
@@ -91,18 +155,19 @@ export default function FiltersSheet({
               <TextInput
                 style={{
                   flex: 1,
-                  backgroundColor: "white",
-                  borderRadius: 20,
+                  backgroundColor: "#181818",
+                  color: 'white',
+                  borderRadius: 100,
                   paddingHorizontal: 15,
                   paddingVertical: 10,
                 }}
-                placeholder="Type your message..."
+                placeholder="Ask anything here ..."
+                placeholderTextColor={"white"}
                 value={inputValue}
                 onChangeText={setInputValue}
               />
-              <TouchableOpacity onPress={handleSend}>
-                <Send2 size="30" color="#ffffff"/>  
-              </TouchableOpacity>
+              <Microphone2 size="30" color="#ffffff" />
+              <Send2 size="30" color="#ffffff" onPress={handleSend} />
             </XStack>
           </KeyboardAvoidingView>
         </YStack>

@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { MoneySend, More } from 'iconsax-react-native';
+import { Box, Edit2, Logout, MoneySend, More } from 'iconsax-react-native';
 import { useEffect, useRef, useState } from 'react';
 import workshops from '~/lib/data/workshops.json';
 import WorkshopCard from '~/components/custom/WorkshopCard';
@@ -101,7 +101,7 @@ export default function ProfilePage() {
   const { session, logOut } = useSession();
   const router = useRouter();
 
-  const [profile, setProfile] = useState<Artisan>();
+  const [profile, setProfile] = useState<Artisan | any>();
   const [products, setProducts] = useState<Product[]>([])
   const [workshops, setWorkshops] = useState<Workshop[]>([])
 
@@ -143,7 +143,10 @@ export default function ProfilePage() {
       <StatusBar style="light" />
 
       <ScrollView stickyHeaderIndices={[3]} paddingHorizontal="$5">
-        <XStack width={'100%'} mb="$4" justifyContent="center" alignItems="center">
+        <XStack 
+          width={'100%'} mb="$4" justifyContent="center" alignItems="center"
+          flexDirection={session?.role === 'user' ? 'column' : 'row'}
+        >
           <Avatar circular size="$11">
             <Avatar.Image
               src={profile?.profile_image as string}
@@ -151,25 +154,37 @@ export default function ProfilePage() {
             <Avatar.Fallback delayMs={600} backgroundColor="$blue10" />
           </Avatar>
 
-          <YStack marginLeft="$5">
+          <YStack 
+            marginLeft={session?.role === 'user' ? '0' : '$5'} 
+            alignItems={session?.role === 'user' ? 'center' : 'flex-start'}
+            mt={session?.role === 'user' ? '$2' : '0'}
+          >  
             <H3 fontWeight={'bold'}>{session?.name}</H3>
             <Paragraph
               flexDirection="row"
               alignItems="center"
               fontSize={'$5'}
               theme={'alt2'}
-              fontWeight={'bold'}>
-              {profile?.district}, {profile?.state}
+              fontWeight={'bold'}
+            >
+              <WithRole role="artisan">
+                {profile?.district}, {profile?.state}
+              </WithRole>
+              <WithRole role="user">
+                {profile?.city}, {profile?.state}
+              </WithRole>
             </Paragraph>
           </YStack>
 
-          <Button
-            circular
-            icon={() => <More rotation={90} size={22} color="white" />}
-            padding="$2"
-            ml="auto"
-            onPress={() => setOpen(true)}
-          />
+          <WithRole role="artisan">
+            <Button
+              circular
+              icon={() => <More rotation={90} size={22} color="white" />}
+              padding="$2"
+              ml="auto"
+              onPress={() => setOpen(true)}
+            />
+          </WithRole>
         </XStack>
 
         <WithRole role="artisan">
@@ -225,14 +240,56 @@ export default function ProfilePage() {
               Support Artisan
             </Button>
           </YStack>
+
+          <Separator ref={separatorRef} marginVertical="$5" />
+
+          <HorizontalTabs
+            products={products}
+            workshops={workshops}
+          />
         </WithRole>
 
-        <Separator ref={separatorRef} marginVertical="$5" />
+        <WithRole role='user'>
+          <YStack padding="$0" mb="$6">
+            <H4 mb="$1" padding="$0">
+              Email
+            </H4>
+            <Paragraph theme={'alt2'} lineHeight={'$1'} textAlign="justify" padding="$0">
+              {profile?.email}
+            </Paragraph>
+          </YStack>
 
-        <HorizontalTabs
-          products={products}
-          workshops={workshops}
-        />
+          <YStack padding="$0" mb="$6">
+            <H4 mb="$1" padding="$0">
+              Address
+            </H4>
+            <Paragraph theme={'alt2'} lineHeight={'$1'} textAlign="justify" padding="$0">
+              {profile?.address}
+            </Paragraph>
+          </YStack>
+
+          <YStack rowGap="$4">
+            <Button
+              icon={() => <Box color="white" />}
+              onPress={() => router.push('/(protected)/')}
+            >
+              Edit Profile
+            </Button>
+            <Button
+              icon={() => <Box color="white" />}
+              onPress={() => router.push('/(protected)/order/all')}
+            >
+              My Orders
+            </Button>
+            <Button
+              themeInverse
+              icon={() => <Logout color="black" />}
+              onPress={handleLogout}>
+              Logout
+            </Button>
+          </YStack>
+        </WithRole>
+
       </ScrollView>
     </>
   );

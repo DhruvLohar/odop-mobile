@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import { H6, H4, XStack, YStack, Paragraph } from 'tamagui';
-import { Calendar, Clock, Star1 } from 'iconsax-react-native';
+import { H6, H4, XStack, YStack, Paragraph, SizableText } from 'tamagui';
+import { Calendar, Clock, Location, Star1 } from 'iconsax-react-native';
 import { useRouter } from 'expo-router';
 
 
@@ -33,13 +33,16 @@ const EventCard: React.FC<EventDetails> = (event) => {
         {event.description}
       </Paragraph>
 
-      <YStack gap={'$1'}>
-        <XStack flex={1} justifyContent="space-between" width={'100%'}>
-          <H6 size={14} color={'#585858'} fontWeight={700}>
-            {event.address}
-          </H6>
-        </XStack>
+      <YStack alignItems='flex-start' space="$2">
+        <SizableText fontWeight={"bold"}>ADDRESS</SizableText>
+        <H6 size={14}>
+          {event.address}
+        </H6>
       </YStack>
+      {/* <YStack gap={'$1'}> */}
+        {/* <XStack flex={1} justifyContent="space-between" width={'100%'}> */}
+        {/* </XStack> */}
+      {/* </YStack> */}
     </YStack>
   );
 };

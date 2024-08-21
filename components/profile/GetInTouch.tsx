@@ -5,22 +5,24 @@ import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RenderSelect } from '../shared/RenderSelect'; // Import your RenderSelect component
+import { axiosRequest } from '~/lib/api';
+import CustomSelect from '../shared/CustomSelect';
 
 // The options array for the dropdown
-const options = ['ODOP Certified Artisan', 'Wholeseller', 'Influencer/Content-Creator', 'Other'];
+const options = [
+  { id: 'odop_artisan', value: "ODOP Certified Aritsan" },
+  { id: 'wholesaler', value: "Wholesaler" },
+  { id: 'influencer', value: "Influencer or Content Creator" },
+  { id: 'other', value: "Other" },
+];
+// const options = ["ODOP Certified Artisan", "Wholesaler", "Influencer or Content Creator", "Other"]
 
 const schema = yup.object().shape({
-  mobileNumber: yup
-    .string()
-    .matches(/^[0-9]{10}$/, 'Mobile number must be 10 digits')
-    .required('Mobile number is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  Message: yup.string().required('Give a 5-10 word description minimum'),
-  selectedOption: yup.string().required('Contact Purpose is required'),
+  message: yup.string().required('Convey atleast 20+ words of message, it helps in connecting faster.'),
+  purpose: yup.string().required('Purpose of Contact is required'),
 });
 
 export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: any }) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const {
     control,
@@ -32,8 +34,17 @@ export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: 
   });
 
   // Handle form submission
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    const res = await axiosRequest('', {
+      method: 'post',
+      data
+    }, false);
+
+    if (res?.success) {
+      alert("Your request was sent to artisan")
+    } else {
+      alert(res?.message)
+    }
   };
 
   return (
@@ -49,6 +60,7 @@ export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: 
       <Sheet.Handle backgroundColor={'white'} />
 
       <Sheet.Frame
+        paddingTop="$6"
         paddingHorizontal="$5"
         justifyContent="flex-start"
         alignItems="flex-start"
@@ -56,8 +68,8 @@ export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: 
         <H1 fontSize={'$9'} fontWeight={'bold'}>
           Get in Touch
         </H1>
-        <Paragraph theme={'alt2'} fontSize={'$5'}>
-          Your Request is shown to the Artisan
+        <Paragraph theme={'alt2'} fontSize={'$5'} mb="$4">
+          Your Request is shown to the Artisan, by submitting this form your are sharing your email and phone number to artisan
         </Paragraph>
 
         {/* Form Component */}
@@ -65,85 +77,29 @@ export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: 
           {/* Dropdown for Options */}
           <Controller
             control={control}
-            name="selectedOption"
-            render={({ field: { onChange, value } }) =>
-              RenderSelect(
-                'Select Purpose',
-                value,
-                (value) => {
-                  onChange(value);
-                  setSelectedOption(value);
-                },
-                options,
-                false
-              )
-            }
-          />
-          {errors.selectedOption && (
-            <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.selectedOption.message}
-            </Paragraph>
-          )}
-
-          {/* Email Input */}
-          <Controller
-            control={control}
-            name="email"
+            name="purpose"
             render={({ field: { onChange, value } }) => (
-              <>
-                <Label mb="$2">Email</Label>
-                <Input
-                  keyboardType="email-address"
-                  size={'$5'}
-                  borderWidth={2}
-                  placeholder="name@example.com"
-                  mb="$4"
-                  w={'100%'}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              </>
+              <CustomSelect
+                label='Purpose of Contact'
+                value={value}
+                setValue={onChange}
+                options={options}
+              />
             )}
           />
-          {errors.email && (
+          {errors.purpose && (
             <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.email.message}
-            </Paragraph>
-          )}
-
-          {/* Mobile Number Input */}
-          <Controller
-            control={control}
-            name="mobileNumber"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <Label mb="$2">Contact Number</Label>
-                <Input
-                  size={'$5'}
-                  borderWidth={2}
-                  placeholder="Mobile Number"
-                  keyboardType="numeric"
-                  mb="$4"
-                  w="100%"
-                  onChangeText={onChange}
-                  value={value}
-                />
-              </>
-            )}
-          />
-          {errors.mobileNumber && (
-            <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.mobileNumber.message}
+              {errors.purpose.message}
             </Paragraph>
           )}
 
           {/* Message Input */}
           <Controller
             control={control}
-            name="Message"
+            name="message"
             render={({ field: { onChange, value } }) => (
               <>
-                <Label mb="$2">Message</Label>
+                <Label mb="$2" mt="$3">Message</Label>
                 <Input
                   size={'$5'}
                   borderWidth={2}
@@ -158,9 +114,9 @@ export default function GetInTouch({ open, setOpen }: { open: boolean; setOpen: 
               </>
             )}
           />
-          {errors.Message && (
+          {errors.message && (
             <Paragraph size={'$4'} color={'$red10'} mt="$4">
-              {errors.Message.message}
+              {errors.message.message}
             </Paragraph>
           )}
           {/* Submit Button */}

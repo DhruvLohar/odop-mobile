@@ -56,7 +56,6 @@ function CreateProduct() {
     images.forEach((image, index) => {
       formData.append(`product_images[]`, image);
     });
-    console.log(formData)
 
     const res = await axiosRequest(
       'product/',
@@ -70,7 +69,7 @@ function CreateProduct() {
     if (res?.success) {
       alert('Product was uploaded, wait before we review and list on the marketplace');
     } else {
-      alert(res?.message);
+      alert(res?.message || 'Something went wrong');
     }
   }
 

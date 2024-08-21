@@ -88,14 +88,16 @@ export default function TabLayout() {
             />,
 
             headerRight: () => (
-              <XStack space="$4" marginRight={24}>
+              <XStack space="$2" marginRight={24}>
                 <WithRole role='user'>
                   <ShoppingCart color="white" onPress={() => router.push('/(protected)/order/cart')} />
                 </WithRole>
                 <WithRole role='artisan'>
                   <Messages1 color="white" onPress={() => router.push('/(protected)/artisan/Forums/AllForums')} />
                 </WithRole>
-                <Android color='white' onPress={() => setOpen(true)} />
+                <WithRole role="artisan">
+                  <Android color='white' onPress={() => setOpen(true)} />
+                </WithRole>
                 <Notification color='white' onPress={() => setNotiOpen(true)} />
               </XStack>
             )

@@ -132,40 +132,6 @@ export default function ProductPage() {
     fetchProduct()
   }, [])
 
-  // const product: Product = {
-  //   artisan: {
-  //     id: 123,
-  //     name: 'Aadish Gotekar',
-  //     phone_number: '8888888888',
-  //     profile_image:
-  //       'https://images.unsplash.com/photo-1531384441138-2736e62e0919?&w=100&h=100&dpr=2&q=80',
-  //   },
-  //   back_story: 'A beautiful handcrafted shawl from Kashmir.',
-  //   cancelled_at: null,
-  //   category: 'Clothing',
-  //   created_at: '2024-01-01T00:00:00Z',
-  //   description: 'This Kashmiri Wool Silks Kalamkari Shawl is a luxurious piece crafted with care.',
-  //   dimensions: {
-  //     h: 12,
-  //     l: 14,
-  //   },
-  //   id: 1,
-  //   images: ['https://arunakullu.com/wp-content/uploads/2024/01/71F3Vs3jiuL._SY741_.jpg'],
-  //   is_customizable: true,
-  //   is_verified: true,
-  //   modified_at: '2024-01-15T00:00:00Z',
-  //   price: 23000,
-  //   product_details: {
-  //     material: 'Silk',
-  //     weight: '500g',
-  //   },
-  //   quantity: 1,
-  //   raw_material: 'Wool',
-  //   restock_date: null,
-  //   tax_percent: 5,
-  //   title: 'Kashmiri Wool Silks',
-  // };
-
   return (
     <ScrollView>
       <AddressInfo open={open} setOpen={setOpen} />
@@ -180,14 +146,21 @@ export default function ProductPage() {
           <Paragraph>{product?.category}</Paragraph>
         </XStack>
 
-        {product?.images[0] ? (
-          <Image
-            source={{ uri: MEDIA_URL + product?.images[0] }}
-            width={'100%'}
-            height={550}
-            style={{ objectFit: 'cover', marginVertical: 20, borderRadius: 25 }}
-          />
-        ) : null}
+        {product?.images && product?.images?.length > 0 && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} my="$5">
+            <XStack gap="$2">
+              {product?.images.map((imageUri, index) => (
+                <Image
+                  key={index}
+                  source={{ uri: MEDIA_URL + imageUri }}
+                  width={380}
+                  height={550}
+                  style={{ objectFit: 'cover', borderRadius: 25 }}
+                />
+              ))}
+            </XStack>
+          </ScrollView>
+        )}
 
         <H1 fontSize={'$8'}>{product?.title}</H1>
         <SizableText fontSize={'$10'} lineHeight={'$10'}>
@@ -223,17 +196,9 @@ export default function ProductPage() {
         </YStack>
       </YStack>
       <XStack flex={1} p="$4" gap="$4" justifyContent='flex-start' alignItems='center'>
-        <Button circular size={"$5"} themeInverse icon={() => <ShoppingCart color='black' />}></Button>
-        
         <Button
-          themeInverse
-          width={'48%'}
-          onPress={() => {
-            setOpen(true);
-          }}>
-          Buy Now
-        </Button>
-        {/* <Button
+          circular size={"$5"} themeInverse
+          icon={() => <ShoppingCart color='black' />}
           onPress={() => {
             try {
               addToCart(product as Product);
@@ -242,10 +207,17 @@ export default function ProductPage() {
               console.error('Navigation error:', error);
             }
           }}
+        >
+        </Button>
+
+        <Button
+          themeInverse
           width={'48%'}
-          icon={() => <ShoppingCart size="32" color="#d9e3f0" variant="Bold" />}>
-          Add to Cart
-        </Button> */}
+          onPress={() => {
+            setOpen(true);
+          }}>
+          Buy Now
+        </Button>
       </XStack>
     </ScrollView>
   );

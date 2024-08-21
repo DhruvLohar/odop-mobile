@@ -36,7 +36,7 @@ export default function ProtectedLayout() {
       <Stack.Screen name="certificate/viewCertificate" options={{ headerShown: true, title: 'Check Certificate' }} />
 
 
-      <Stack.Screen name="artisan/Forums/AllForums" options={{ headerShown: true, title: 'All Forums' }} />
+      <Stack.Screen name="artisan/Forums/AllForums" options={{ headerShown: true, title: 'ODOP Forums' }} />
 
 
       <Stack.Screen

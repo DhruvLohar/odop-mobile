@@ -1,58 +1,95 @@
 import { Send2 } from 'iconsax-react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput, TouchableOpacity } from 'react-native';
-import { H4, YStack, ScrollView, XStack, Button, Text } from 'tamagui';
+import { H4, YStack, ScrollView, XStack, Button, Text, SizableText, H2, Paragraph, Separator, Card } from 'tamagui';
+import { axiosRequest } from '~/lib/api';
+import { useSession } from '~/lib/auth';
 
 // Define the type for chat message
 interface ChatMessage {
-  id: number;
-  content: string;
+  uid: number;
+  msg_type: 'message' | 'workshop' | 'event' | 'job_portal' | 'rental_machine';
+  message: string | null;
+  object_id: number | null;
+  self: boolean;
 }
 
 export default function IndividualNews() {
-  
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('General');
-  const [chatMessages, setChatMessages] = useState<Record<string, ChatMessage[]>>({
-    General: [],
-    Sports: [],
-    Technology: [],
-    Health: [],
-    Entertainment: [],
-  });
+  const { session } = useSession()
+
+  const [channels, setChannels] = useState<any[]>([])
+  const [currentChannel, setCurrentChannel] = useState<any>()
+
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      uid: 1,
+      msg_type: 'message',
+      message: "Hellow",
+      object_id: null,
+      self: false,
+    },
+  ])
+
   const [newMessage, setNewMessage] = useState<string>('');
 
-  // Example categories for pills
-  const categories = ['General', 'Sports', 'Technology', 'Health', 'Entertainment'];
+  async function fetchChannels() {
+    const res = await axiosRequest('forum/', { method: 'get' }, false);
+
+    if (res) {
+      setChannels(res)
+    }
+  }
+
+  async function fetchMessages() {
+
+  }
+
+  useEffect(() => {
+    fetchChannels()
+  }, [])
 
   // Handle sending a new chat message
   const sendMessage = () => {
     if (newMessage.trim()) {
-      setChatMessages((prevMessages) => ({
-        ...prevMessages,
-        [selectedCategory]: [...prevMessages[selectedCategory], { id: Date.now(), content: newMessage }],
-      }));
+      setMessages(prev => [...prev, {
+        uid: session?.id as number,
+        msg_type: 'message',
+        message: newMessage.trim(),
+        object_id: null,
+        self: true,
+      }])
       setNewMessage('');
     }
   };
 
   return (
     <YStack flex={1}>
+      <YStack mr="auto" px="$4">
+        <H2 fontWeight={'bold'}>Explore Channels</H2>
+        <Paragraph width={'80%'} theme={'alt2'}>
+          Explore the channels and share your thoughts openly and learn
+        </Paragraph>
+      </YStack>
       {/* Pills for selecting categories */}
-      <XStack space="$2" padding="$5">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            size="$3"
-            borderRadius="$10"
-            backgroundColor={selectedCategory === category ? '#10274E' : '$gray4'}
-            color="white"
-            onPress={() => setSelectedCategory(category)}
-          >
-            {category}
-          </Button>
-        ))}
-      </XStack>
+      {channels.length > 0 ? (
+        <XStack space="$2" padding="$4" paddingTop="$2">
+          {channels.map((channel) => (
+            <Button
+              key={channel.id}
+              size="$3"
+              borderRadius="$10"
+              backgroundColor={currentChannel === channel.id ? '#10274E' : '$gray4'}
+              color="white"
+              onPress={() => setCurrentChannel(channel.id)}
+            >
+              {channel.title}
+            </Button>
+          ))}
+        </XStack>
+      ) : <SizableText>No Channels Available</SizableText>}
+
+      <Separator width={"90%"} alignSelf='center' />
 
       {/* ScrollView for chat messages */}
       <ScrollView
@@ -61,18 +98,22 @@ export default function IndividualNews() {
         keyboardShouldPersistTaps="handled"
       >
         <YStack padding="$5" flex={1}>
-          {chatMessages[selectedCategory].map((message) => (
-            <YStack
-              key={message.id}
-              padding="$3"
-              backgroundColor="#181818"
-              borderRadius="$2"
-              alignSelf="flex-end" // Align messages to the right
-              maxWidth="80%"
-              marginBottom="$2"
+          {messages.map((message: ChatMessage, index) => (
+            <XStack
+              key={index}
+              width={"100%"}
+              justifyContent={!message.self ? 'flex-start' : 'flex-end'}
+              mb="$1"
             >
-              <Text color="white">{message.content}</Text>
-            </YStack>
+              <Card
+                padding="$3"
+                backgroundColor={!message.self ? "white" : "#181818"}
+                borderRadius="$4"
+                maxWidth={"75%"}
+              >
+                <Paragraph color={!message.self ? "black" : "white"}>{message.message}</Paragraph>
+              </Card>
+            </XStack>
           ))}
         </YStack>
       </ScrollView>
@@ -87,15 +128,14 @@ export default function IndividualNews() {
             flex: 1,
             borderWidth: 1,
             borderColor: '#ccc',
-            borderRadius: 50,
+            borderRadius: 100,
             paddingHorizontal: 20,
             paddingVertical: 8,
             backgroundColor: '#fff',
           }}
         />
-        <TouchableOpacity onPress={sendMessage}>
-          <Send2 size="30" color="#ffffff" />
-        </TouchableOpacity>
+
+        <Send2 size="30" color="#ffffff" onPress={sendMessage} />
       </XStack>
     </YStack>
   );

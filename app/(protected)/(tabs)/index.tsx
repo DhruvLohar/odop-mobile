@@ -10,12 +10,8 @@ import DistrictCard from '~/components/custom/DistrictCard';
 import { StatusBar } from 'expo-status-bar';
 import KnowMoreCard from '~/components/custom/KnowMoreCard';
 import { useSession } from '~/lib/auth';
-import { productsHome } from '~/lib/data/productsHome';
-<<<<<<< HEAD
 import { axiosRequest } from '~/lib/api';
-=======
 import WalkthroughCard from '~/components/custom/WalkthroughCard';
->>>>>>> d580204253f8b04975f845dcc56a74a866019227
 
 const districtData = [
   {
@@ -157,10 +153,6 @@ const HomePage: React.FC = () => {
           </YStack>
         </XStack>
 
-<<<<<<< HEAD
-        <H4 width={'100%'} color="#fff" mt="$10">
-          Success Stories of our artisans
-=======
         <YStack width="100%" marginTop="$7">
           <H4 marginBottom="$3">Explore how this app works</H4>
           <WalkthroughCard/>
@@ -168,7 +160,6 @@ const HomePage: React.FC = () => {
 
         <H4 width={'100%'} color="#fff" mt="$7">
           Learn More about the Benefits
->>>>>>> d580204253f8b04975f845dcc56a74a866019227
         </H4>
         <Index />
 

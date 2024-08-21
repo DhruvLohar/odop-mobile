@@ -19,8 +19,9 @@ import { RadioGroup } from 'tamagui';
 import { RadioGroupItemWithLabel } from '~/components/shared/RadioButtonwithLabel';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
 import ImageUploader from '~/components/shared/ImageAdd';
+import { axiosRequest } from '~/lib/api';
 
-function Create() {
+export default function CreateWorkshop() {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -31,8 +32,8 @@ function Create() {
     description: yup.string().required(),
     address: yup.string().required(),
     price: yup.number().min(0, 'Only positive and free of cost allowed').default(0),
-    availnow: yup.boolean().default(false),
-    eventTime: yup.string().required('Event Time is required'),
+    is_active: yup.boolean().default(false),
+    date: yup.string().required('Event Time is required'),
     workshop_level: yup.string().required('Workshop level is required'),
     tags: yup.string().test('is-valid-tags', 'Please enter comma-separated tags', (value) => {
       if (!value) return true;
@@ -79,7 +80,7 @@ function Create() {
         hour12: true,
       });
 
-      setValue('eventTime', formattedDateTime);
+      setValue('date', combinedDateTime.toISOString());
     }
   };
 
@@ -87,7 +88,8 @@ function Create() {
     setShowDatePicker(true);
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
+
     const formData = new FormData();
 
     // Append form data fields
@@ -96,29 +98,42 @@ function Create() {
     });
 
     images.forEach((image, index) => {
-      formData.append(`images[${index}]`, image);
+      formData.append(`workshop_images[]`, image);
     });
 
-    console.log(formData);
-    setTimeout(() => reset(), 3000);
+    console.log(formData)
+
+    const res = await axiosRequest('workshop/', {
+      method: 'post',
+      data: formData
+    }, true);
+
+    if (res?.success) {
+      alert("Workshop was created")
+    } else {
+      alert(res.message)
+    }
   };
 
   return (
     <ScrollView>
       <YStack width={'100%'} height={'100%'} justifyContent="center" paddingHorizontal="$5" my="$6">
         <H2 fontWeight={'bold'} mb="$2">
-          Skillfill Workshops
+          Skillfull Workshops
         </H2>
         <Paragraph theme={'alt2'} fontSize={'$4'}>
           Fill the form below to create a new Workshop Post
         </Paragraph>
-        <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)} mt="$6">
+        <Form width="100%" pb="$2" onSubmit={handleSubmit(onSubmit)} mt="$4">
+
+          <ImageUploader images={images} setImages={setImages} />
+
           <Controller
             control={control}
             name="title"
             render={({ field: { onChange, value } }) => (
               <>
-                <Label mb="$2">Title</Label>
+                <Label mb="$2" mt="$2">Title</Label>
                 <Input
                   keyboardType="default"
                   size={'$5'}
@@ -162,7 +177,7 @@ function Create() {
               {errors.description.message}
             </Paragraph>
           )}
-          <ImageUploader images={images} setImages={setImages} />
+
           <Controller
             control={control}
             name="address"
@@ -227,9 +242,9 @@ function Create() {
                   defaultValue="beginner"
                   orientation="horizontal">
                   <XStack my="$2">
-                    <RadioGroupItemWithLabel size="$3" value="Begginer" label="Beginner" />
-                    <RadioGroupItemWithLabel size="$3" value="intermediate" label="intermediate" />
-                    <RadioGroupItemWithLabel size="$3" value="Advance" label="Advance" />
+                    <RadioGroupItemWithLabel size="$3" value="beginner" label="Begineer" />
+                    <RadioGroupItemWithLabel size="$3" value="intermediate" label="Intermediate" />
+                    <RadioGroupItemWithLabel size="$3" value="advance" label="Advance" />
                   </XStack>
                 </RadioGroup>
                 {errors.workshop_level && (
@@ -270,24 +285,33 @@ function Create() {
 
           <Controller
             control={control}
-            name="eventTime"
+            name="date"
             render={({ field: { value } }) => (
               <>
                 <Label mb="$2">Event Date & Time</Label>
-                <Button onPress={showDatepicker}>{value || 'Select Date & Time'}</Button>
+                <Button onPress={showDatepicker}>
+                  {new Date(value).toLocaleString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                  }) || 'Select Date & Time'}</Button>
                 <Input value={value} style={{ display: 'none' }} editable={false} />
               </>
             )}
           />
-          {errors.eventTime && (
+          {errors.date && (
             <Paragraph size={'$4'} color={'$red10'}>
-              {errors.eventTime.message}
+              {errors.date.message}
             </Paragraph>
           )}
 
           <Controller
             control={control}
-            name="availnow"
+            name="is_active"
             render={({ field: { onChange, value } }) => (
               <SwitchWithLabel
                 size="$2"
@@ -297,18 +321,19 @@ function Create() {
               />
             )}
           />
-          {errors.availnow && (
+          {errors.is_active && (
             <Paragraph size={'$4'} color={'$red10'} mt="$-4">
-              {errors.availnow.message}
+              {errors.is_active.message}
             </Paragraph>
           )}
 
           <Form.Trigger asChild>
             <Button my="$6" themeInverse width={'100%'}>
-              SUBMIT
+              Create Workshop
             </Button>
           </Form.Trigger>
         </Form>
+
         {showDatePicker && (
           <DateTimePicker
             testID="datePicker"
@@ -331,5 +356,3 @@ function Create() {
     </ScrollView>
   );
 }
-
-export default Create;

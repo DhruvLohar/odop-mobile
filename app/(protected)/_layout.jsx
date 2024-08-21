@@ -35,6 +35,10 @@ export default function ProtectedLayout() {
         options={{ headerShown: true, title: 'Workshop Details' }}
       />
       <Stack.Screen
+        name="artisan/workshop/host"
+        options={{ headerShown: true, title: 'Create Workshop' }}
+      />
+      <Stack.Screen
         name="artisan/brochure/[id]"
         options={{ headerShown: true, title: 'Products Brochure' }}
       />

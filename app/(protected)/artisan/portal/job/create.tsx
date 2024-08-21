@@ -17,11 +17,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SwitchWithLabel } from '~/components/shared/SwitchWithLabel';
 import { ControlledInput, ControlledTextArea } from '~/components/forms/Controllers/ControlFields';
-import PortalSheet from '~/components/sheets/PortalSheet';
 import { axiosRequest } from '~/lib/api';
 
 function Create() {
-  // Update the Yup schema to validate the 12-hour time format with AM/PM
 
   const schema = yup.object().shape({
     title: yup.string().required(),
@@ -47,15 +45,13 @@ function Create() {
   const onSubmit = async (data: any) => {
 
     const formData = new FormData()
-
     Object.keys(data).map((key) => {
       formData.append(key, data[key]);
     })
 
-    console.log(formData)
     const res = await axiosRequest('community/job/', {
       method: 'post',
-      data: formData
+      data
     }, false);
 
     if (res?.success) {

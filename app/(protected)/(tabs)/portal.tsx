@@ -17,9 +17,7 @@ import {
 import JobPortalCard from '~/components/custom/JobPortalCard';
 import jobs from '~/lib/data/Jobs.json';
 import RentalMachineCard from '~/components/custom/RentalMachineCard';
-import rentalmachine from '~/lib/data/rentalmachine.json';
 import { Filter, Add } from 'iconsax-react-native';
-import { TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import PortalSheet from '~/components/sheets/PortalSheet';
 import { axiosRequest } from '~/lib/api';
@@ -27,7 +25,8 @@ import { axiosRequest } from '~/lib/api';
 function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
   const router = useRouter();
 
-  const [rentalMachines, setRentalMachines] = useState<any[]>([])
+  const [rentalMachines, setRentalMachines] = useState<RentalMachine[]>([])
+  const [jobPosts, setJobPosts] = useState<JobPosting[]>([])
 
   async function fetchRentalMachines() {
     const res = await axiosRequest('community/rental_machines/', {
@@ -36,6 +35,14 @@ function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
 
     if (res?.success) {
       setRentalMachines(res.rental_machines)
+    }
+  }
+
+  async function fetchJobPosts() {
+    const res = await axiosRequest('community/job/', { method: 'get' }, false);
+  
+    if (res?.success) {
+      setJobPosts(res.job_posts)
     }
   }
 
@@ -61,6 +68,7 @@ function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
 
   useEffect(() => {
     fetchRentalMachines()
+    fetchJobPosts()
   }, [])
 
   return (
@@ -84,7 +92,7 @@ function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
       <Tabs.Content value="job_portal" padding="$1" flex={1}>
         <ScrollView flex={1}>
           <YStack flex={1} alignItems="center">
-            {jobs.jobs.map((jobs) => (
+            {jobPosts.map((jobs) => (
               <JobPortalCard key={jobs.id} {...jobs} />
             ))}
           </YStack>

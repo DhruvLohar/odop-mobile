@@ -60,13 +60,13 @@ const HomePage: React.FC = () => {
     <ScrollView>
       <StatusBar style="light" />
 
-      <YStack flex={1} alignItems="flex-start" justifyContent="flex-start" padding="$5">
-        <XStack alignItems="center">
-          <H4 fontSize={'$8'}>Good Afternoon,</H4>
-          <H4 fontSize={'$9'} ml="$2" fontWeight={'bold'}>
+      <YStack flex={1} alignItems="flex-start" justifyContent="flex-start" paddingHorizontal="$5">
+        <YStack>
+          <H4 theme="alt2" fontSize={'$6'}>Good Afternoon,</H4>
+          <H4 fontSize={'$9'} marginBottom="$2" fontWeight={'bold'}>
             {session?.name}
           </H4>
-        </XStack>
+        </YStack>
         <XStack justifyContent="center" alignItems="center" columnGap="$2">
           <Location size={20} color="#ffffffAA" />
           <Paragraph theme={'alt2'} fontSize={'$5'}>

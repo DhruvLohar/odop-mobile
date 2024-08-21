@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-export const API_URL = "http://192.168.1.26:8000/";
-export const MEDIA_URL = "http://192.168.1.26:8000";
+export const API_URL = 'http://192.168.20.200:8000/';
+export const MEDIA_URL = 'http://192.168.20.200:8000';
 
 axios.defaults.baseURL = API_URL;
 
@@ -30,7 +30,7 @@ export async function postToAPI<T>(url: string, data: any): Promise<ApiResponse<
 
 export async function fetchFromAPI<T>(url: string): Promise<ApiResponse<T> | { success: boolean }> {
   try {
-    const sessionString = await SecureStore.getItemAsync("session");
+    const sessionString = await SecureStore.getItemAsync('session');
     const session: Session = sessionString ? JSON.parse(sessionString) : {};
     if (session.access_token) {
       axios.defaults.headers.common.Authorization = `Bearer ${session.access_token}`;
@@ -48,7 +48,7 @@ export async function axiosRequest<T>(
   reqParams: AxiosRequestConfig,
   sendingMedia: boolean
 ): Promise<ApiResponse<T> | any> {
-  const sessionString = await SecureStore.getItemAsync("session");
+  const sessionString = await SecureStore.getItemAsync('session');
   const session: Session = sessionString ? JSON.parse(sessionString) : {};
 
   try {
@@ -57,8 +57,8 @@ export async function axiosRequest<T>(
       ...reqParams,
       headers: {
         Authorization: `Bearer ${session.access_token}`,
-        Accept: "application/json",
-        "Content-Type": sendingMedia ? "multipart/form-data" : "application/json",
+        Accept: 'application/json',
+        'Content-Type': sendingMedia ? 'multipart/form-data' : 'application/json',
       },
     });
     return res.data;

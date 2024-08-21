@@ -21,15 +21,30 @@ import { Filter } from 'iconsax-react-native';
 import EventsSheet from '~/components/sheets/EventsSheet';
 import PortalSheet from '~/components/sheets/PortalSheet';
 
-function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
+function parseShowTime(showTime: string): string {
+  const [datePart, timePart] = showTime.split(' | ');
+  const [day, month] = datePart.split(' ');
+
+  // Correctly parse the month
+  const monthIndex = new Date(Date.parse(month + ' 1, 2012')).getMonth() + 1;
+
+  // Ensure day and month are in two digits
+  const dayString = day.padStart(2, '0');
+  const monthString = monthIndex.toString().padStart(2, '0');
+
+  // Return date in YYYY-MM-DD format
+  return `${new Date().getFullYear()}-${monthString}-${dayString}`;
+}
+
+function HorizontalTabs({ setCurrentTab, currentFilters, currentTab }: any) {
   useEffect(() => {
     console.log(currentFilters);
   }, [currentFilters]);
 
-  const currentDate = new Date();
+  const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
 
   const filteredWorkShops = useMemo(() => {
-    let filteredData = workshops.workshops; // Access the workshops array
+    let filteredData = workshops.workshops;
 
     // Apply level filter
     if (currentFilters['level'] && currentFilters['level'] !== 'all') {
@@ -48,18 +63,35 @@ function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
     }
 
     // Apply date filter
-    if (currentFilters['date'] === 'current') {
+    if (currentFilters['workshopDate'] === 'current') {
       filteredData = filteredData
-        .filter((workshop) => new Date(workshop.date) >= currentDate) // Ongoing or near workshops
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Ascending order
-    } else if (currentFilters['date'] === 'upcoming') {
+        .filter((workshop) => workshop.date >= currentDate) // Ongoing or near workshops
+        .sort((a, b) => a.date.localeCompare(b.date)); // Ascending order
+    } else if (currentFilters['workshopDate'] === 'upcoming') {
       filteredData = filteredData
-        .filter((workshop) => new Date(workshop.date) > currentDate) // Future workshops
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Descending order
+        .filter((workshop) => workshop.date > currentDate) // Future workshops
+        .sort((a, b) => b.date.localeCompare(a.date)); // Descending order
     }
 
     return filteredData;
-  }, [workshops, currentFilters]);
+  }, [workshops, currentFilters, currentTab, currentDate]);
+
+  const filteredEvents = useMemo(() => {
+    let filteredData = eventsData.events;
+
+    // Apply date filter based on the day only
+    if (currentFilters['eventDate'] === 'current') {
+      filteredData = filteredData
+        .filter((workshop) => workshop.date >= currentDate) // Ongoing or near workshops
+        .sort((a, b) => a.date.localeCompare(b.date)); // Ascending order
+    } else if (currentFilters['workshopDate'] === 'upcoming') {
+      filteredData = filteredData
+        .filter((workshop) => workshop.date > currentDate) // Future workshops
+        .sort((a, b) => b.date.localeCompare(a.date)); // Descending order
+    }
+
+    return filteredData;
+  }, [eventsData, currentFilters, currentTab, currentDate]);
 
   return (
     <Tabs
@@ -92,7 +124,7 @@ function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
       <Tabs.Content value="events" flex={1}>
         <ScrollView flex={1}>
           <YStack flex={1} alignItems="center">
-            {eventsData.events.map((event) => (
+            {filteredEvents.map((event) => (
               <EventCard key={event.id} {...event} />
             ))}
           </YStack>
@@ -110,7 +142,7 @@ function HorizontalTabs({ setCurrentTab, currentFilters }: any) {
 
 const filters = [
   {
-    id: 'date',
+    id: 'workshopDate',
     title: 'Date',
     keys: [
       { id: 'current', value: 'Current' },
@@ -131,20 +163,11 @@ const filters = [
 
 const eventFilters = [
   {
-    id: 'date',
+    id: 'eventDate',
     title: 'Date',
     keys: [
       { id: 'current', value: 'Current' },
       { id: 'upcoming', value: 'Upcoming' },
-    ],
-  },
-  {
-    id: 'level',
-    title: 'Level',
-    keys: [
-      { id: 'bg', value: 'Begginer' },
-      { id: 'int', value: 'Intermediate' },
-      { id: 'adv', value: 'Advance' },
     ],
   },
 ];
@@ -193,7 +216,11 @@ export default function EventsPage() {
         </XStack>
 
         <YStack flex={1}>
-          <HorizontalTabs setCurrentTab={setCurrentTab} currentFilters={currentFilters} />
+          <HorizontalTabs
+            setCurrentTab={setCurrentTab}
+            currentFilters={currentFilters}
+            currentTab={currentTab}
+          />
         </YStack>
       </YStack>
     </>

@@ -1,32 +1,61 @@
-import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { MoneySend, More } from "iconsax-react-native";
-import { useRef, useState } from "react";
+import { useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { MoneySend, More } from 'iconsax-react-native';
+import { useRef, useState } from 'react';
 import workshops from '~/lib/data/workshops.json';
 import WorkshopCard from '~/components/custom/WorkshopCard';
-import { Avatar, Button, Card, H3, H4, Paragraph, ScrollView, Separator, SizableText, Tabs, type TabsContentProps, XStack, YStack } from "tamagui";
-import ProfileDetails from "~/components/profile/DetailsSheet";
-import GetInTouch from "~/components/profile/GetInTouch";
+import {
+  Avatar,
+  Button,
+  Card,
+  H3,
+  H4,
+  Paragraph,
+  ScrollView,
+  Separator,
+  SizableText,
+  Tabs,
+  type TabsContentProps,
+  XStack,
+  YStack,
+} from 'tamagui';
+import ProfileDetails from '~/components/profile/DetailsSheet';
+import GetInTouch from '~/components/profile/GetInTouch';
 import productsData from '~/lib/data/products.json';
 import ProductCard from '~/components/custom/ProductCard';
-import SupportArtisan from "~/components/profile/SupportArtisanSheet";
-import WithRole from "~/components/shared/WithRole";
-import { useSession } from "~/lib/auth";
-
+import SupportArtisan from '~/components/profile/SupportArtisanSheet';
+import WithRole from '~/components/shared/WithRole';
+import { useSession } from '~/lib/auth';
+import { productsHome } from '~/lib/data/productsHome';
+import { FlatList } from 'react-native';
 function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: boolean }) {
-
   const { productsNearby, categoryProducts } = productsData;
+
+  const renderItem = (data: any) => (
+    <XStack key={data.index} alignItems="center" justifyContent="space-between" space="$4">
+      {data.item?.map((product: Product, idx: number) => <ProductCard key={idx} {...product} />)}
+    </XStack>
+  );
+
+  const chunkArray = (array: any[], size: number): any[] => {
+    const result = [];
+
+    for (let i = 0; i < array.length; i += size) {
+      result.push(array.slice(i, i + size));
+    }
+
+    return result;
+  };
 
   return (
     <Tabs
       defaultValue="products"
       orientation="horizontal"
       flexDirection="column"
-      width={"100%"}
+      width={'100%'}
       height={2000}
-      borderRadius={"$5"}
-      overflow="hidden"
-    >
+      borderRadius={'$5'}
+      overflow="hidden">
       <Tabs.List separator={<Separator vertical />} mb="$4">
         <Tabs.Tab flex={1} value="products">
           <SizableText fontFamily="$body">Products</SizableText>
@@ -39,9 +68,15 @@ function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: bool
       <Tabs.Content value="products" flex={1}>
         <ScrollView>
           <YStack>
-            {productsNearby.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
+            {productsHome && productsHome.length > 0 && (
+              <YStack width={'100%'} justifyContent="center" alignItems="center" rowGap="$4">
+                <FlatList
+                  data={chunkArray(productsHome, 2)}
+                  renderItem={renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              </YStack>
+            )}
           </YStack>
         </ScrollView>
       </Tabs.Content>
@@ -49,11 +84,8 @@ function HorizontalTabs({ internalScrollEnabled }: { internalScrollEnabled: bool
       <Tabs.Content value="workshops" flex={1}>
         <ScrollView nestedScrollEnabled={true} flex={1}>
           <YStack alignItems="center" flex={1}>
-            {workshops.workshops.map(workshop => (
-              <WorkshopCard
-                key={workshop.id}
-                {...workshop}
-              />
+            {workshops.workshops.map((workshop) => (
+              <WorkshopCard key={workshop.id} {...workshop} />
             ))}
           </YStack>
         </ScrollView>
@@ -78,40 +110,31 @@ const TabsContent = (props: TabsContentProps) => {
 };
 
 export default function ProfilePage() {
-
-  const { logOut } = useSession()
-  const router = useRouter()
+  const { logOut } = useSession();
+  const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [openSupport, setOpenSupport] = useState(false);
   const [openGetInTouch, setOpenGetInTouch] = useState(false);
 
-  const separatorRef = useRef<any>(null)
-  const [internalScrollEnabled, setInternalScrollEnabled] = useState(true)
+  const separatorRef = useRef<any>(null);
+  const [internalScrollEnabled, setInternalScrollEnabled] = useState(true);
 
   async function handleLogout() {
-    await logOut()
-    router.replace('/auth/onboarding')
+    await logOut();
+    router.replace('/auth/onboarding');
   }
 
   return (
     <>
       <SupportArtisan open={openSupport} setOpen={setOpenSupport} />
 
-      <ProfileDetails
-        open={open}
-        setOpen={setOpen}
-        handleLogout={handleLogout}
-      />
+      <ProfileDetails open={open} setOpen={setOpen} handleLogout={handleLogout} />
 
       <GetInTouch open={openGetInTouch} setOpen={setOpenGetInTouch} />
       <StatusBar style="light" />
 
-      <ScrollView
-        stickyHeaderIndices={[3]}
-        paddingHorizontal="$5"
-      >
-
+      <ScrollView stickyHeaderIndices={[3]} paddingHorizontal="$5">
         <XStack width={'100%'} mb="$4" justifyContent="center" alignItems="center">
           <Avatar circular size="$11">
             <Avatar.Image
@@ -202,5 +225,5 @@ export default function ProfilePage() {
         <HorizontalTabs internalScrollEnabled={internalScrollEnabled} />
       </ScrollView>
     </>
-  )
+  );
 }

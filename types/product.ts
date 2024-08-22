@@ -14,6 +14,7 @@ interface Artisan {
     profile_image: string | null;
     state: string;
     district: string;
+    about_me: string;
 }
 
 interface Product {

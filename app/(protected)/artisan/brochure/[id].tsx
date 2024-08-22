@@ -1,6 +1,9 @@
-import React from "react";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import { H3, H5, Paragraph, ScrollView, YStack, XStack, Separator } from "tamagui";
+import { axiosRequest, MEDIA_URL } from "~/lib/api";
+import { useSession } from "~/lib/auth";
 import brochureData from "~/lib/data/brochuredata.json";
 
 interface ProductCategory {
@@ -40,13 +43,30 @@ interface BrochureData {
 const data: BrochureData = brochureData;
 
 const ODOPBrochure: React.FC = () => {
+
+  const { id } = useLocalSearchParams()
+  const { session } = useSession()
+  const [products, setProducts] = useState<Product[]>([])
+
+  async function fetchProfileData() {
+    const res = await axiosRequest(`${session?.role}/${session?.id}/`, { method: 'get' }, false);
+
+    if (res?.success) {
+      setProducts(res?.products);
+    }
+  }
+
+  useEffect(() => {
+    fetchProfileData()
+  }, [])
+
   return (
     <ScrollView>
       <YStack padding="$3">
         <YStack alignItems="center">
           <Image
-            source={require(`~/assets/brochure/ODOP1.png`)}
-            style={{ height: 130, width: 130, resizeMode: "contain" }}
+            source={require(`~/assets/Logo.png`)}
+            style={{ height: 180, width: 180, resizeMode: "contain" }}
           />
         </YStack>
 
@@ -54,7 +74,7 @@ const ODOPBrochure: React.FC = () => {
           <H3>Introduction</H3>
           <XStack alignItems="center">
             <YStack flex={1}>
-              <Paragraph marginBottom="$5" theme="alt2">{data.introduction.text}</Paragraph>
+              <Paragraph marginBottom="$5" theme="alt2">{products[0].artisan.about_me}</Paragraph>
             </YStack>
           </XStack>
         </YStack>
@@ -73,7 +93,7 @@ const ODOPBrochure: React.FC = () => {
               <Paragraph theme="alt2" size="$2">Address: {data.storeInfo.address}</Paragraph>
               <Image
                 source={require(`~/assets/brochure/Rectangle2.png`)}
-                style={{ width: "100%", height: 150, borderRadius: 10 }}
+                style={{ width: "100%", height: 150, borderRadius: 10, marginTop: 10 }}
               />
             </YStack>
           </XStack>
@@ -82,8 +102,8 @@ const ODOPBrochure: React.FC = () => {
         <Separator my="$6" />
 
         <YStack space="$4">
-          <H3 alignSelf="center" marginBottom="$3">Product Categories</H3>
-          {data.productCategories.map((product, index) => (
+          <H3 alignSelf="center" marginBottom="$3">Products</H3>
+          {products.map((product: Product, index) => (
             <XStack
               key={index}
               space="$4"
@@ -91,13 +111,13 @@ const ODOPBrochure: React.FC = () => {
               flexDirection={index % 2 === 0 ? "row" : "row-reverse"}
             >
               <YStack flex={1}>
-                <H5>{product.name}</H5>
-                <Paragraph theme="alt2" size="$2">{product.description}</Paragraph>
+                <H5>{product.title}</H5>
+                <Paragraph theme="alt2" size="$2" lineBreakMode="tail" numberOfLines={3}>{product.description}...</Paragraph>
               </YStack>
               <YStack flex={1}>
                 <Image
-                  source={require(`~/assets/brochure/Rectangle4.png`)}
-                  style={{ width: "100%", height: 150, borderRadius: 20 }}
+                  source={{ uri: MEDIA_URL + product.images[0] }}
+                  style={{ width: "100%", height: 150, borderRadius: 20, objectFit: 'cover' }}
                 />
               </YStack>
             </XStack>

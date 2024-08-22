@@ -198,7 +198,7 @@ export default function ProfilePage() {
             <Separator vertical height={'$6'} />
             <Card backgroundColor={'transparent'} flex={1}>
               <Card.Header alignItems="center">
-                <H3 fontWeight={'bold'}>100+</H3>
+                <H3 fontWeight={'bold'}>2</H3>
                 <Paragraph theme={'alt2'}>Orders</Paragraph>
               </Card.Header>
             </Card>
@@ -216,15 +216,13 @@ export default function ProfilePage() {
               About Me
             </H4>
             <Paragraph theme={'alt2'} lineHeight={'$1'} textAlign="justify" padding="$0">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+              {profile?.about_me}
             </Paragraph>
           </YStack>
 
           <YStack>
             <XStack mb="$4" justifyContent="space-between">
-              <Button width={'48%'}>View Brochure</Button>
+              <Button width={'48%'} onPress={() => router.push(`/(protected)/artisan/brochure/${profile.id}`)}>View Brochure</Button>
               <Button
                 width={'48%'}
                 onPress={() => {

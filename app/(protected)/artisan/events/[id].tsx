@@ -1,40 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { H2, H3, H6, ScrollView, XStack, YStack, Paragraph, Button } from 'tamagui';
 import { Location } from 'iconsax-react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { axiosRequest } from '~/lib/api';
 
-const images = [
-    require('~/assets/Workshops/Workshop1.jpg'),
-    require('~/assets/Workshops/Workshop2.jpg'),
-    require('~/assets/Workshops/Workshop3.jpg'),
-];
 
-export default function WorkshopAll() {
+export default function EventDetails() {
+
+    const { id } = useLocalSearchParams()
+    const [event, setEvent] = useState<EventDetails | null>(null)
+
+    async function fetchEvent() {
+        const res = await axiosRequest(`event/${id}/`, {
+            method: 'get'
+        }, false);
+
+        if (res?.success) {
+            setEvent(res.workshop)
+        }
+    }
+
+    useEffect(() => {
+        fetchEvent()
+    }, [])
+
     return (
         <ScrollView>
             <YStack flex={1} alignItems="center" paddingHorizontal="$5" paddingVertical="$3">
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    paddingVertical="$1"
-                    paddingBottom="$4"
-                    contentContainerStyle={{
-                        alignItems: 'center',
-                    }}
-                >
-                    {images.map((image, index) => (
-                        <Image
-                            key={index}
-                            source={image}
-                            style={{
-                                width: 200,
-                                height: 250,
-                                borderRadius: 10,
-                                marginRight: 10,
-                            }}
-                        />
-                    ))}
-                </ScrollView>
 
                 <H3 width={"100%"} marginBottom="$2">
                     Event 1

@@ -6,12 +6,12 @@ import productsData from '~/lib/data/products.json';
 import ProductCard from '~/components/custom/ProductCard';
 
 const images = [
-  require('~/assets/Workshops/Workshop1.jpg'), 
-  require('~/assets/Workshops/Workshop2.jpg'), 
-  require('~/assets/Workshops/Workshop3.jpg'),
+  'https://t4.ftcdn.net/jpg/05/13/77/31/360_F_513773104_G7Pin2bxWwpMAWqI5MIvrSnWDpYs80WN.jpg', 
+  'https://cdn.britannica.com/28/170728-050-AD5F144B/Great-Imambara-Lucknow-Uttar-Pradesh-India.jpg', 
+  'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/b0/6c/32/caption.jpg?w=1200&h=-1&s=1',
 ];
 
-export default function WorkshopAll() {
+export default function Districts() {
   const { productsNearby, categoryProducts } = productsData;
     return (
       <ScrollView>
@@ -36,10 +36,10 @@ export default function WorkshopAll() {
             {images.map((image, index) => (
               <Image
                 key={index}
-                source={image}
+                src={`${image}`}
                 style={{
-                  width: 200,
-                  height: 250,
+                  width: 300,
+                  height: 300,
                   borderRadius: 10,
                   marginRight: 10, 
                 }}
@@ -71,11 +71,11 @@ export default function WorkshopAll() {
             </H3>
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
-          <XStack alignItems="center" justifyContent="center" columnGap="$4">
+          {/* <XStack alignItems="center" justifyContent="center" columnGap="$4">
             {productsNearby.map((product) => (
               <ProductCard key={product.id} {...product} />
             ))}
-          </XStack>
+          </XStack> */}
         </ScrollView>
 
       

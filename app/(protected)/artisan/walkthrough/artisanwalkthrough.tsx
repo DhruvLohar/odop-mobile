@@ -34,7 +34,6 @@ export default function ArtisanWalkthrough() {
       description: "Explore job openings, rental machinery, and manage your listings in one place.",
       actionText: "Post Job/Machine",
       route:"/(tabs)/portal"
-
     },
     {
       number: 5,

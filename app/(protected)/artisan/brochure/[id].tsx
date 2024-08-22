@@ -74,7 +74,7 @@ const ODOPBrochure: React.FC = () => {
           <H3>Introduction</H3>
           <XStack alignItems="center">
             <YStack flex={1}>
-              <Paragraph marginBottom="$5" theme="alt2">{products[0].artisan.about_me}</Paragraph>
+              <Paragraph marginBottom="$5" theme="alt2">{products[0]?.artisan?.about_me}</Paragraph>
             </YStack>
           </XStack>
         </YStack>
@@ -112,11 +112,11 @@ const ODOPBrochure: React.FC = () => {
             >
               <YStack flex={1}>
                 <H5>{product.title}</H5>
-                <Paragraph theme="alt2" size="$2" lineBreakMode="tail" numberOfLines={3}>{product.description}...</Paragraph>
+                <Paragraph theme="alt2" size="$2" lineBreakMode="tail" numberOfLines={3}>{product?.description}...</Paragraph>
               </YStack>
               <YStack flex={1}>
                 <Image
-                  source={{ uri: MEDIA_URL + product.images[0] }}
+                  source={{ uri: MEDIA_URL + product?.images[0] }}
                   style={{ width: "100%", height: 150, borderRadius: 20, objectFit: 'cover' }}
                 />
               </YStack>

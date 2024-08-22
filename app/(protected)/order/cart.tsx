@@ -12,7 +12,7 @@ export default function Cart() {
 
   // Calculate the subtotal
   const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => item.price * 1, 0);
   };
 
   const subtotal = calculateSubtotal();
@@ -48,7 +48,7 @@ export default function Cart() {
                 Subtotal
               </H6>
               <H6 size={14} marginLeft={'$5'} fontWeight={700}>
-                ${subtotal.toFixed(2)}
+              ₹{subtotal.toFixed(2)}
               </H6>
             </XStack>
             <XStack
@@ -73,7 +73,7 @@ export default function Cart() {
                 Order Total
               </H6>
               <H6 size={14} marginLeft={'$5'} fontWeight={700}>
-                ${subtotal.toFixed(2)}
+              ₹{subtotal.toFixed(2)}
               </H6>
             </XStack>
 

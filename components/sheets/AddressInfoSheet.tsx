@@ -20,7 +20,7 @@ const schema = yup.object().shape({
 });
 
 export default function AddressSheet({ open, setOpen }: { open: boolean; setOpen: any }) {
-  const [isCustomizable] = useState<boolean>(false); // Hardcoded to true
+  const [isCustomizable] = useState<boolean>(true); // Hardcoded to true
   const router = useRouter();
 
   const {
@@ -119,14 +119,13 @@ export default function AddressSheet({ open, setOpen }: { open: boolean; setOpen
               name="customMessage"
               render={({ field: { onChange, value } }) => (
                 <>
-                  <Label mb="$2">Custom Message</Label>
+                  <Label mb="$2">Customize Message</Label>
                   <TextArea
                     size={'$5'}
                     borderWidth={2}
                     placeholder="Enter a custom message"
                     mb="$4"
                     w="100%"
-                    h="$20"
                     onChangeText={onChange}
                     value={value}
                   />

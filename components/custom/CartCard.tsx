@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { Image } from 'react-native';
 import { H6, H4, XStack, YStack, Button } from 'tamagui';
 import { useCart } from '~/app/context/CartContext';
+import { MEDIA_URL } from '~/lib/api';
 
 interface CartItemProps {
   item: Product;
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  const [quantity, setQuantity] = useState(item.quantity);
+  const [quantity, setQuantity] = useState(1);
   const { removeFromCart, updateQuantity } = useCart(); // Access the cart context functions
 
   const increaseQuantity = () => {
@@ -33,19 +34,20 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     <YStack width="100%" marginTop="$5">
       <XStack alignItems="center" justifyContent="flex-start" width="100%">
         <Image
-          source={{ uri: item.images[0] }} // Assuming the first image in the array is used
+          source={{ uri: MEDIA_URL + item.images[0] }} // Assuming the first image in the array is used
           style={{
             width: 120,
             height: 120,
             borderRadius: 20,
+            objectFit: 'cover'
           }}
         />
 
         <YStack justifyContent="center" marginLeft={40} height={120}>
-          <H4 fontWeight={700}>${item.price}</H4>
+          <H4 fontWeight={700}>₹{item.price}</H4>
           <H6 fontWeight={700}>{item.title}</H6>
           <H6 fontSize={14} color={'#585858'}>
-            Seller: {item.artisan.name}
+            Artisan: {item.artisan.name}
           </H6>
         </YStack>
       </XStack>

@@ -35,6 +35,15 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.dhruvlohar.odopmobile"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "af8a43a8-10a4-4af6-9564-df180ac30768"
       }
     }
   }

@@ -22,6 +22,7 @@ import AddressInfo from '~/components/sheets/AddressInfoSheet';
 import { useRouter, Href, useLocalSearchParams } from 'expo-router';
 import { useCart } from '~/app/context/CartContext';
 import { axiosRequest, MEDIA_URL } from '~/lib/api';
+import NotCurrentUser from '~/components/shared/NotCurrentUser';
 
 function Info({ title, content }: { title: string; content: string }) {
   return (
@@ -195,30 +196,32 @@ export default function ProductPage() {
           <Paragraph>Product cards for similar items would go here.</Paragraph>
         </YStack>
       </YStack>
-      <XStack flex={1} p="$4" gap="$4" justifyContent='flex-start' alignItems='center'>
-        <Button
-          circular size={"$5"} themeInverse
-          icon={() => <ShoppingCart color='black' />}
-          onPress={() => {
-            try {
-              addToCart(product as Product);
-              router.push('/order/cart' as Href);
-            } catch (error) {
-              console.error('Navigation error:', error);
-            }
-          }}
-        >
-        </Button>
+      <NotCurrentUser checkID={product?.artisan.id as number}>
+        <XStack flex={1} p="$4" gap="$4" justifyContent='flex-start' alignItems='center'>
+          <Button
+            circular size={"$5"} themeInverse
+            icon={() => <ShoppingCart color='black' />}
+            onPress={() => {
+              try {
+                addToCart(product as Product);
+                router.push('/order/cart' as Href);
+              } catch (error) {
+                console.error('Navigation error:', error);
+              }
+            }}
+          >
+          </Button>
 
-        <Button
-          themeInverse
-          width={'80%'}
-          onPress={() => {
-            setOpen(true);
-          }}>
-          Buy Now
-        </Button>
-      </XStack>
+          <Button
+            themeInverse
+            width={'80%'}
+            onPress={() => {
+              setOpen(true);
+            }}>
+            Buy Now
+          </Button>
+        </XStack>
+      </NotCurrentUser>
     </ScrollView>
   );
 }
